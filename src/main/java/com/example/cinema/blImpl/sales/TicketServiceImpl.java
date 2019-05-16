@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,13 +31,28 @@ public class TicketServiceImpl implements TicketService {
     @Override
     @Transactional
     public ResponseVO addTicket(TicketForm ticketForm) {
-        return null;
+        List<Ticket> tickets = new ArrayList<>();
+        Ticket ticket;
+        for (SeatForm seatForm:ticketForm.getSeats()){
+            ticket = new Ticket();
+            ticket.setUserId(ticketForm.getUserId());
+            ticket.setScheduleId(ticketForm.getScheduleId());
+            ticket.setColumnIndex(seatForm.getColumnIndex());
+            ticket.setRowIndex(seatForm.getRowIndex());
+            ticket.setState(0);
+            tickets.add(ticket);
+        }
+        ticketMapper.insertTickets(tickets);
+        return ResponseVO.buildSuccess();
     }
 
     @Override
     @Transactional
     public ResponseVO completeTicket(List<Integer> id, int couponId) {
-        return null;
+        for (int idOfOne : id){
+            ticketMapper.updateTicketState(idOfOne, 0);
+        }
+        return ResponseVO.buildSuccess();
     }
 
     @Override
@@ -61,19 +77,25 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public ResponseVO getTicketByUser(int userId) {
-        return null;
-
+        List<Ticket> tickets = ticketMapper.selectTicketByUser(userId);
+        return ResponseVO.buildSuccess(tickets);
     }
 
     @Override
     @Transactional
     public ResponseVO completeByVIPCard(List<Integer> id, int couponId) {
-        return null;
+        for (int idOfOne : id){
+            ticketMapper.updateTicketState(idOfOne, 0);
+        }
+        return ResponseVO.buildSuccess();
     }
 
     @Override
     public ResponseVO cancelTicket(List<Integer> id) {
-        return null;
+        for (int idOfOne : id){
+            ticketMapper.updateTicketState(idOfOne, 0);
+        }
+        return ResponseVO.buildSuccess();
     }
 
 
