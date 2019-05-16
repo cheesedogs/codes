@@ -2,7 +2,7 @@ target/
 /target/
 !.mvn/wrapper/maven-wrapper.jar
 
-.yml
+*.yml
 
 ### STS ###
 .apt_generated
