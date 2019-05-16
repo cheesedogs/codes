@@ -112,7 +112,7 @@ function orderConfirmClick() {
             "rowIndex": 1,
             "state": "未完成"
         }, {"id": 64, "userId": 15, "scheduleId": 67, "columnIndex": 6, "rowIndex": 1, "state": "未完成"}],
-        "total": 41.0,
+        "total": 50.0,
         "coupons": [{
             "id": 5,
             "description": "测试优惠券",

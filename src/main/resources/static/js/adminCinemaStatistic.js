@@ -4,11 +4,9 @@ $(document).ready(function() {
 
     var days = 0;
 
-    var movieNum = 0;
+    var movies = 0;
 
     changeDate();
-
-    changeScaleAndCunt();
 
     getScheduleRate();
 
@@ -18,25 +16,13 @@ $(document).ready(function() {
 
     getPlacingRate(statisticDate);
 
-    getPolularMovie(days, movieNum);
+    getPolularMovie(days, movies);
 
     function changeDate() {
         // 过滤条件变化后重新查询
         $('#statistic-date-input').change(function () {
             statisticDate = $('#statistic-date-input').val();
             getPlacingRate(statisticDate);
-        });
-    }
-
-    function changeScaleAndCunt() {
-        // 过滤条件变化后重新查询
-        $('#days-set-input').change(function () {
-            days = $('#days-set-input').val();
-            getPlacingRate(days, movieNum);
-        });
-        $('#movienum-set-input').change(function () {
-            movieNum = $('#movienum-set-input').val();
-            getPlacingRate(days, movieNum);
         });
     }
 
@@ -239,10 +225,10 @@ $(document).ready(function() {
         );
     }
 
-    function getPolularMovie(days, movieNum) {
+    function getPolularMovie(days, movies) {
         // todo
         getRequest(
-            '/statistics/popular/movie?days=' + days + '&movieNum=' + movieNum,
+            '/statistics/popular/movie?days=' + days + '&movieNum=' + movies,
             function (res) {
                 var data = res.content || [];
                 var tableData = data.map(function (item) {
@@ -254,7 +240,7 @@ $(document).ready(function() {
                 var option = {
                     title: {
                         text: '最受欢迎电影',
-                        subtext: '最近' + days + '天，TOP ' + movieNum,
+                        subtext: '最近' + days + '天，TOP ' + movies,
                         x: 'center'
                     },
                     xAxis: {
@@ -286,26 +272,37 @@ $(document).ready(function() {
     });
 
     $('#days-confirm-btn').click(function () {
-        var dayNum = $("#days-set-input").val();
+        var dayNum = +$("#days-set-input").val();
         // 验证一下是否为数字
-        postRequest(
-            '/schedule/view/set',
-            {day:dayNum},
-            function (res) {
-                if(res.success){
-                    getPolularMovie(days, movieNum)
-                    getCanSeeDayNum();
-                    canSeeDate = dayNum;
-                    $("#days-modify-btn").show();
-                    $("#days-set-input").hide();
-                    $("#days-confirm-btn").hide();
-                } else{
-                    alert(res.message);
-                }
-            },
-            function (error) {
-                alert(JSON.stringify(error));
-            }
-        );
-    })
+        if (typeof(dayNum) === 'number') {
+            getPolularMovie(dayNum, movies);
+            days = dayNum;
+            $("#days-modify-btn").show();
+            $("#days-set-input").hide();
+            $("#days-confirm-btn").hide();
+        } else {
+            alert("请输入正确的数字！");
+        }
+    });
+
+    $('#movies-modify-btn').click(function () {
+        $("#movies-modify-btn").hide();
+        $("#movies-set-input").val(movies);
+        $("#movies-set-input").show();
+        $("#movies-confirm-btn").show();
+    });
+
+    $('#movies-confirm-btn').click(function () {
+        var movieNum = +$("#movies-set-input").val();
+        // 验证一下是否为数字
+        if (typeof(movieNum) === 'number') {
+            getPolularMovie(days, movieNum);
+            movies = movieNum;
+            $("#movies-modify-btn").show();
+            $("#movies-set-input").hide();
+            $("#movies-confirm-btn").hide();
+        } else {
+            alert("请输入正确的数字！");
+        }
+    });
 });
