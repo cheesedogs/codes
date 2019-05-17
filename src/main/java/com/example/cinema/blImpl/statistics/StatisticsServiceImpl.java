@@ -98,7 +98,6 @@ public class StatisticsServiceImpl implements StatisticsService {
         }
     }
 
-
     @Override
     public ResponseVO getPopularMovies(int days, int movieNum) {
         //要求见接口说明
@@ -138,6 +137,7 @@ public class StatisticsServiceImpl implements StatisticsService {
         return movieTotalBoxOfficeVOList;
     }
 
+
     private List<ProjectionSituationVO> projectionSituationList2projectionSituationVOList(List<ProjectionSituation> projectionSituationList) {
         List<ProjectionSituationVO> projectionSituationVOList = new ArrayList<>();
         for(ProjectionSituation projectionSituation: projectionSituationList){
@@ -145,4 +145,5 @@ public class StatisticsServiceImpl implements StatisticsService {
         }
         return projectionSituationVOList;
     }
+
 }

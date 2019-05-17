@@ -37,10 +37,12 @@ public interface StatisticsMapper {
      */
     List<AudiencePrice> selectAudiencePrice(@Param("date") Date date, @Param("nextDate") Date nextDate);
 
+
     /**
      * 查询影院的影厅及座位数目、观众人数、放映场次
      * @param date
      * @return
      */
     List<ProjectionSituation> selectProjectionSituation(@Param("date") Date date, @Param("nextDate") Date nextDate);
+
 }

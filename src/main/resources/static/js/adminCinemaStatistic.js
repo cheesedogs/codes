@@ -26,6 +26,10 @@ $(document).ready(function() {
         });
     }
 
+    getPlacingRate();
+
+    getPolularMovie();
+
     function getScheduleRate() {
 
         getRequest(
@@ -305,4 +309,5 @@ $(document).ready(function() {
             alert("请输入正确的数字！");
         }
     });
+
 });
