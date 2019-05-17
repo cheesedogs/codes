@@ -56,7 +56,7 @@ public class TicketServiceImpl implements TicketService {
     public ResponseVO completeTicket(List<Integer> id, int couponId) {
         try{
             for (int idOfOne : id){
-                ticketMapper.updateTicketState(idOfOne, 0);
+                ticketMapper.updateTicketState(idOfOne, 1);
             }
         }catch (Exception e){
             e.printStackTrace();
@@ -104,7 +104,7 @@ public class TicketServiceImpl implements TicketService {
     public ResponseVO completeByVIPCard(List<Integer> id, int couponId) {
         try{
             for (int idOfOne : id){
-                ticketMapper.updateTicketState(idOfOne, 0);
+                ticketMapper.updateTicketState(idOfOne, 1);
             }
         }catch (Exception e){
             e.printStackTrace();
@@ -117,7 +117,7 @@ public class TicketServiceImpl implements TicketService {
     public ResponseVO cancelTicket(List<Integer> id) {
         try{
             for (int idOfOne : id){
-                ticketMapper.updateTicketState(idOfOne, 0);
+                ticketMapper.updateTicketState(idOfOne, 2);
             }
         }catch (Exception e){
             e.printStackTrace();
