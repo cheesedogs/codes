@@ -38,9 +38,9 @@ function renderSchedule(schedule, seats) {
     var hallDomStr = "";
     var seat = "";
     for (var i = 0; i < seats.length; i++) {
-        var temp = ""
+        var temp = "";
         for (var j = 0; j < seats[i].length; j++) {
-            var id = "seat" + i + j
+            var id = "seat" + i + j;
 
             if (seats[i][j] == 0) {
                 // 未选
@@ -89,7 +89,7 @@ function seatClick(id, i, j) {
 
     var seatDetailStr = "";
     if (selectedSeats.length == 0) {
-        seatDetailStr += "还未选择座位"
+        seatDetailStr += "还未选择座位";
         $('#order-confirm-btn').attr("disabled", "disabled")
     } else {
         for (var seatLoc in selectedSeats) {
