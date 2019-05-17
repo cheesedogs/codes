@@ -38,9 +38,9 @@ function renderSchedule(schedule, seats) {
     var hallDomStr = "";
     var seat = "";
     for (var i = 0; i < seats.length; i++) {
-        var temp = "";
+        var temp = ""
         for (var j = 0; j < seats[i].length; j++) {
-            var id = "seat" + i + j;
+            var id = "seat" + i + j
 
             if (seats[i][j] == 0) {
                 // 未选
@@ -67,7 +67,7 @@ function renderSchedule(schedule, seats) {
 }
 
 function seatClick(id, i, j) {
-    var seat = $('#' + id);
+    let seat = $('#' + id);
     if (seat.hasClass("cinema-hall-seat-choose")) {
         seat.removeClass("cinema-hall-seat-choose");
         seat.addClass("cinema-hall-seat");
@@ -87,12 +87,12 @@ function seatClick(id, i, j) {
         return res === 0 ? x[1] - y[1] : res;
     });
 
-    var seatDetailStr = "";
+    let seatDetailStr = "";
     if (selectedSeats.length == 0) {
-        seatDetailStr += "还未选择座位";
+        seatDetailStr += "还未选择座位"
         $('#order-confirm-btn').attr("disabled", "disabled")
     } else {
-        for (var seatLoc in selectedSeats) {
+        for (let seatLoc of selectedSeats) {
             seatDetailStr += "<span>" + (seatLoc[0] + 1) + "排" + (seatLoc[1] + 1) + "座</span>";
         }
         $('#order-confirm-btn').removeAttr("disabled");
@@ -107,7 +107,7 @@ function orderConfirmClick() {
     // TODO:这里是假数据，需要连接后端获取真数据，数据格式可以自行修改，但如果改了格式，别忘了修改renderOrder方法
     var ticketVOList;
     var total;
-    var coupons = [];
+    var coupons;
     var activities;
 
     getRequest(
@@ -137,17 +137,6 @@ function orderConfirmClick() {
             alert(error);
             console.log(error);
         });
-    getRequest(
-        '/ticket/get/occupiedSeats?scheduleId=' + scheduleId,
-        function (res) {
-            if (res.success) {
-                total = res.content.scheduleItem.fare * res.content.seats;
-            }
-        },
-        function (error) {
-            alert(JSON.stringify(error));
-        }
-    );
     total = selectedSeats.length * scheduleFare;
     var orderInfo = {
         "ticketVOList": ticketVOList,
@@ -257,7 +246,7 @@ function switchPay(type) {
 
 function renderOrder(orderInfo) {
     var ticketStr = "<div>" + selectedSeats.length + "张</div>";
-    for (var ticketInfo in orderInfo.ticketVOList) {
+    for (let ticketInfo of orderInfo.ticketVOList) {
         ticketStr += "<div>" + (ticketInfo.rowIndex + 1) + "排" + (ticketInfo.columnIndex + 1) + "座</div>";
         order.ticketId.push(ticketInfo.id);
     }
