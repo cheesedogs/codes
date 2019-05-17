@@ -1,5 +1,6 @@
-var selectedSeats = []
+var selectedSeats = [];
 var scheduleId;
+var scheduleFare;
 var order = {ticketId: [], couponId: 0};
 var coupons = [];
 var isVIP = false;
@@ -16,6 +17,7 @@ $(document).ready(function () {
             function (res) {
                 if (res.success) {
                     renderSchedule(res.content.scheduleItem, res.content.seats);
+                    scheduleFare = res.content.scheduleItem.fare;
                 }
             },
             function (error) {
@@ -65,7 +67,7 @@ function renderSchedule(schedule, seats) {
 }
 
 function seatClick(id, i, j) {
-    let seat = $('#' + id);
+    var seat = $('#' + id);
     if (seat.hasClass("cinema-hall-seat-choose")) {
         seat.removeClass("cinema-hall-seat-choose");
         seat.addClass("cinema-hall-seat");
@@ -85,12 +87,12 @@ function seatClick(id, i, j) {
         return res === 0 ? x[1] - y[1] : res;
     });
 
-    let seatDetailStr = "";
+    var seatDetailStr = "";
     if (selectedSeats.length == 0) {
         seatDetailStr += "还未选择座位"
         $('#order-confirm-btn').attr("disabled", "disabled")
     } else {
-        for (let seatLoc of selectedSeats) {
+        for (var seatLoc in selectedSeats) {
             seatDetailStr += "<span>" + (seatLoc[0] + 1) + "排" + (seatLoc[1] + 1) + "座</span>";
         }
         $('#order-confirm-btn').removeAttr("disabled");
@@ -105,8 +107,9 @@ function orderConfirmClick() {
     // TODO:这里是假数据，需要连接后端获取真数据，数据格式可以自行修改，但如果改了格式，别忘了修改renderOrder方法
     var ticketVOList;
     var total;
-    var coupons;
+    var coupons = [];
     var activities;
+
     getRequest(
         '/ticket/get/' + sessionStorage.getItem('id'),
         function (res) {
@@ -134,7 +137,18 @@ function orderConfirmClick() {
             alert(error);
             console.log(error);
         });
-    total = 50.0;
+    getRequest(
+        '/ticket/get/occupiedSeats?scheduleId=' + scheduleId,
+        function (res) {
+            if (res.success) {
+                total = res.content.scheduleItem.fare * res.content.seats;
+            }
+        },
+        function (error) {
+            alert(JSON.stringify(error));
+        }
+    );
+    total = selectedSeats.length * scheduleFare;
     var orderInfo = {
         "ticketVOList": ticketVOList,
         "total": total,
@@ -243,7 +257,7 @@ function switchPay(type) {
 
 function renderOrder(orderInfo) {
     var ticketStr = "<div>" + selectedSeats.length + "张</div>";
-    for (let ticketInfo of orderInfo.ticketVOList) {
+    for (var ticketInfo in orderInfo.ticketVOList) {
         ticketStr += "<div>" + (ticketInfo.rowIndex + 1) + "排" + (ticketInfo.columnIndex + 1) + "座</div>";
         order.ticketId.push(ticketInfo.id);
     }
@@ -261,7 +275,7 @@ function renderOrder(orderInfo) {
         $('#pay-amount').html("<div><b>金额：</b>" + total + "元</div>");
     } else {
         coupons = orderInfo.coupons;
-        for (let coupon of coupons) {
+        for (var coupon in coupons) {
             couponTicketStr += "<option>满" + coupon.targetAmount + "减" + coupon.discountAmount + "</option>"
         }
         $('#order-coupons').html(couponTicketStr);
