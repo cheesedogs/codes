@@ -103,6 +103,44 @@ function orderConfirmClick() {
     $('#order-state').css("display", "");
 
     // TODO:这里是假数据，需要连接后端获取真数据，数据格式可以自行修改，但如果改了格式，别忘了修改renderOrder方法
+    var ticketVOList;
+    var total;
+    var coupons;
+    var activities;
+    getRequest(
+        '/ticket/get/' + sessionStorage.getItem('id'),
+        function (res) {
+            ticketVOList = res.content;
+        },
+        function (error) {
+            alert(error);
+            console.log(error);
+        });
+    getRequest(
+        '/coupon/' + sessionStorage.getItem('id') + '/get',
+        function (res) {
+            coupons = res.content;
+        },
+        function (error) {
+            alert(error);
+            console.log(error);
+        });
+    getRequest(
+        '/activity/get',
+        function (res) {
+            activities = res.content;
+        },
+        function (error) {
+            alert(error);
+            console.log(error);
+        });
+    total = 50.0;
+    var orderInfo = {
+        "ticketVOList": ticketVOList,
+        "total": total,
+        "coupons": coupons,
+        "activities": activities
+    };
     // var orderInfo = {
     //     "ticketVOList": [{
     //         "id": 63,
@@ -164,12 +202,6 @@ function orderConfirmClick() {
     //         }
     //     }]
     // };
-    var orderInfo = {
-        "ticketVOList": ticketVOList,
-        "total": total,
-        "coupons": coupons,
-        "activities": activities
-    };
     renderOrder(orderInfo);
 
     getRequest(
