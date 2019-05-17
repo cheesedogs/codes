@@ -33,14 +33,19 @@ public class TicketServiceImpl implements TicketService {
     public ResponseVO addTicket(TicketForm ticketForm) {
         List<Ticket> tickets = new ArrayList<>();
         Ticket ticket;
-        for (SeatForm seatForm:ticketForm.getSeats()){
-            ticket = new Ticket();
-            ticket.setUserId(ticketForm.getUserId());
-            ticket.setScheduleId(ticketForm.getScheduleId());
-            ticket.setColumnIndex(seatForm.getColumnIndex());
-            ticket.setRowIndex(seatForm.getRowIndex());
-            ticket.setState(0);
-            tickets.add(ticket);
+        try{
+            for (SeatForm seatForm:ticketForm.getSeats()){
+                ticket = new Ticket();
+                ticket.setUserId(ticketForm.getUserId());
+                ticket.setScheduleId(ticketForm.getScheduleId());
+                ticket.setColumnIndex(seatForm.getColumnIndex());
+                ticket.setRowIndex(seatForm.getRowIndex());
+                ticket.setState(0);
+                tickets.add(ticket);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResponseVO.buildFailure("锁座失败");
         }
         ticketMapper.insertTickets(tickets);
         return ResponseVO.buildSuccess();
@@ -49,8 +54,13 @@ public class TicketServiceImpl implements TicketService {
     @Override
     @Transactional
     public ResponseVO completeTicket(List<Integer> id, int couponId) {
-        for (int idOfOne : id){
-            ticketMapper.updateTicketState(idOfOne, 0);
+        try{
+            for (int idOfOne : id){
+                ticketMapper.updateTicketState(idOfOne, 0);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResponseVO.buildFailure("普通购票失败");
         }
         return ResponseVO.buildSuccess();
     }
@@ -77,23 +87,41 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public ResponseVO getTicketByUser(int userId) {
-        List<Ticket> tickets = ticketMapper.selectTicketByUser(userId);
-        return ResponseVO.buildSuccess(tickets);
+        try{
+            List<Ticket> tickets = ticketMapper.selectTicketByUser(userId);
+            ResponseVO responseVO = ResponseVO.buildSuccess(tickets);
+            responseVO.setMessage("查询成功，该用户拥有以下"+tickets.size()+"张票");
+            return responseVO;
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResponseVO.buildFailure("查询用户已购票失败");
+        }
+
     }
 
     @Override
     @Transactional
     public ResponseVO completeByVIPCard(List<Integer> id, int couponId) {
-        for (int idOfOne : id){
-            ticketMapper.updateTicketState(idOfOne, 0);
+        try{
+            for (int idOfOne : id){
+                ticketMapper.updateTicketState(idOfOne, 0);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResponseVO.buildFailure("VIP卡购票失败");
         }
         return ResponseVO.buildSuccess();
     }
 
     @Override
     public ResponseVO cancelTicket(List<Integer> id) {
-        for (int idOfOne : id){
-            ticketMapper.updateTicketState(idOfOne, 0);
+        try{
+            for (int idOfOne : id){
+                ticketMapper.updateTicketState(idOfOne, 0);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResponseVO.buildFailure("取消购票失败");
         }
         return ResponseVO.buildSuccess();
     }
