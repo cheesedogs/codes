@@ -48,7 +48,7 @@ public class TicketServiceImpl implements TicketService {
             return ResponseVO.buildFailure("锁座失败");
         }
         ticketMapper.insertTickets(tickets);
-        return ResponseVO.buildSuccess();
+        return ResponseVO.buildSuccess("锁座成功");
     }
 
     @Override
@@ -62,7 +62,7 @@ public class TicketServiceImpl implements TicketService {
             e.printStackTrace();
             return ResponseVO.buildFailure("普通购票失败");
         }
-        return ResponseVO.buildSuccess();
+        return ResponseVO.buildSuccess("普通购票成功");
     }
 
     @Override
@@ -110,7 +110,7 @@ public class TicketServiceImpl implements TicketService {
             e.printStackTrace();
             return ResponseVO.buildFailure("VIP卡购票失败");
         }
-        return ResponseVO.buildSuccess();
+        return ResponseVO.buildSuccess("VIP卡购票成功");
     }
 
     @Override
@@ -123,7 +123,7 @@ public class TicketServiceImpl implements TicketService {
             e.printStackTrace();
             return ResponseVO.buildFailure("取消购票失败");
         }
-        return ResponseVO.buildSuccess();
+        return ResponseVO.buildSuccess("取消购票成功");
     }
 
 
