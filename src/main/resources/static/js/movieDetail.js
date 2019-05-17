@@ -96,15 +96,100 @@ $(document).ready(function(){
     });
 
     // admin界面才有
-    $("#modify-btn").click(function () {
-        var movie={
-
+    $("#movie-edit-form-btn").click(function () {
+        var form={
+                name: $('#movie-edit-name-input').val(),
+                startDate: $('#movie-edit-date-input').val(),
+                posterUrl: $('#movie-edit-img-input').val(),
+                description: $('#movie-edit-description-input').val(),
+                type: $('#movie-edit-type-input').val(),
+                length: $('#movie-edit-length-input').val(),
+                country: $('#movie-edit-country-input').val(),
+                starring: $('#movie-edit-star-input').val(),
+                director: $('#movie-edit-director-input').val(),
+                screenWriter: $('#movie-edit-writer-input').val(),
+                language: $('#movie-edit-language-input').val(),
+                id: parseInt(window.location.href.split('?')[1].split('&')[0].split('=')[1]),
         }
-       alert('交给你们啦，修改时需要在对应html文件添加表单然后获取用户输入，提交给后端，别忘记对用户输入进行验证。（可参照添加电影&添加排片&修改排片）');
+
+        //表单验证
+        if (!form.name) {
+            alert("名称空缺");
+            return;
+        }
+        if (!form.starring){
+            alert("主演空缺");
+            return;
+        }
+        if (!form.country){
+            alert("国家地区空缺");
+            return;
+        }
+        if (!form.description){
+            alert("描述空缺");
+            return;
+        }
+        if (!form.language){
+            alert("语言空缺");
+            return;
+        }
+        if (!form.director){
+            alert("导演空缺");
+            return;
+        }
+        if (!form.screenWriter){
+            alert("编剧空缺");
+            return;
+        }
+        if (!form.posterUrl){
+            alert("海报空缺");
+            return;
+        }
+        if (!form.type){
+            alert("类型空缺");
+            return;
+        }
+
+        postRequest(
+            '/movie/update',
+            form,
+            function (res) {
+                if(res.success){
+                    getMovie();
+                    $("#movieEditModal").modal('hide');
+                } else{
+                    alert(res.message);
+                }
+            },
+            function (error) {
+                alert(JSON.stringify(error));
+            }
+        );
+
+       // alert('交给你们啦，修改时需要在对应html文件添加表单然后获取用户输入，提交给后端，别忘记对用户输入进行验证。（可参照添加电影&添加排片&修改排片）');
 
     });
     $("#delete-btn").click(function () {
-        alert('交给你们啦，下架别忘记需要一个确认提示框，也别忘记下架之后要对用户有所提示哦');
+        // alert('交给你们啦，下架别忘记需要一个确认提示框，也别忘记下架之后要对用户有所提示哦');
+        var r=confirm("确认下架该电影吗？");
+        alert(parseInt(window.location.href.split('?')[1].split('&')[0].split('=')[1]));//验证成功锁定id 
+        if (r){
+            deleteRequest(
+                '/movie/off/batch',
+                {movieIdList:[parseInt(window.location.href.split('?')[1].split('&')[0].split('=')[1])]},
+                function () {
+                    if(res.success){
+                        getMovie();
+                        // $("#scheduleEditModal").modal('hide');
+                    } else{
+                        alert(res.message);
+                    }
+                },
+                function (error) {
+                    alert(JSON.stringify(error));
+                }
+            );
+        }
     });
 
 });

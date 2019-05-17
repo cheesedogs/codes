@@ -165,6 +165,26 @@ $(document).ready(function() {
                 alert("分钟不对，开始时间应该比结束时间晚");
                 return;
             }
+        if (!form.endTime){
+            alert("结束时间没填完");
+            return;
+        }
+        if (!form.startTime){
+            alert("开始时间没填完");
+            return;
+        }
+        if (!form.fare){
+            alert("费用没填完");
+            return;
+        }
+        if (!form.hallId) {
+            alert("影厅没填完")
+            return;
+        }
+        if (!form.movieId ){
+            alert("影片名称没填完")
+            return;
+        }
         // }
         // checkFormDate();
         postRequest(
@@ -220,6 +240,26 @@ $(document).ready(function() {
             alert("分钟不对，开始时间应该比结束时间晚");
             return;
         }
+        if (!form.endTime){
+            alert("结束时间没填完");
+            return;
+        }
+        if (!form.startTime){
+            alert("开始时间没填完");
+            return;
+        }
+        if (!form.fare){
+            alert("费用没填完");
+            return;
+        }
+        if (!form.hallId) {
+            alert("影厅没填完")
+            return;
+        }
+        if (!form.movieId ){
+            alert("影片名称没填完")
+            return;
+        }
         // }
         // checkFormDate();
         postRequest(
@@ -240,7 +280,7 @@ $(document).ready(function() {
     });
 
     $("#schedule-edit-remove-btn").click(function () {
-        var r=confirm("确认要删除该排片信息吗")
+        var r=confirm("确认要删除该排片信息吗");
         if (r) {
             deleteRequest(
                 '/schedule/delete/batch',
