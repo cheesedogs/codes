@@ -56,7 +56,7 @@ public class ProjectionSituation {
         return audienceNum / (releaseNum / (hallNum / (rowNum * columnNum)));
     }
 
-    public void setPlacingRate(Integer placingRate) {
-        this.placingRate = placingRate;
+    public void setPlacingRate(Integer audienceNum, Integer releaseNum, Integer hallNum, Integer rowNum, Integer columnNum) {
+        this.placingRate = audienceNum / (releaseNum / (hallNum / (rowNum * columnNum)));
     }
 }
