@@ -6,9 +6,11 @@ package com.example.cinema.po;
  */
 public class ProjectionSituation {
     private Integer hallNum;
-    private Integer seatNum;
+    private Integer rowNum;
+    private Integer columnNum;
     private Integer releaseNum;
     private Integer audienceNum;
+    private Integer placingRate;
 
     public Integer getHallNum() {
         return hallNum;
@@ -18,12 +20,20 @@ public class ProjectionSituation {
         this.hallNum = hallNum;
     }
 
-    public Integer getSeatNum() {
-        return seatNum;
+    public Integer getRowNum() {
+        return rowNum;
     }
 
-    public void setSeatNum(Integer seatNum) {
-        this.seatNum = seatNum;
+    public void setRowNum(Integer rowNum) {
+        this.rowNum = rowNum;
+    }
+
+    public Integer getColumnNum() {
+        return columnNum;
+    }
+
+    public void setColumnNum(Integer columnNum) {
+        this.columnNum = columnNum;
     }
 
     public Integer getReleaseNum() {
@@ -40,5 +50,13 @@ public class ProjectionSituation {
 
     public void setAudienceNum(Integer audienceNum) {
         this.audienceNum = audienceNum;
+    }
+
+    public Integer getPlacingRate() {
+        return audienceNum / (releaseNum / (hallNum / (rowNum * columnNum)));
+    }
+
+    public void setPlacingRate(Integer placingRate) {
+        this.placingRate = placingRate;
     }
 }

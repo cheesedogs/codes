@@ -8,16 +8,19 @@ import com.example.cinema.po.ProjectionSituation;
  */
 public class ProjectionSituationVO {
     private Integer hallNum;
-    private Integer seatNum;
+    private Integer rowNum;
+    private Integer columnNum;
     private Integer releaseNum;
     private Integer audienceNum;
     private Integer placingRate;
 
     public ProjectionSituationVO(ProjectionSituation projectionSituation){
         this.hallNum = projectionSituation.getHallNum();
-        this.seatNum = projectionSituation.getSeatNum();
+        this.rowNum = projectionSituation.getRowNum();
+        this.columnNum = projectionSituation.getColumnNum();
         this.releaseNum = projectionSituation.getReleaseNum();
         this.audienceNum = projectionSituation.getAudienceNum();
+        this.placingRate = projectionSituation.getPlacingRate();
     }
 
     public Integer getHallNum() {
@@ -28,12 +31,20 @@ public class ProjectionSituationVO {
         this.hallNum = hallNum;
     }
 
-    public Integer getSeatNum() {
-        return seatNum;
+    public Integer getRowNum() {
+        return rowNum;
     }
 
-    public void setSeatNum(Integer seatNum) {
-        this.seatNum = seatNum;
+    public void setRowNum(Integer rowNum) {
+        this.rowNum = rowNum;
+    }
+
+    public Integer getColumnNum() {
+        return columnNum;
+    }
+
+    public void setColumnNum(Integer columnNum) {
+        this.columnNum = columnNum;
     }
 
     public Integer getReleaseNum() {
@@ -56,7 +67,7 @@ public class ProjectionSituationVO {
         return placingRate;
     }
 
-    public void setPlacingRate(Integer hallNum, Integer seatNum, Integer releaseNum, Integer audienceNum) {
-        this.placingRate = audienceNum / (releaseNum / (hallNum / seatNum));
+    public void setPlacingRate(Integer placingRate) {
+        this.placingRate = placingRate;
     }
 }

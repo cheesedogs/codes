@@ -28,7 +28,8 @@
     <select id="selectProjectionSituation" resultType="com.example.cinema.po.ProjectionSituation">
         select
             count(h.name) as hallNum,
-            h.column * h.row as seatNum,
+            h.row as rowNum,
+            h.column as columnNum,
             count(t.schedule_id) as releaseNum,
             count(t.id) as audienceNum
         from hall h, ticket t

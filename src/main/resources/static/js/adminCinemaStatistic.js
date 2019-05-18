@@ -174,9 +174,8 @@ $(document).ready(function() {
             function (res) {
                 var data = res.content || [];
                 var tableData = data.map(function (item) {
-                    return {
-                        placeRate: item.placingRate
-                    };
+                    console.log(item);
+                    return item.placingRate;
                 });
                 var placingRateList = data.map(function (item) {
                     return item.placingRate;
