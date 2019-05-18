@@ -3,15 +3,21 @@ package com.example.cinema.blImpl.sales;
 import com.example.cinema.bl.sales.TicketService;
 import com.example.cinema.blImpl.management.hall.HallServiceForBl;
 import com.example.cinema.blImpl.management.schedule.ScheduleServiceForBl;
+import com.example.cinema.blImpl.promotion.ActivityServiceImpl;
+import com.example.cinema.data.management.MovieMapper;
+import com.example.cinema.data.management.ScheduleMapper;
+import com.example.cinema.data.promotion.ActivityMapper;
+import com.example.cinema.data.promotion.CouponMapper;
+import com.example.cinema.data.promotion.VIPCardMapper;
 import com.example.cinema.data.sales.TicketMapper;
-import com.example.cinema.po.Hall;
-import com.example.cinema.po.ScheduleItem;
-import com.example.cinema.po.Ticket;
+import com.example.cinema.po.*;
 import com.example.cinema.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +33,21 @@ public class TicketServiceImpl implements TicketService {
     ScheduleServiceForBl scheduleService;
     @Autowired
     HallServiceForBl hallService;
+
+    @Autowired
+    CouponMapper couponMapper;
+
+    @Autowired
+    ActivityMapper activityMapper;
+
+    @Autowired
+    ScheduleMapper scheduleMapper;
+
+    @Autowired
+    MovieMapper movieMapper;
+
+    @Autowired
+    VIPCardMapper vipCardMapper;
 
     @Override
     @Transactional
@@ -55,12 +76,22 @@ public class TicketServiceImpl implements TicketService {
     @Transactional
     public ResponseVO completeTicket(List<Integer> id, int couponId) {
         try{
+            Ticket ticket;
+
             for (int idOfOne : id){
+                ticket = ticketMapper.selectTicketById(idOfOne);
+
+                //检验优惠券
+                checkCouponValidated(ticket,couponId);
+
+                //判断是否符合活动
+                checkActivities(ticket);
+
                 ticketMapper.updateTicketState(idOfOne, 1);
             }
         }catch (Exception e){
             e.printStackTrace();
-            return ResponseVO.buildFailure("普通购票失败");
+            return ResponseVO.buildFailure("普通购票失败" + e.getMessage());
         }
         return ResponseVO.buildSuccess("普通购票成功");
     }
@@ -102,30 +133,72 @@ public class TicketServiceImpl implements TicketService {
     @Override
     @Transactional
     public ResponseVO completeByVIPCard(List<Integer> id, int couponId) {
+        Ticket ticket;
+        int UserId=ticketMapper.selectTicketById(id.get(0)).getUserId();
+        double totalFare = 0;
+
         try{
             for (int idOfOne : id){
+                ticket = ticketMapper.selectTicketById(idOfOne);
+
+                //检验优惠券
+                checkCouponValidated(ticket,couponId);
+
+                //判断是否符合活动
+                checkActivities(ticket);
+
+                totalFare += scheduleMapper.selectScheduleById(ticket.getScheduleId()).getFare();
                 ticketMapper.updateTicketState(idOfOne, 1);
             }
+
+            vipCardMapper.updateCardBalance(UserId, vipCardMapper.selectCardByUserId(UserId).getBalance()-totalFare);
+            return ResponseVO.buildSuccess("VIP卡购票成功");
         }catch (Exception e){
             e.printStackTrace();
-            return ResponseVO.buildFailure("VIP卡购票失败");
+            return ResponseVO.buildFailure("VIP卡购票失败" + e.getMessage());
         }
-        return ResponseVO.buildSuccess("VIP卡购票成功");
     }
 
     @Override
     public ResponseVO cancelTicket(List<Integer> id) {
         try{
             for (int idOfOne : id){
-                ticketMapper.updateTicketState(idOfOne, 2);
+                if (ticketMapper.selectTicketById(idOfOne).getState() != 2){
+                    ticketMapper.updateTicketState(idOfOne, 2);
+                }else {
+                    throw new Exception("票未锁座");
+                }
             }
         }catch (Exception e){
             e.printStackTrace();
-            return ResponseVO.buildFailure("取消购票失败");
+            return ResponseVO.buildFailure("取消购票失败，原因:"+e.getMessage());
         }
         return ResponseVO.buildSuccess("取消购票成功");
     }
 
+    private void checkCouponValidated(Ticket ticket,int couponId)throws Exception{
+        Coupon coupon = couponMapper.selectById(couponId);
+        int UserId=ticket.getUserId();
+        //判断优惠券是否有效
+        Timestamp ticketTimeStamp;
+        ticketTimeStamp = ticket.getTime();
+        if (ticketTimeStamp.compareTo(coupon.getStartTime())<0
+                || ticketTimeStamp.compareTo(coupon.getEndTime())>0){
+            throw new Exception("优惠券时间失效");
+        }
+        couponMapper.deleteCouponUser(couponId,UserId);
+    }
 
+    private void checkActivities(Ticket ticket){
+        Timestamp ticketTimeStamp = ticket.getTime();
+        ScheduleItem schedule = scheduleMapper.selectScheduleById(ticket.getScheduleId());
+        List<Activity> activities = activityMapper.selectActivitiesByMovie(schedule.getMovieId());
+        for (Activity a : activities) {
+            if (ticketTimeStamp.compareTo(a.getStartTime())>0
+                    && ticketTimeStamp.compareTo(a.getEndTime())<0){
+                couponMapper.insertCouponUser(a.getCoupon().getId(),ticket.getUserId());
+            }
+        }
+    }
 
 }
