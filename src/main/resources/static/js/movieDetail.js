@@ -172,9 +172,9 @@ $(document).ready(function(){
     $("#delete-btn").click(function () {
         // alert('交给你们啦，下架别忘记需要一个确认提示框，也别忘记下架之后要对用户有所提示哦');
         var r=confirm("确认下架该电影吗？");
-        alert(parseInt(window.location.href.split('?')[1].split('&')[0].split('=')[1]));//验证成功锁定id 
+        alert(parseInt(window.location.href.split('?')[1].split('&')[0].split('=')[1]));//验证成功锁定id
         if (r){
-            deleteRequest(
+            postRequest(
                 '/movie/off/batch',
                 {movieIdList:[parseInt(window.location.href.split('?')[1].split('&')[0].split('=')[1])]},
                 function () {
