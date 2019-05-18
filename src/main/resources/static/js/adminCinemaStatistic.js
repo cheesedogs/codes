@@ -309,6 +309,6 @@ $(document).ready(function() {
         } else {
             alert("请输入正确的数字！");
         }
-    });
+    })
 
 });
