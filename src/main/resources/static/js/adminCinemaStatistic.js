@@ -2,9 +2,9 @@ $(document).ready(function() {
 
     var statisticDate = formatDate(new Date());
 
-    var days = 7;
+    var days = 30;
 
-    var movies = 7;
+    var movies = 5;
 
     initStatisticDate();
 
@@ -43,7 +43,6 @@ $(document).ready(function() {
                 var nameList = data.map(function (item) {
                     return item.name;
                 });
-                console.log(nameList);
                 var option = {
                     title: {
                         text: '今日排片率',
@@ -242,6 +241,7 @@ $(document).ready(function() {
         getRequest(
             '/statistics/popular/movie?days=' + days + '&movieNum=' + movies,
             function (res) {
+                console.log(res.content);
                 $("#day-num").text(days);
                 $("#movie-num").text(movies);
                 var data = res.content || [];
@@ -273,6 +273,7 @@ $(document).ready(function() {
                 scheduleRateChart.setOption(option);
             },
             function (error) {
+                console.log(error);
                 alert(JSON.stringify(error));
             }
         )
