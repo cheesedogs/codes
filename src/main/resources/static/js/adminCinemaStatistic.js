@@ -6,7 +6,7 @@ $(document).ready(function() {
 
     var movies = 0;
 
-    changeDate();
+    initStatisticDate();
 
     getScheduleRate();
 
@@ -14,19 +14,17 @@ $(document).ready(function() {
 
     getAudiencePrice();
 
-    getPlacingRate(statisticDate);
+    getPlacingRate();
 
     getPolularMovie(days, movies);
 
-    getPlacingRate();
+    function initStatisticDate() {
+        $('#statistic-date-input').val(statisticDate);
 
-    getPolularMovie();
-
-    function changeDate() {
         // 过滤条件变化后重新查询
         $('#statistic-date-input').change(function () {
             statisticDate = $('#statistic-date-input').val();
-            getPlacingRate(statisticDate);
+            getPlacingRate();
         });
     }
 
@@ -169,10 +167,10 @@ $(document).ready(function() {
             });
     }
 
-    function getPlacingRate(statisticDate) {
+    function getPlacingRate() {
         // todo
         getRequest(
-            '/statistics/PlacingRate?date=' + statisticDate.replace(/-/g, '/'),
+            '/statistics/placingRate?date=' + statisticDate.replace(/-/g,'/'),
             function (res) {
                 var data = res.content || [];
                 var tableData = data.map(function (item) {
@@ -235,6 +233,8 @@ $(document).ready(function() {
         getRequest(
             '/statistics/popular/movie?days=' + days + '&movieNum=' + movies,
             function (res) {
+                $("#day-num").text(days);
+                $("#movie-num").text(movies);
                 var data = res.content || [];
                 var tableData = data.map(function (item) {
                     return item.boxOffice;
