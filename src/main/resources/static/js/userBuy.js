@@ -52,7 +52,7 @@ $(document).ready(function () {
         tiEndTime=emonth+"月"+eday+"日 "+eHourMin;
 
         bodyContent += "<tr><td>" + schedule.movieName + "</td>" +
-            "<td>" + schedule.hallName + "号厅" + "</td>" +
+            "<td>" + schedule.hallName + "</td>" +
             "<td>" + (ticketList[i].rowIndex+1) + "排" + (ticketList[i].columnIndex+1) + "列" + "</td>" +
             "<td>" + tiStartTime + "</td>" +
             "<td>" + tiEndTime + "</td>" +
