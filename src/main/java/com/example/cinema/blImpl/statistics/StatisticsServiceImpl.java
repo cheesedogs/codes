@@ -30,7 +30,12 @@ public class StatisticsServiceImpl implements StatisticsService {
     @Autowired
     private StatisticsMapper statisticsMapper;
 
-    HallServiceForBl hallServiceForBl = new HallServiceImpl();
+    @Autowired
+    HallServiceForBl hallServiceForBl;
+    @Autowired
+    ScheduleServiceForBl scheduleServiceForBl;
+    @Autowired
+    TicketServiceForBl ticketServiceForBl;
 
     @Override
     public ResponseVO getScheduleRateByDate(Date date) {
@@ -104,13 +109,11 @@ public class StatisticsServiceImpl implements StatisticsService {
 
             //根据日期得到当日的排片
             List<ScheduleItem> scheduleItemList = new ArrayList<>();
-            ScheduleServiceForBl scheduleServiceForBl = new ScheduleServiceImpl();
             scheduleItemList = scheduleServiceForBl.getScheduleByDate(requireDate,nextDate);
             scheduleNum = scheduleItemList.size();
 
             //获取所有影厅
             List<Hall> hallList = new ArrayList<>();
-            HallServiceForBl hallServiceForBl = new HallServiceImpl();
             hallList = hallServiceForBl.getAllHall();
             hallNum = hallList.size();
 
@@ -120,7 +123,6 @@ public class StatisticsServiceImpl implements StatisticsService {
             }
 
             //获取当天所有票数
-            TicketServiceForBl ticketServiceForBl = new TicketServiceImpl();
             ticketNum = ticketServiceForBl.getTicketByDate(requireDate, nextDate).size();
 
             return ResponseVO.buildSuccess((0.0+ticketNum) / scheduleNum/ hallNum / seatNum );
