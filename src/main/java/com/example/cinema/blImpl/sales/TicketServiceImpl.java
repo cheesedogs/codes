@@ -157,6 +157,9 @@ public class TicketServiceImpl implements TicketService {
                 ticketMapper.updateTicketState(idOfOne, 1);
             }
             totalFare -= discount;
+            if(vipCardMapper.selectCardByUserId(UserId).getBalance() < totalFare) {
+                throw new Exception("VIP卡余额不足，请充值！");
+            }
             vipCardMapper.updateCardBalance(vipCardMapper.selectCardByUserId(UserId).getId(), vipCardMapper.selectCardByUserId(UserId).getBalance() - totalFare);
             return ResponseVO.buildSuccess("VIP卡购票成功");
         } catch (Exception e) {
