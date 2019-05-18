@@ -251,6 +251,7 @@ function payConfirmClick() {
             if ($('#userBuy-cardNum').val() === "123123123" && $('#userBuy-cardPwd').val() === "123123") {
                 postPayRequest();
             } else {
+                cancelTicket();
                 alert("银行卡号或密码错误");
             }
         }
@@ -267,6 +268,24 @@ function postPayRequest() {
     } else {
         url = '/ticket/buy' + param;
     }
+    postRequest(
+        url,
+        null,
+        function (res) {
+            if (res.success) {
+                $('#order-state').css("display", "none");
+                $('#success-state').css("display", "");
+                $('#buyModal').modal('hide');
+            }
+        },
+        function (error) {
+            alert(error);
+        });
+}
+
+function cancelTicket() {
+    var param = '?ticketId=' + order.ticketId.join(',');
+    var url = '/ticket/cancel' + param;
     postRequest(
         url,
         null,
