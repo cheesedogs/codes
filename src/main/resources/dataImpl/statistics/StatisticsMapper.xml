@@ -34,4 +34,20 @@
         from hall h, ticket t
         where t.time between #{date} and #{nextDate}
     </select>
+
+    <select id="selectPopularMoviesByNumberAndDay" resultType="com.example.cinema.po.PopularMoviePO">
+        select m.name as movieName,
+            sum(fare) as boxOffice
+        from ticket t
+            inner join schedule s
+            inner join movie m
+        where t.state=1
+            and t.schedule_id = s.id
+            and time>#{limitTime}
+            and m.id=s.movie_id
+        group by s.id
+        order by sum(fare)
+        desc limit 0,#{movieNum};
+    </select>
+
 </mapper>
