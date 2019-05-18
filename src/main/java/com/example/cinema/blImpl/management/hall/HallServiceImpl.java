@@ -41,6 +41,11 @@ public class HallServiceImpl implements HallService, HallServiceForBl {
 
     }
 
+    @Override
+    public List<Hall> getAllHall() {
+        return hallMapper.selectAllHall();
+    }
+
     private List<HallVO> hallList2HallVOList(List<Hall> hallList){
         List<HallVO> hallVOList = new ArrayList<>();
         for(Hall hall : hallList){

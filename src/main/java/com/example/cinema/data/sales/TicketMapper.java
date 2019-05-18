@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.scheduling.annotation.Scheduled;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -31,5 +32,8 @@ public interface TicketMapper {
 
     @Scheduled(cron = "0/1 * * * * ?")
     void cleanExpiredTicket();
+
+    List<Ticket> selectTicketByDate(@Param("startDate") Date startDate,@Param("endDate") Date endDate);
+
 }
 

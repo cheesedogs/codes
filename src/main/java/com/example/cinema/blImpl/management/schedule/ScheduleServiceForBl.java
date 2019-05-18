@@ -2,6 +2,7 @@ package com.example.cinema.blImpl.management.schedule;
 
 import com.example.cinema.po.ScheduleItem;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -22,4 +23,12 @@ public interface ScheduleServiceForBl {
      * @return
      */
     ScheduleItem getScheduleItemById(int id);
+
+    /**
+     * 根据起止时间查找所有排片信息
+     * @param startDate 开始时间
+     * @param endDate 截止时间
+     * @return 返回所有时间范围内所有schedule信息
+     * */
+    List<ScheduleItem> getScheduleByDate(Date startDate, Date endDate);
 }

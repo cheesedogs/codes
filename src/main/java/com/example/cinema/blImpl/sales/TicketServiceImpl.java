@@ -19,13 +19,14 @@ import org.springframework.transaction.annotation.Transactional;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
  * Created by liying on 2019/4/16.
  */
 @Service
-public class TicketServiceImpl implements TicketService {
+public class TicketServiceImpl implements TicketService ,TicketServiceForBl{
 
     @Autowired
     TicketMapper ticketMapper;
@@ -219,4 +220,8 @@ public class TicketServiceImpl implements TicketService {
         }
     }
 
+    @Override
+    public List<Ticket> getTicketByDate(Date startDate, Date endDate) {
+        return ticketMapper.selectTicketByDate(startDate,endDate);
+    }
 }

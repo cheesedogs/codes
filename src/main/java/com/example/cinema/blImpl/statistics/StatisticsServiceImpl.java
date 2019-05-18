@@ -1,12 +1,20 @@
 package com.example.cinema.blImpl.statistics;
 
+import com.example.cinema.bl.sales.TicketService;
 import com.example.cinema.bl.statistics.StatisticsService;
+import com.example.cinema.blImpl.management.hall.HallServiceForBl;
+import com.example.cinema.blImpl.management.hall.HallServiceImpl;
+import com.example.cinema.blImpl.management.schedule.ScheduleServiceForBl;
+import com.example.cinema.blImpl.management.schedule.ScheduleServiceImpl;
+import com.example.cinema.blImpl.sales.TicketServiceForBl;
+import com.example.cinema.blImpl.sales.TicketServiceImpl;
 import com.example.cinema.data.statistics.StatisticsMapper;
 import com.example.cinema.po.*;
 import com.example.cinema.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.xml.crypto.Data;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -21,6 +29,9 @@ import java.util.List;
 public class StatisticsServiceImpl implements StatisticsService {
     @Autowired
     private StatisticsMapper statisticsMapper;
+
+    HallServiceForBl hallServiceForBl = new HallServiceImpl();
+
     @Override
     public ResponseVO getScheduleRateByDate(Date date) {
         try{
@@ -75,19 +86,47 @@ public class StatisticsServiceImpl implements StatisticsService {
 
     @Override
     public ResponseVO getMoviePlacingRateByDate(Date date) {
-        try{
+        try {
+            //目标信息
+            int hallNum=0;
+            int seatNum=0;
+            int ticketNum=0;
+            int scheduleNum=0;
+
+            //计算起止日期
             Date requireDate = date;
-            if(requireDate == null){
+            if (requireDate == null) {
                 requireDate = new Date();
             }
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd");
             requireDate = simpleDateFormat.parse(simpleDateFormat.format(requireDate));
-
             Date nextDate = getNumDayAfterDate(requireDate, 1);
-            return ResponseVO.buildSuccess(projectionSituationList2projectionSituationVOList(statisticsMapper.selectProjectionSituation(requireDate, nextDate)));
-        }catch (Exception e){
+
+            //根据日期得到当日的排片
+            List<ScheduleItem> scheduleItemList = new ArrayList<>();
+            ScheduleServiceForBl scheduleServiceForBl = new ScheduleServiceImpl();
+            scheduleItemList = scheduleServiceForBl.getScheduleByDate(requireDate,nextDate);
+            scheduleNum = scheduleItemList.size();
+
+            //获取所有影厅
+            List<Hall> hallList = new ArrayList<>();
+            HallServiceForBl hallServiceForBl = new HallServiceImpl();
+            hallList = hallServiceForBl.getAllHall();
+            hallNum = hallList.size();
+
+            //获取所有座位数
+            for (Hall h : hallList){
+                seatNum+=h.getColumn()*h.getRow();
+            }
+
+            //获取当天所有票数
+            TicketServiceForBl ticketServiceForBl = new TicketServiceImpl();
+            ticketNum = ticketServiceForBl.getTicketByDate(requireDate, nextDate).size();
+
+            return ResponseVO.buildSuccess((0.0+ticketNum) / scheduleNum/ hallNum / seatNum );
+        }catch (Exception e) {
             e.printStackTrace();
-            return ResponseVO.buildFailure("失败");
+            return ResponseVO.buildFailure("查询某日上座率失败" + e.getMessage());
         }
     }
 

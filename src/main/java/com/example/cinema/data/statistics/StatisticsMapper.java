@@ -50,4 +50,10 @@ public interface StatisticsMapper {
      * @return 返回影院近几天票房最高的几部电影的id
      */
     List<PopularMoviePO> selectPopularMoviesByNumberAndDay(@Param("movieNum") int movieNum, @Param("limitTime") String limitTime);
+
+    /**
+     * 查询某日的所有排片信息
+     *
+     * */
+
 }
