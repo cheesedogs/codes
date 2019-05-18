@@ -2,15 +2,8 @@ package com.example.cinema.blImpl.statistics;
 
 import com.example.cinema.bl.statistics.StatisticsService;
 import com.example.cinema.data.statistics.StatisticsMapper;
-import com.example.cinema.po.AudiencePrice;
-import com.example.cinema.po.MovieScheduleTime;
-import com.example.cinema.po.MovieTotalBoxOffice;
-import com.example.cinema.po.ProjectionSituation;
-import com.example.cinema.vo.AudiencePriceVO;
-import com.example.cinema.vo.MovieScheduleTimeVO;
-import com.example.cinema.vo.MovieTotalBoxOfficeVO;
-import com.example.cinema.vo.ProjectionSituationVO;
-import com.example.cinema.vo.ResponseVO;
+import com.example.cinema.po.*;
+import com.example.cinema.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -101,8 +94,24 @@ public class StatisticsServiceImpl implements StatisticsService {
     @Override
     public ResponseVO getPopularMovies(int days, int movieNum) {
         //要求见接口说明
+        List<PopularMovieVO> popularMovieVOList = new ArrayList<>();
+        List<PopularMoviePO> popularMoviePOList = new ArrayList<>();
 
-        return null;
+        Calendar calendar=Calendar.getInstance();
+        calendar.set(Calendar.DAY_OF_MONTH,calendar.get(Calendar.DAY_OF_MONTH) - days);
+        SimpleDateFormat sf  =new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String limitTime = sf.format(calendar.getTime());
+
+        try{
+            popularMoviePOList = statisticsMapper.selectPopularMoviesByNumberAndDay(movieNum, limitTime);
+            for (PopularMoviePO po : popularMoviePOList) {
+                popularMovieVOList.add(po.getVO());
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResponseVO.buildFailure("获取最受欢迎的电影失败"+ e .getMessage());
+        }
+        return ResponseVO.buildSuccess(popularMovieVOList);
     }
 
 
