@@ -26,14 +26,9 @@
     </select>
 
     <select id="selectProjectionSituation" resultType="com.example.cinema.po.ProjectionSituation">
-        select
-            count(h.name) as hallNum,
-            h.row as rowNum,
-            h.column as columnNum,
-            count(t.schedule_id) as releaseNum,
-            count(t.id) as audienceNum
-        from hall h, ticket t
-        where t.time between #{date} and #{nextDate}
+        select count(schedule_id) as releaseNum, count(*) as audienceNum
+            from ticket
+            where (time between #{date} and #{nextDate}) and state = 1
     </select>
 
     <select id="selectPopularMoviesByNumberAndDay" resultType="com.example.cinema.po.PopularMoviePO">
@@ -44,8 +39,8 @@
             inner join movie m
         where t.state=1
             and t.schedule_id = s.id
-            and time>#{limitTime}
-            and m.id=s.movie_id
+            and time > #{limitTime}
+            and m.id = s.movie_id
         group by m.id
         order by sum(fare)
         desc limit 0,#{movieNum};

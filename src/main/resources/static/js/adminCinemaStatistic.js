@@ -2,9 +2,9 @@ $(document).ready(function() {
 
     var statisticDate = formatDate(new Date());
 
-    var days = 0;
+    var days = 7;
 
-    var movies = 0;
+    var movies = 7;
 
     initStatisticDate();
 
@@ -43,43 +43,44 @@ $(document).ready(function() {
                 var nameList = data.map(function (item) {
                     return item.name;
                 });
+                console.log(nameList);
                 var option = {
-                    title : {
+                    title: {
                         text: '今日排片率',
                         subtext: new Date().toLocaleDateString(),
-                        x:'center'
+                        x: 'center'
                     },
-                    tooltip : {
+                    tooltip: {
                         trigger: 'item',
                         formatter: "{a} <br/>{b} : {c} ({d}%)"
                     },
                     legend: {
-                        x : 'center',
-                        y : 'bottom',
-                        data:nameList
+                        x: 'center',
+                        y: 'bottom',
+                        data: nameList
                     },
                     toolbox: {
-                        show : true,
-                        feature : {
-                            mark : {show: true},
-                            dataView : {show: true, readOnly: false},
-                            magicType : {
+                        show: true,
+                        feature: {
+                            mark: {show: true},
+                            dataView: {show: true, readOnly: false},
+                            magicType: {
                                 show: true,
                                 type: ['pie', 'funnel']
                             },
-                            restore : {show: true},
-                            saveAsImage : {show: true}
+                            restore: {show: true},
+                            saveAsImage: {show: true}
                         }
                     },
-                    calculable : true,
-                    series : [
+                    calculable: true,
+                    series: [
                         {
-                            name:'面积模式',
-                            type:'pie',
-                            radius : [30, 110],
-                            center : ['50%', '50%'],
-                            roseType : 'area',
-                            data:tableData
+                            name: '面积模式',
+                            type: 'pie',
+                            radius: [30, 110],
+                            center: ['50%', '50%'],
+                            roseType: 'area',
+                            data: tableData
                         }
                     ]
                 };
@@ -174,11 +175,13 @@ $(document).ready(function() {
             function (res) {
                 var data = res.content || [];
                 var tableData = data.map(function (item) {
-                    console.log(item);
-                    return item.placingRate;
+                    return {
+                        value: item.placingRate,
+                        name: '上座率'
+                    };
                 });
-                var placingRateList = data.map(function (item) {
-                    return item.placingRate;
+                var nameList = data.map(function (item) {
+                    return [{'name': '上座率'}];
                 });
                 var option = {
                     title: {
@@ -188,12 +191,12 @@ $(document).ready(function() {
                     },
                     tooltip: {
                         trigger: 'item',
-                        formatter: "{a} <br/>{b} : {c} ({d}%)"
+                        formatter: "{a} : {c}%"
                     },
                     legend: {
                         x: 'center',
                         y: 'bottom',
-                        data: placingRateList
+                        data: tableData
                     },
                     toolbox: {
                         show: true,
@@ -210,12 +213,19 @@ $(document).ready(function() {
                     },
                     calculable: true,
                     series: [{
-                        name: '面积模式',
+                        name: '上座率',
                         type: 'pie',
                         radius: [30, 110],
                         center: ['50%', '50%'],
                         roseType: 'area',
-                        data: tableData
+                        data: tableData,
+                        itemStyle: {
+                            emphasis: {
+                                shadowBlur: 10,
+                                shadowOffsetX: 0,
+                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                            }
+                        }
                     }]
                 };
                 var placingRateChart = echarts.init($("#place-rate-container")[0]);
