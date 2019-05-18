@@ -45,7 +45,7 @@
             and t.schedule_id = s.id
             and time>#{limitTime}
             and m.id=s.movie_id
-        group by s.id
+        group by m.id
         order by sum(fare)
         desc limit 0,#{movieNum};
     </select>

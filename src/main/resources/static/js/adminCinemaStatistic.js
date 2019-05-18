@@ -240,7 +240,7 @@ $(document).ready(function() {
                     return item.boxOffice;
                 });
                 var nameList = data.map(function (item) {
-                    return item.name;
+                    return item.movieName;
                 });
                 var option = {
                     title: {
