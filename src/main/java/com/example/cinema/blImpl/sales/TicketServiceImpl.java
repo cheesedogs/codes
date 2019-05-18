@@ -69,6 +69,13 @@ public class TicketServiceImpl implements TicketService {
             return ResponseVO.buildFailure("锁座失败");
         }
         ticketMapper.insertTickets(tickets);
+//        int ticketId;
+//        List<Integer> ticketsIds = new ArrayList<>();
+//        for (Ticket t : tickets) {
+//            ticketId = t.getId();
+//            ticketsIds.add(ticketId);
+//        }
+//        ticketMapper.selectTicketById();
         return ResponseVO.buildSuccess("锁座成功");
     }
 
@@ -136,22 +143,24 @@ public class TicketServiceImpl implements TicketService {
         Ticket ticket;
         int UserId=ticketMapper.selectTicketById(id.get(0)).getUserId();
         double totalFare = 0;
-
+        double discount = 0;
         try{
             for (int idOfOne : id){
                 ticket = ticketMapper.selectTicketById(idOfOne);
 
                 //检验优惠券
-                checkCouponValidated(ticket,couponId);
+                discount = checkCouponValidated(ticket,couponId);
 
                 //判断是否符合活动
                 checkActivities(ticket);
 
                 totalFare += scheduleMapper.selectScheduleById(ticket.getScheduleId()).getFare();
                 ticketMapper.updateTicketState(idOfOne, 1);
+                System.out.println(totalFare);
             }
-
-            vipCardMapper.updateCardBalance(UserId, vipCardMapper.selectCardByUserId(UserId).getBalance()-totalFare);
+            totalFare -= discount;
+            System.out.println(totalFare);
+            vipCardMapper.updateCardBalance(vipCardMapper.selectCardByUserId(UserId).getId(), vipCardMapper.selectCardByUserId(UserId).getBalance()-totalFare);
             return ResponseVO.buildSuccess("VIP卡购票成功");
         }catch (Exception e){
             e.printStackTrace();
@@ -176,17 +185,23 @@ public class TicketServiceImpl implements TicketService {
         return ResponseVO.buildSuccess("取消购票成功");
     }
 
-    private void checkCouponValidated(Ticket ticket,int couponId)throws Exception{
+    private double checkCouponValidated(Ticket ticket,int couponId)throws Exception{
         Coupon coupon = couponMapper.selectById(couponId);
+        double dicount=0;
         int UserId=ticket.getUserId();
         //判断优惠券是否有效
         Timestamp ticketTimeStamp;
         ticketTimeStamp = ticket.getTime();
         if (ticketTimeStamp.compareTo(coupon.getStartTime())<0
                 || ticketTimeStamp.compareTo(coupon.getEndTime())>0){
+            System.out.println(ticketTimeStamp);
+            System.out.println(coupon.getStartTime());
+            System.out.println(coupon.getEndTime());
             throw new Exception("优惠券时间失效");
         }
+        dicount = couponMapper.selectById(couponId).getDiscountAmount();
         couponMapper.deleteCouponUser(couponId,UserId);
+        return dicount;
     }
 
     private void checkActivities(Ticket ticket){
