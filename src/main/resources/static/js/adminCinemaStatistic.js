@@ -173,15 +173,15 @@ $(document).ready(function() {
             '/statistics/placingRate?date=' + statisticDate.replace(/-/g,'/'),
             function (res) {
                 var data = res.content || [];
-                var tableData = data.map(function (item) {
-                    return {
-                        value: item.placingRate,
-                        name: '上座率'
-                    };
-                });
-                var nameList = data.map(function (item) {
-                    return [{'name': '上座率'}];
-                });
+                console.log(data);
+                var tableData = [{
+                    value: data * 100,
+                    name: '上座率'
+                }, {
+                    value: (1 - data) * 100,
+                    name: '空座率'
+                }];
+                console.log(tableData);
                 var option = {
                     title: {
                         text: '上座率',
@@ -241,7 +241,6 @@ $(document).ready(function() {
         getRequest(
             '/statistics/popular/movie?days=' + days + '&movieNum=' + movies,
             function (res) {
-                console.log(res.content);
                 $("#day-num").text(days);
                 $("#movie-num").text(movies);
                 var data = res.content || [];
@@ -273,7 +272,6 @@ $(document).ready(function() {
                 scheduleRateChart.setOption(option);
             },
             function (error) {
-                console.log(error);
                 alert(JSON.stringify(error));
             }
         )
