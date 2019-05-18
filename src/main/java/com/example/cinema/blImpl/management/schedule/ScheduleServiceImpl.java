@@ -153,14 +153,12 @@ public class ScheduleServiceImpl implements ScheduleService, ScheduleServiceForB
 
     @Override
     public List<ScheduleItem> getScheduleByDate(Date startDate, Date endDate) {
-        List<ScheduleItem> l = scheduleMapper.selectScheduleByDate(startDate,endDate);
-        List<Integer> i = null;
-        if (l.isEmpty())System.out.println("schedulemap传了空");
-        for (ScheduleItem s :
-                l) {
-            System.out.println("l里有参数");
+        try {
+            return scheduleMapper.selectScheduleByDate(startDate,endDate);
+        }catch (Exception e){
+            return null;
         }
-        return scheduleMapper.selectScheduleByDate(startDate,endDate);
+
     }
 
     @Override
