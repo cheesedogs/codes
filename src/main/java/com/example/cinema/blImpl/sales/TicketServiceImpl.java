@@ -185,6 +185,9 @@ public class TicketServiceImpl implements TicketService {
     }
 
     private double checkCouponValidated(Ticket ticket,int couponId)throws Exception{
+        if (couponId==0){
+            return 0;
+        }
         Coupon coupon = couponMapper.selectById(couponId);
         double dicount=0;
         int UserId=ticket.getUserId();
