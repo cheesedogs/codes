@@ -1,15 +1,38 @@
 $(document).ready(function() {
 
+    var statisticDate = formatDate(new Date());
+
+    var days = 0;
+
+    var movies = 0;
+
+    changeDate();
 
     getScheduleRate();
-    
+
+
     getBoxOffice();
 
     getAudiencePrice();
 
+
+    getPlacingRate(statisticDate);
+
+    getPolularMovie(days, movies);
+
+
     getPlacingRate();
 
     getPolularMovie();
+
+    function changeDate() {
+        // 过滤条件变化后重新查询
+        $('#statistic-date-input').change(function () {
+            statisticDate = $('#statistic-date-input').val();
+            getPlacingRate(statisticDate);
+        });
+    }
+
 
     function getScheduleRate() {
 
@@ -114,6 +137,7 @@ $(document).ready(function() {
     }
 
     function getAudiencePrice() {
+
         getRequest(
             '/statistics/audience/price',
             function (res) {
@@ -149,11 +173,146 @@ $(document).ready(function() {
             });
     }
 
-    function getPlacingRate() {
+
+    function getPlacingRate(statisticDate) {
         // todo
+        getRequest(
+            '/statistics/PlacingRate?date=' + statisticDate.replace(/-/g, '/'),
+            function (res) {
+                var data = res.content || [];
+                var tableData = data.map(function (item) {
+                    return {
+                        placeRate: item.placingRate
+                    };
+                });
+                var placingRateList = data.map(function (item) {
+                    return item.placingRate;
+                });
+                var option = {
+                    title: {
+                        text: '上座率',
+                        subtext: new Date().toLocaleDateString(),
+                        x: 'center'
+                    },
+                    tooltip: {
+                        trigger: 'item',
+                        formatter: "{a} <br/>{b} : {c} ({d}%)"
+                    },
+                    legend: {
+                        x: 'center',
+                        y: 'bottom',
+                        data: placingRateList
+                    },
+                    toolbox: {
+                        show: true,
+                        feature: {
+                            mark: {show: true},
+                            dataView: {show: true, readOnly: false},
+                            magicType: {
+                                show: true,
+                                type: ['pie', 'funnel']
+                            },
+                            restore: {show: true},
+                            saveAsImage: {show: true}
+                        }
+                    },
+                    calculable: true,
+                    series: [{
+                        name: '面积模式',
+                        type: 'pie',
+                        radius: [30, 110],
+                        center: ['50%', '50%'],
+                        roseType: 'area',
+                        data: tableData
+                    }]
+                };
+                var placingRateChart = echarts.init($("#place-rate-container")[0]);
+                placingRateChart.setOption(option);
+            },
+            function (error) {
+                alert(JSON.stringify(error));
+            }
+        );
     }
 
-    function getPolularMovie() {
+    function getPolularMovie(days, movies) {
         // todo
+        getRequest(
+            '/statistics/popular/movie?days=' + days + '&movieNum=' + movies,
+            function (res) {
+                var data = res.content || [];
+                var tableData = data.map(function (item) {
+                    return item.boxOffice;
+                });
+                var nameList = data.map(function (item) {
+                    return item.name;
+                });
+                var option = {
+                    title: {
+                        text: '最受欢迎电影',
+                        subtext: '最近' + days + '天，TOP ' + movies,
+                        x: 'center'
+                    },
+                    xAxis: {
+                        type: 'category',
+                        data: nameList
+                    },
+                    yAxis: {
+                        type: 'value'
+                    },
+                    series: [{
+                        data: tableData,
+                        type: 'bar'
+                    }]
+                };
+                var scheduleRateChart = echarts.init($("#popular-movie-container")[0]);
+                scheduleRateChart.setOption(option);
+            },
+            function (error) {
+                alert(JSON.stringify(error));
+            }
+        )
     }
+
+    $('#days-modify-btn').click(function () {
+        $("#days-modify-btn").hide();
+        $("#days-set-input").val(days);
+        $("#days-set-input").show();
+        $("#days-confirm-btn").show();
+    });
+
+    $('#days-confirm-btn').click(function () {
+        var dayNum = +$("#days-set-input").val();
+        // 验证一下是否为数字
+        if (typeof(dayNum) === 'number') {
+            getPolularMovie(dayNum, movies);
+            days = dayNum;
+            $("#days-modify-btn").show();
+            $("#days-set-input").hide();
+            $("#days-confirm-btn").hide();
+        } else {
+            alert("请输入正确的数字！");
+        }
+    });
+
+    $('#movies-modify-btn').click(function () {
+        $("#movies-modify-btn").hide();
+        $("#movies-set-input").val(movies);
+        $("#movies-set-input").show();
+        $("#movies-confirm-btn").show();
+    });
+
+    $('#movies-confirm-btn').click(function () {
+        var movieNum = +$("#movies-set-input").val();
+        // 验证一下是否为数字
+        if (typeof(movieNum) === 'number') {
+            getPolularMovie(days, movieNum);
+            movies = movieNum;
+            $("#movies-modify-btn").show();
+            $("#movies-set-input").hide();
+            $("#movies-confirm-btn").hide();
+        } else {
+            alert("请输入正确的数字！");
+        }
+    });
 });

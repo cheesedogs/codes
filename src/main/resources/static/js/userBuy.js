@@ -12,7 +12,6 @@ $(document).ready(function () {
             }
         )
     }
-
     function getMovieList() {
         getRequest(
             '/ticket/get/' + sessionStorage.getItem('id'),
@@ -45,5 +44,4 @@ $(document).ready(function () {
         }
         $('#ticket-list-body').html(bodyContent);
     }
-
 });

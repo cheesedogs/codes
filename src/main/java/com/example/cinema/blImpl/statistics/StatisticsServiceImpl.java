@@ -5,9 +5,17 @@ import com.example.cinema.data.statistics.StatisticsMapper;
 import com.example.cinema.po.AudiencePrice;
 import com.example.cinema.po.MovieScheduleTime;
 import com.example.cinema.po.MovieTotalBoxOffice;
+
 import com.example.cinema.vo.AudiencePriceVO;
 import com.example.cinema.vo.MovieScheduleTimeVO;
 import com.example.cinema.vo.MovieTotalBoxOfficeVO;
+
+import com.example.cinema.po.ProjectionSituation;
+import com.example.cinema.vo.AudiencePriceVO;
+import com.example.cinema.vo.MovieScheduleTimeVO;
+import com.example.cinema.vo.MovieTotalBoxOfficeVO;
+import com.example.cinema.vo.ProjectionSituationVO;
+
 import com.example.cinema.vo.ResponseVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -80,13 +88,31 @@ public class StatisticsServiceImpl implements StatisticsService {
 
     @Override
     public ResponseVO getMoviePlacingRateByDate(Date date) {
+
         //要求见接口说明
         return null;
+
+        try{
+            Date requireDate = date;
+            if(requireDate == null){
+                requireDate = new Date();
+            }
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            requireDate = simpleDateFormat.parse(simpleDateFormat.format(requireDate));
+
+            Date nextDate = getNumDayAfterDate(requireDate, 1);
+            return ResponseVO.buildSuccess(projectionSituationList2projectionSituationVOList(statisticsMapper.selectProjectionSituation(requireDate, nextDate)));
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResponseVO.buildFailure("失败");
+        }
+
     }
 
     @Override
     public ResponseVO getPopularMovies(int days, int movieNum) {
         //要求见接口说明
+
         return null;
     }
 
@@ -122,4 +148,15 @@ public class StatisticsServiceImpl implements StatisticsService {
         }
         return movieTotalBoxOfficeVOList;
     }
+
+
+    private List<ProjectionSituationVO> projectionSituationList2projectionSituationVOList(List<ProjectionSituation> projectionSituationList) {
+        List<ProjectionSituationVO> projectionSituationVOList = new ArrayList<>();
+        for(ProjectionSituation projectionSituation: projectionSituationList){
+            projectionSituationVOList.add(new ProjectionSituationVO(projectionSituation));
+        }
+        return projectionSituationVOList;
+    }
+
+
 }

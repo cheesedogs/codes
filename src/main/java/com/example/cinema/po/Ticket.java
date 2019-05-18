@@ -51,6 +51,9 @@ public class Ticket {
     }
 
 
+
+
+
     public TicketVO getVO() {
         TicketVO vo = new TicketVO();
         vo.setRowIndex(this.getRowIndex());
@@ -76,7 +79,12 @@ public class Ticket {
         vo.setTime(time);
         return vo;
 
+
     }
+
+    }
+
+
     public TicketWithScheduleVO getWithScheduleVO() {
         TicketWithScheduleVO vo = new TicketWithScheduleVO();
         vo.setRowIndex(this.getRowIndex());
@@ -99,6 +107,11 @@ public class Ticket {
         }
         vo.setState(stateString);
         return vo;
+
+
+    }
+
+
 
     }
 

@@ -17,7 +17,6 @@ $(document).ready(function() {
 
     function getSchedules() {
         var _this = this
-
         getRequest(
             '/schedule/search?hallId='+hallId+'&startDate='+scheduleDate.replace(/-/g,'/'),
             function (res) {
@@ -185,8 +184,6 @@ $(document).ready(function() {
             alert("影片名称没填完")
             return;
         }
-        // }
-        // checkFormDate();
         postRequest(
             '/schedule/add',
             form,
@@ -260,8 +257,6 @@ $(document).ready(function() {
             alert("影片名称没填完")
             return;
         }
-        // }
-        // checkFormDate();
         postRequest(
             '/schedule/update',
             form,

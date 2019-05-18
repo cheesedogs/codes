@@ -24,4 +24,14 @@
               (select id from schedule where start_time between #{date} and #{nextDate}) and state = 1) t
         on schedule.id = schedule_id group by user_id
     </select>
+
+    <select id="selectProjectionSituation" resultType="com.example.cinema.po.ProjectionSituation">
+        select
+            count(h.name) as hallNum,
+            h.column * h.row as seatNum,
+            count(t.schedule_id) as releaseNum,
+            count(t.id) as audienceNum
+        from hall h, ticket t
+        where t.time between #{date} and #{nextDate}
+    </select>
 </mapper>
