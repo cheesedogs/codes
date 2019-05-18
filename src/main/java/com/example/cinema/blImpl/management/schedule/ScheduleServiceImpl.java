@@ -152,6 +152,16 @@ public class ScheduleServiceImpl implements ScheduleService, ScheduleServiceForB
     }
 
     @Override
+    public List<ScheduleItem> getScheduleByDate(Date startDate, Date endDate) {
+        try {
+            return scheduleMapper.selectScheduleByDate(startDate,endDate);
+        }catch (Exception e){
+            return null;
+        }
+
+    }
+
+    @Override
     public ResponseVO searchScheduleSevenDays(int hallId, Date startDate) {
         try {
             // 处理查询表单的起止时间

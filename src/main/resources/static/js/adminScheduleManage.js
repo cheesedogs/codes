@@ -16,6 +16,7 @@ $(document).ready(function() {
     initSelectAndDate();
 
     function getSchedules() {
+        var _this = this
 
         getRequest(
             '/schedule/search?hallId='+hallId+'&startDate='+scheduleDate.replace(/-/g,'/'),
@@ -132,7 +133,60 @@ $(document).ready(function() {
             fare: $("#schedule-price-input").val()
         };
         //todo 需要做一下表单验证？
+        // console.log(form.startTime);
+        // console.log(form.endTime);
+        if (form.fare<0){
+            alert("费用必须大于0");
+            return;
+        }
 
+        var s1=form.startTime.split("-");
+        var s2=form.endTime.split("-");
+        var subs1=s1[2].split("T");
+        var subs2=s2[2].split("T");
+        // function checkFormDate() {
+            if (s1[0]>s2[0]) {
+                alert("年份不对，开始年份应该比结束年份早");
+                return;
+            }
+            else if (s1[1]>s2[1]){
+                alert("月份不对，开始月份应该比结束月份早");
+                return;
+            }
+            else if (subs1[0]>subs2[0]||(subs1[0]!=subs2[0])){
+                alert("日子不对，开始日子应该比结束日子早,且不能跨天");
+                return;
+            }
+            else if (subs1[1].substring(0,2)>subs2[1].substring(0,2)){
+                alert("小时不对，开始时间应该比结束时间晚");
+                return;
+            }
+            else if (subs1[1].substring(3,5)>subs2[1].substring(3,5)) {
+                alert("分钟不对，开始时间应该比结束时间晚");
+                return;
+            }
+        if (!form.endTime){
+            alert("结束时间没填完");
+            return;
+        }
+        if (!form.startTime){
+            alert("开始时间没填完");
+            return;
+        }
+        if (!form.fare){
+            alert("费用没填完");
+            return;
+        }
+        if (!form.hallId) {
+            alert("影厅没填完")
+            return;
+        }
+        if (!form.movieId ){
+            alert("影片名称没填完")
+            return;
+        }
+        // }
+        // checkFormDate();
         postRequest(
             '/schedule/add',
             form,
@@ -161,6 +215,53 @@ $(document).ready(function() {
         };
         //todo 需要做一下表单验证？
 
+        var s1=form.startTime.split("-");
+        var s2=form.endTime.split("-");
+        var subs1=s1[2].split("T");
+        var subs2=s2[2].split("T");
+        // function checkFormDate() {
+        if (s1[0]>s2[0]) {
+            alert("年份不对，开始年份应该比结束年份早");
+            return;
+        }
+        else if (s1[1]>s2[1]){
+            alert("月份不对，开始月份应该比结束月份早");
+            return;
+        }
+        else if (subs1[0]>subs2[0]||(subs1[0]!=subs2[0])){
+            alert("日子不对，开始日子应该比结束日子早,且不能跨天");
+            return;
+        }
+        else if (subs1[1].substring(0,2)>subs2[1].substring(0,2)){
+            alert("小时不对，开始时间应该比结束时间晚");
+            return;
+        }
+        else if (subs1[1].substring(3,5)>subs2[1].substring(3,5)) {
+            alert("分钟不对，开始时间应该比结束时间晚");
+            return;
+        }
+        if (!form.endTime){
+            alert("结束时间没填完");
+            return;
+        }
+        if (!form.startTime){
+            alert("开始时间没填完");
+            return;
+        }
+        if (!form.fare){
+            alert("费用没填完");
+            return;
+        }
+        if (!form.hallId) {
+            alert("影厅没填完")
+            return;
+        }
+        if (!form.movieId ){
+            alert("影片名称没填完")
+            return;
+        }
+        // }
+        // checkFormDate();
         postRequest(
             '/schedule/update',
             form,
@@ -179,7 +280,7 @@ $(document).ready(function() {
     });
 
     $("#schedule-edit-remove-btn").click(function () {
-        var r=confirm("确认要删除该排片信息吗")
+        var r=confirm("确认要删除该排片信息吗");
         if (r) {
             deleteRequest(
                 '/schedule/delete/batch',

@@ -1,17 +1,20 @@
 package com.example.cinema.blImpl.statistics;
 
+import com.example.cinema.bl.sales.TicketService;
 import com.example.cinema.bl.statistics.StatisticsService;
+import com.example.cinema.blImpl.management.hall.HallServiceForBl;
+import com.example.cinema.blImpl.management.hall.HallServiceImpl;
+import com.example.cinema.blImpl.management.schedule.ScheduleServiceForBl;
+import com.example.cinema.blImpl.management.schedule.ScheduleServiceImpl;
+import com.example.cinema.blImpl.sales.TicketServiceForBl;
+import com.example.cinema.blImpl.sales.TicketServiceImpl;
 import com.example.cinema.data.statistics.StatisticsMapper;
-import com.example.cinema.po.AudiencePrice;
-import com.example.cinema.po.MovieScheduleTime;
-import com.example.cinema.po.MovieTotalBoxOffice;
-import com.example.cinema.vo.AudiencePriceVO;
-import com.example.cinema.vo.MovieScheduleTimeVO;
-import com.example.cinema.vo.MovieTotalBoxOfficeVO;
-import com.example.cinema.vo.ResponseVO;
+import com.example.cinema.po.*;
+import com.example.cinema.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.xml.crypto.Data;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -26,6 +29,14 @@ import java.util.List;
 public class StatisticsServiceImpl implements StatisticsService {
     @Autowired
     private StatisticsMapper statisticsMapper;
+
+    @Autowired
+    HallServiceForBl hallServiceForBl;
+    @Autowired
+    ScheduleServiceForBl scheduleServiceForBl;
+    @Autowired
+    TicketServiceForBl ticketServiceForBl;
+
     @Override
     public ResponseVO getScheduleRateByDate(Date date) {
         try{
@@ -80,14 +91,68 @@ public class StatisticsServiceImpl implements StatisticsService {
 
     @Override
     public ResponseVO getMoviePlacingRateByDate(Date date) {
-        //要求见接口说明
-        return null;
+        try {
+            //目标信息
+            int hallNum=0;
+            int seatNum=0;
+            int ticketNum=0;
+            int scheduleNum=0;
+
+            //计算起止日期
+            Date requireDate = date;
+            if (requireDate == null) {
+                requireDate = new Date();
+            }
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd");
+            requireDate = simpleDateFormat.parse(simpleDateFormat.format(requireDate));
+            Date nextDate = getNumDayAfterDate(requireDate, 1);
+
+            //根据日期得到当日的排片
+            List<ScheduleItem> scheduleItemList = new ArrayList<>();
+            scheduleItemList = scheduleServiceForBl.getScheduleByDate(requireDate,nextDate);
+            scheduleNum = scheduleItemList.size();
+
+            //获取所有影厅
+            List<Hall> hallList = new ArrayList<>();
+            hallList = hallServiceForBl.getAllHall();
+            hallNum = hallList.size();
+
+            //获取所有座位数
+            for (Hall h : hallList){
+                seatNum+=h.getColumn()*h.getRow();
+            }
+
+            //获取当天所有票数
+            ticketNum = ticketServiceForBl.getTicketByDate(requireDate, nextDate).size();
+
+            return ResponseVO.buildSuccess((0.0+ticketNum) / scheduleNum/ hallNum / seatNum );
+        }catch (Exception e) {
+            e.printStackTrace();
+            return ResponseVO.buildFailure("查询某日上座率失败" + e.getMessage());
+        }
     }
 
     @Override
     public ResponseVO getPopularMovies(int days, int movieNum) {
         //要求见接口说明
-        return null;
+        List<PopularMovieVO> popularMovieVOList = new ArrayList<>();
+        List<PopularMoviePO> popularMoviePOList = new ArrayList<>();
+
+        Calendar calendar=Calendar.getInstance();
+        calendar.set(Calendar.DAY_OF_MONTH,calendar.get(Calendar.DAY_OF_MONTH) - days);
+        SimpleDateFormat sf  =new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String limitTime = sf.format(calendar.getTime());
+
+        try{
+            popularMoviePOList = statisticsMapper.selectPopularMoviesByNumberAndDay(movieNum, limitTime);
+            for (PopularMoviePO po : popularMoviePOList) {
+                popularMovieVOList.add(po.getVO());
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResponseVO.buildFailure("获取最受欢迎的电影失败"+ e .getMessage());
+        }
+        return ResponseVO.buildSuccess(popularMovieVOList);
     }
 
 
@@ -122,4 +187,14 @@ public class StatisticsServiceImpl implements StatisticsService {
         }
         return movieTotalBoxOfficeVOList;
     }
+
+
+    private List<ProjectionSituationVO> projectionSituationList2projectionSituationVOList(List<ProjectionSituation> projectionSituationList) {
+        List<ProjectionSituationVO> projectionSituationVOList = new ArrayList<>();
+        for(ProjectionSituation projectionSituation: projectionSituationList){
+            projectionSituationVOList.add(new ProjectionSituationVO(projectionSituation));
+        }
+        return projectionSituationVOList;
+    }
+
 }

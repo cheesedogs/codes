@@ -56,4 +56,9 @@
         update ticket SET  state =2 WHERE minute(timediff(now(),time))>15 and state=0;
     </update>
 
+
+    <select id="selectTicketByDate" resultMap="Ticket">
+        select * from ticket where time > #{startDate} and #{endDate}>time
+    </select>
+
 </mapper>

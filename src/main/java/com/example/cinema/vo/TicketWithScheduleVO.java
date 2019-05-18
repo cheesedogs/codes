@@ -18,7 +18,7 @@ public class TicketWithScheduleVO {
      */
     private int userId;
     /**
-     * 排片id
+     * schedule PO
      */
     private ScheduleItem schedule;
     /**
