@@ -35,7 +35,7 @@ public class TicketServiceImpl implements TicketService {
         List<Ticket> tickets = new ArrayList<>();
         Ticket ticket;
         try{
-            for (SeatForm seatForm:ticketForm.getSeats()){
+            for (SeatForm seatForm: ticketForm.getSeats()){
                 ticket = new Ticket();
                 ticket.setUserId(ticketForm.getUserId());
                 ticket.setScheduleId(ticketForm.getScheduleId());
@@ -91,7 +91,7 @@ public class TicketServiceImpl implements TicketService {
         try{
             List<Ticket> tickets = ticketMapper.selectTicketByUser(userId);
             ResponseVO responseVO = ResponseVO.buildSuccess(tickets);
-            responseVO.setMessage("查询成功，该用户拥有以下"+tickets.size()+"张票");
+            responseVO.setMessage("查询成功，该用户拥有以下"+ tickets.size() +"张票");
             return responseVO;
         }catch (Exception e){
             e.printStackTrace();
