@@ -269,10 +269,8 @@ function postPayRequest() {
     } else {
         url = '/ticket/buy' + param;
     }
-    console.log(order.ticketId);
     postRequest(
         url,
-        // {ticketId: order.ticketId, couponId: order.couponId},
         null,
         function (res) {
             if (res.success) {
@@ -282,7 +280,6 @@ function postPayRequest() {
             }
         },
         function (error) {
-            console.log(error);
             alert(error);
         });
 }
