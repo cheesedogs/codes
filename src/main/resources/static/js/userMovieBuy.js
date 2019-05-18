@@ -262,14 +262,18 @@ function payConfirmClick() {
 // TODO:填空
 function postPayRequest() {
     var url = '';
+    var param = '';
+    param += '?ticketId=' + order.ticketId.join(',') + '&couponId=' + order.couponId;
     if (useVIP) {
-        url = '/ticket/vip/buy';
+        url = '/ticket/vip/buy' + param;
     } else {
-        url = '/ticket/buy';
+        url = '/ticket/buy' + param;
     }
+    console.log(order.ticketId);
     postRequest(
         url,
-        order,
+        // {ticketId: order.ticketId, couponId: order.couponId},
+        null,
         function (res) {
             if (res.success) {
                 $('#order-state').css("display", "none");
@@ -278,6 +282,7 @@ function postPayRequest() {
             }
         },
         function (error) {
+            console.log(error);
             alert(error);
         });
 }
