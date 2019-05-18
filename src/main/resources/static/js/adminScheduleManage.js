@@ -16,7 +16,6 @@ $(document).ready(function() {
     initSelectAndDate();
 
     function getSchedules() {
-
         getRequest(
             '/schedule/search?hallId='+hallId+'&startDate='+scheduleDate.replace(/-/g,'/'),
             function (res) {

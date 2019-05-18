@@ -18,6 +18,10 @@ $(document).ready(function() {
 
     getPolularMovie(days, movies);
 
+    getPlacingRate();
+
+    getPolularMovie();
+
     function changeDate() {
         // 过滤条件变化后重新查询
         $('#statistic-date-input').change(function () {
@@ -25,10 +29,6 @@ $(document).ready(function() {
             getPlacingRate(statisticDate);
         });
     }
-
-    getPlacingRate();
-
-    getPolularMovie();
 
     function getScheduleRate() {
 
@@ -181,7 +181,7 @@ $(document).ready(function() {
                 });
                 var placingRateList = data.map(function (item) {
                     return item.placingRate;
-                })
+                });
                 var option = {
                     title: {
                         text: '上座率',

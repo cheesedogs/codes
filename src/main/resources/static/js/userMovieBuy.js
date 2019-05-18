@@ -96,29 +96,6 @@ function seatClick(id, i, j) {
         for (let seatLoc of selectedSeats) {
             seatDetailStr += "<span>" + (seatLoc[0] + 1) + "排" + (seatLoc[1] + 1) + "座</span>";
         }
-        var seats = [];
-        for (let seatLoc of selectedSeats) {
-            let seat = {};
-            seat.rowIndex = seatLoc[0];
-            seat.columnIndex = seatLoc[1];
-            seats.push(seat);
-        }
-        var ticketForm = {
-            "userId": sessionStorage.getItem('id'),
-            "scheduleId": scheduleId,
-            "seats": seats
-        };
-        $('#order-confirm-btn').click(
-            postRequest(
-                '/ticket/lockSeat',
-                ticketForm,
-                function (res) {
-                },
-                function (error) {
-                    alert(error);
-                }
-            )
-        );
         $('#order-confirm-btn').removeAttr("disabled");
     }
     $('#seat-detail').html(seatDetailStr);
@@ -127,6 +104,28 @@ function seatClick(id, i, j) {
 function orderConfirmClick() {
     $('#seat-state').css("display", "none");
     $('#order-state').css("display", "");
+
+    // 发起锁座请求
+    var seats = [];
+    for (let seatLoc of selectedSeats) {
+        let seat = {};
+        seat.rowIndex = seatLoc[0];
+        seat.columnIndex = seatLoc[1];
+        seats.push(seat);
+    }
+    var ticketForm = {
+        "userId": sessionStorage.getItem('id'),
+        "scheduleId": scheduleId,
+        "seats": seats
+    };
+    postRequest(
+        '/ticket/lockSeat',
+        ticketForm,
+        function (res) {
+        },
+        function (error) {
+            alert(error);
+        });
 
     // TODO:这里是假数据，需要连接后端获取真数据，数据格式可以自行修改，但如果改了格式，别忘了修改renderOrder方法
     var ticketVOList = [];
