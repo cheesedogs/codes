@@ -98,4 +98,8 @@
         <result column="hall_name" property="hallName"></result>
     </resultMap>
 
+    <select id="selectScheduleByDate" resultMap="ScheduleItem">
+        select * from schedule where start_time>#{startDate} and #{endDate}>end_time
+    </select>
+
 </mapper>

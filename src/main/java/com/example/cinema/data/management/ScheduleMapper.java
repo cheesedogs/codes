@@ -111,4 +111,12 @@ public interface ScheduleMapper {
      */
     List<ScheduleItem> selectScheduleByMovieId(@Param("movieId") int movieId);
 
+    /**
+     * 查询指定时间范围内的所有排片信息
+     * @param startDate 开始时间
+     * @param endDate 截止时间
+     * @return 返回时间范围内的所有排片信息
+     */
+    List<ScheduleItem> selectScheduleByDate(@Param("startDate") Date startDate,@Param("endDate") Date endDate);
+
 }
