@@ -122,72 +122,71 @@ function orderConfirmClick() {
         '/ticket/lockSeat',
         ticketForm,
         function (res) {
+            // TODO:这里是假数据，需要连接后端获取真数据，数据格式可以自行修改，但如果改了格式，别忘了修改renderOrder方法
+            var ticketVOList = [];
+            var activities = [];
+            getRequest(
+                '/ticket/get/' + sessionStorage.getItem('id'),
+                function (res) {
+                    if (res.success) {
+                        let totalTicketList = res.content;
+                        ticketVOList = totalTicketList.slice(totalTicketList.length - selectedSeats.length, totalTicketList.length);
+                        getRequest(
+                            '/coupon/' + sessionStorage.getItem('id') + '/get',
+                            function (res) {
+                                if (res.success) {
+                                    coupons = res.content;
+                                    getRequest(
+                                        '/activity/get',
+                                        function (res) {
+                                            if (res.success) {
+                                                activities = res.content;
+                                                var total = selectedSeats.length * scheduleFare;
+                                                var orderInfo = {
+                                                    "ticketVOList": ticketVOList,
+                                                    "total": total,
+                                                    "coupons": coupons,
+                                                    "activities": activities
+                                                };
+                                                getRequest(
+                                                    '/vip/' + sessionStorage.getItem('id') + '/get',
+                                                    function (res) {
+                                                        isVIP = res.success;
+                                                        useVIP = res.success;
+                                                        if (isVIP) {
+                                                            $('#member-balance').html("<div><b>会员卡余额：</b>" + res.content.balance.toFixed(2) + "元</div>");
+                                                        } else {
+                                                            $("#member-pay").css("display", "none");
+                                                            $("#nonmember-pay").addClass("active");
+
+                                                            $("#modal-body-member").css("display", "none");
+                                                            $("#modal-body-nonmember").css("display", "");
+                                                        }
+                                                    },
+                                                    function (error) {
+                                                        alert(error);
+                                                    });
+                                                renderOrder(orderInfo);
+                                            }
+                                        },
+                                        function (error) {
+                                            alert(error);
+                                        });
+                                }
+                            },
+                            function (error) {
+                                alert(error);
+                            });
+                    }
+                },
+                function (error) {
+                    alert(error);
+                });
         },
         function (error) {
             alert(error);
         });
 
-    // TODO:这里是假数据，需要连接后端获取真数据，数据格式可以自行修改，但如果改了格式，别忘了修改renderOrder方法
-    var ticketVOList = [];
-    var activities = [];
-
-    getRequest(
-        '/ticket/get/' + sessionStorage.getItem('id'),
-        function (res) {
-            if (res.success) {
-                let totalTicketList = res.content;
-                ticketVOList = totalTicketList.slice(totalTicketList.length - selectedSeats.length, totalTicketList.length);
-                getRequest(
-                    '/coupon/' + sessionStorage.getItem('id') + '/get',
-                    function (res) {
-                        if (res.success) {
-                            coupons = res.content;
-                            getRequest(
-                                '/activity/get',
-                                function (res) {
-                                    if (res.success) {
-                                        activities = res.content;
-                                        var total = selectedSeats.length * scheduleFare;
-                                        var orderInfo = {
-                                            "ticketVOList": ticketVOList,
-                                            "total": total,
-                                            "coupons": coupons,
-                                            "activities": activities
-                                        };
-                                        getRequest(
-                                            '/vip/' + sessionStorage.getItem('id') + '/get',
-                                            function (res) {
-                                                isVIP = res.success;
-                                                useVIP = res.success;
-                                                if (isVIP) {
-                                                    $('#member-balance').html("<div><b>会员卡余额：</b>" + res.content.balance.toFixed(2) + "元</div>");
-                                                } else {
-                                                    $("#member-pay").css("display", "none");
-                                                    $("#nonmember-pay").addClass("active");
-
-                                                    $("#modal-body-member").css("display", "none");
-                                                    $("#modal-body-nonmember").css("display", "");
-                                                }
-                                            },
-                                            function (error) {
-                                                alert(error);
-                                            });
-                                        renderOrder(orderInfo);
-                                    }
-                                },
-                                function (error) {
-                                    alert(error);
-                                });
-                        }
-                    },
-                    function (error) {
-                        alert(error);
-                    });
-            }
-        },
-        function (error) {
-            alert(error);
-        });
 }
 
 function switchPay(type) {
