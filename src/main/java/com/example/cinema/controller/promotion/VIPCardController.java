@@ -3,8 +3,6 @@ package com.example.cinema.controller.promotion;
 import com.example.cinema.bl.promotion.VIPService;
 import com.example.cinema.vo.VIPCardForm;
 import com.example.cinema.vo.ResponseVO;
-import com.example.cinema.vo.VIPPromotionForm;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,28 +34,7 @@ public class VIPCardController {
         return vipService.charge(vipCardForm);
     }
 
-    @GetMapping("/getVIPPromotion")
-    public ResponseVO getVIPPromotion(){
-        // TODO: 获取用户会员卡充值优惠数据
-        return vipService.getVIPPromotion();
-    }
 
-    @PostMapping("/releaseVIPPromotion")
-    public ResponseVO releaseVIPPromotion(@RequestBody VIPPromotionForm vipPromotionForm){
-        // TODO: 发布用户会员卡充值优惠数据
-        return vipService.releaseVIPPromotion(vipPromotionForm);
-    }
 
-    @PostMapping("/updateVIPPromotion")
-    public ResponseVO updateVIPPromotion(@RequestBody VIPPromotionForm vipPromotionForm){
-        // TODO: 更新用户会员卡充值优惠数据
-        return vipService.updateVIPPromotion(vipPromotionForm);
-    }
-
-    @GetMapping("/getChargeRecord")
-    public ResponseVO getChargeRecord(@RequestParam("id") int id){
-        //TODO: 获取会员卡充值记录，和用户历史消费记录是分离的
-        return ResponseVO.buildSuccess();
-    }
 
 }

@@ -1,8 +1,6 @@
 package com.example.cinema.controller.sales;
 
 import com.example.cinema.bl.sales.TicketService;
-import com.example.cinema.vo.RefundForm;
-import com.example.cinema.vo.RefundStrategyFrom;
 import com.example.cinema.vo.ResponseVO;
 import com.example.cinema.vo.TicketForm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,36 +39,13 @@ public class TicketController {
     public ResponseVO getOccupiedSeats(@RequestParam int scheduleId){
         return ticketService.getBySchedule(scheduleId);
     }
-
     @PostMapping("/cancel")
     public ResponseVO cancelTicket(@RequestParam List<Integer> ticketId){
         return ticketService.cancelTicket(ticketId);
     }
 
-    @GetMapping("/getRefundStrategy")
-    public ResponseVO getRefundStrategy(){
-        //TODO: 获取所有退票策略
-        return ResponseVO.buildSuccess();
-    }
 
-    @PostMapping("/addRefundStrategy")
-    public ResponseVO addRefundStrategy(@RequestBody RefundStrategyFrom refundStrategyFrom){
-        //TODO: 新增退票策略
-        return ResponseVO.buildSuccess();
-    }
 
-    @PostMapping("/updateRefundStrategy")
-    public ResponseVO updateRefundStrategy(@RequestBody RefundStrategyFrom refundStrategyFrom){
-        //TODO: 修改退票策略
-        return ResponseVO.buildSuccess();
-    }
 
-    @PostMapping("/refund")
-    public ResponseVO refundTicket(@RequestBody RefundForm refundForm){
-        //TODO: 退票，和上面cancelTicket(取消锁座)好像有点像
-        // 不过不一样，这个是单个位置的票退票，还要退钱之类的
-        // 如果有会员卡就退到卡里，没有就。。。。。白嫖
-        return ResponseVO.buildSuccess();
-    }
 
 }
