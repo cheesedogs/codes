@@ -10,8 +10,13 @@
         <module name="codes" />
       </profile>
     </annotationProcessing>
+<<<<<<< HEAD
     <bytecodeTargetLevel>
       <module name="codes" target="1.8" />
+=======
+    <bytecodeTargetLevel target="8">
+      <module name="cinema" target="1.8" />
+>>>>>>> parent of 7e84087... Revert "重构数据库，更改了mybatis版本，写了所有接口的桩(TODO标识)"
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
