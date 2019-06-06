@@ -87,4 +87,6 @@ $(document).ready(function(){
         });
         $('.movie-on-list').append(movieDomStr);
     }
+
+
 });

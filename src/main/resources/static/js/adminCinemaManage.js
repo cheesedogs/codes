@@ -87,4 +87,48 @@ $(document).ready(function() {
             }
         );
     })
+
+    $('#hall-form-btn').click(function () {
+        var form=getHallForm();
+        console.log(form);
+        if(!validateHallForm(form)) {
+            return;
+        }
+        postRequest(
+            '/hall/addHall',
+            form,
+            function (res) {
+                getCinemaHalls();
+                $('#hallModal').model.hide();
+            },
+            function (error) {
+                alert(error);
+                $('#hallModal').model.hide();
+            }
+        )
+    })
+
+    function getHallForm() {
+        return  {
+            hallName : $('#hall-name-input').val(),
+            row : $('#hall-row-input').val(),
+            col : $('#hall-col-input').val()
+        }
+    }
+    function validateHallForm(data) {
+        var isValidate=true;
+        if (!data.hallName){
+            isValidate = false;
+            $('#hall-name-input').parent('.form-group').addClass('has-error');
+        }
+        if (!data.row){
+            isValidate = false;
+            $('#hall-row-input').parent('.form-group').addClass('has-error');
+        }
+        if (!data.col){
+            isValidate = false;
+            $('#hall-col-input').parent('.form-group').addClass('has-error');
+        }
+        return isValidate;
+    }
 });
