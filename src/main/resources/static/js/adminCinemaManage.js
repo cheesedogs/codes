@@ -92,57 +92,39 @@ $(document).ready(function() {
     })
 
     $(document).on('click','.editHall',function (e) {
-        // console.log(e.target.id);
+        console.log(e.target.id);
         var hallid=e.target.id;
         $('#halleditModal').modal('show');
         var form=getHallEditForm();
         form["id"]=hallid;
+        localStorage.setItem("hallid",hallid);
         console.log(form);
-        $(document).on('click','#hall-edit-form-btn',function () {
-            var formEdit=getHallEditForm();
-            formEdit["id"]=hallid;
-            console.log("------------------------");
-            console.log(formEdit);
-            if(!validateHallForm(form)) {
-                return;
-            }
-            postRequest(
-                '/hall/addHall',
-                form,
-                function (res) {
-                    getCinemaHalls();
-                    $('#hallModal').model('hide');
-                },
-                function (error) {
-                    alert(error);
-                    $('#hallModal').model('hide');
-                }
-            )
-        })
     })
 
-    // $('#hall-form-btn').click(function () {
-    //     var form=getHallForm();
-    //     console.log(form);
-    //     if(!validateHallForm(form)) {
-    //         return;
-    //     }
-    //     postRequest(
-    //         '/hall/addHall',
-    //         form,
-    //         function (res) {
-    //             getCinemaHalls();
-    //             $('#hallModal').model('hide');
-    //         },
-    //         function (error) {
-    //             alert(error);
-    //             $('#hallModal').model('hide');
-    //         }
-    //     )
-    // })
+    $('#hall-form-btn').click(function () {
+        var form=getHallForm();
+        console.log(form);
+        if(!validateHallForm(form)) {
+            return;
+        }
+        postRequest(
+            '/hall/addHall',
+            form,
+            function (res) {
+                getCinemaHalls();
+                $('#hallModal').model('hide');
+            },
+            function (error) {
+                alert(error);
+                $('#hallModal').model('hide');
+            }
+        )
+    })
 
     $('#hall-edit-form-btn').click(function () {
         var form=getHallEditForm();
+        form["id"]=localStorage.getItem("hallid");
+        console.log("----------下面是要传送的东西------------")
         console.log(form);
         if(!validateHallForm(form)){
             return;
