@@ -48,13 +48,6 @@ $(document).ready(function() {
         $('#hall-card').append(hallDomStr);
     }
 
-    $(document).on('click','.editHall',function (e) {
-        $('#halleditModal').modal('show');
-        var form=getHallEditForm();
-        console.log(form);
-    })
-
-
     function getCanSeeDayNum() {
         getRequest(
             '/schedule/view',
@@ -98,6 +91,11 @@ $(document).ready(function() {
         );
     })
 
+    $(document).on('click','.editHall',function (e) {
+        $('#halleditModal').modal('show');
+        var form=getHallEditForm();
+        console.log(form);
+    })
 
     $('#hall-form-btn').click(function () {
         var form=getHallForm();
@@ -110,11 +108,11 @@ $(document).ready(function() {
             form,
             function (res) {
                 getCinemaHalls();
-                $('#hallModal').model.hide();
+                $('#hallModal').model('hide');
             },
             function (error) {
                 alert(error);
-                $('#hallModal').model.hide();
+                $('#hallModal').model('hide');
             }
         )
     })

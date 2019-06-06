@@ -261,8 +261,6 @@ $(document).ready(function() {
             alert("影片名称没填完")
             return;
         }
-        // }
-        // checkFormDate();
         postRequest(
             '/schedule/update',
             form,
