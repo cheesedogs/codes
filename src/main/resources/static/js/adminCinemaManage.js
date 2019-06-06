@@ -35,7 +35,7 @@ $(document).ready(function() {
                 "<div class='cinema-hall'>" +
                 "<div>" +
                 "<span class='cinema-hall-name'>"+ hall.name +"</span>" +
-                "<span class='cinema-hall-size'>"+ hall.column +'*'+ hall.row +"</span>" +
+                "<span class='cinema-hall-size'>"+ hall.column +'*'+ hall.row +"</span>" +"<span>"+"<button type=\"button\" class=\"btn btn-primary editHall\" data-backdrop=\"static\" data-toggle=\"modal\" data-target=\"#halleditModal\"><i class=\"icon-plus-sign\"></i>修改影厅信息</button>"+"</span>"+
                 "</div>" +
                 "<div class='cinema-seat'>" + seat +
                 "</div>" +
@@ -108,6 +108,25 @@ $(document).ready(function() {
         )
     })
 
+    $('#hall-edit-form-btn').click(function () {
+        var form=getHallEditForm();
+        console.log(form);
+        if(!validateHallForm(form)){
+            return;
+        }
+        postRequest(
+            '/hall/updateHall',
+            form,
+            function (res) {
+                getCinemaHalls();
+                $('#halleditModal').model.hide();
+            },
+            function (error) {
+                alert(error);
+            }
+        )
+    })
+
     function getHallForm() {
         return  {
             hallName : $('#hall-name-input').val(),
@@ -115,6 +134,16 @@ $(document).ready(function() {
             col : $('#hall-col-input').val()
         }
     }
+
+    function getHallEditForm() {
+        return  {
+            // id :如何锁定id？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？/
+            hallName : $('#hall-edit-name-input').val(),
+            row : $('#hall-edit-row-input').val(),
+            col : $('#hall-edit-col-input').val()
+        }
+    }
+
     function validateHallForm(data) {
         var isValidate=true;
         if (!data.hallName){
