@@ -213,6 +213,7 @@ $(document).ready(function() {
             endTime: $("#schedule-edit-end-date-input").val(),
             fare: $("#schedule-edit-price-input").val()
         };
+        console.log(form.id);
         //todo 需要做一下表单验证？
 
         var s1=form.startTime.split("-");

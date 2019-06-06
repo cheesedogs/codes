@@ -22,6 +22,7 @@ $(document).ready(function() {
     function renderHall(halls){
         $('#hall-card').empty();
         var hallDomStr = "";
+        var hid=1;
         halls.forEach(function (hall) {
             var seat = "";
             for(var i =0;i<hall.row;i++){
@@ -35,15 +36,24 @@ $(document).ready(function() {
                 "<div class='cinema-hall'>" +
                 "<div>" +
                 "<span class='cinema-hall-name'>"+ hall.name +"</span>" +
-                "<span class='cinema-hall-size'>"+ hall.column +'*'+ hall.row +"</span>" +"<span>"+"<button type=\"button\" class=\"btn btn-primary editHall\" data-backdrop=\"static\" data-toggle=\"modal\" data-target=\"#halleditModal\"><i class=\"icon-plus-sign\"></i>修改影厅信息</button>"+"</span>"+
+                "<span class='cinema-hall-size'>"+ hall.column +'*'+ hall.row +"</span>" +"<span>"+"<button  type=\"button\"  class=\"btn btn-primary editHall\" data-backdrop=\"static\" data-toggle=\"modal\"  >修改 "+hall.name+" 影厅信息</button>"+"</span>"+
                 "</div>" +
                 "<div class='cinema-seat'>" + seat +
                 "</div>" +
                 "</div>";
             hallDomStr+=hallDom;
+            localStorage.setItem("hallid"+hid,hid)
+            hid+=1;
         });
         $('#hall-card').append(hallDomStr);
     }
+
+    $(document).on('click','.editHall',function (e) {
+        $('#halleditModal').modal('show');
+        var form=getHallEditForm();
+        console.log(form);
+    })
+
 
     function getCanSeeDayNum() {
         getRequest(
@@ -88,6 +98,7 @@ $(document).ready(function() {
         );
     })
 
+
     $('#hall-form-btn').click(function () {
         var form=getHallForm();
         console.log(form);
@@ -118,11 +129,12 @@ $(document).ready(function() {
             '/hall/updateHall',
             form,
             function (res) {
+                $('#halleditModal').modal('hide');
                 getCinemaHalls();
-                $('#halleditModal').model.hide();
             },
             function (error) {
                 alert(error);
+                $('#halleditModal').modal('hide');
             }
         )
     })
@@ -137,7 +149,7 @@ $(document).ready(function() {
 
     function getHallEditForm() {
         return  {
-            // id :如何锁定id？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？/
+            // id:
             hallName : $('#hall-edit-name-input').val(),
             row : $('#hall-edit-row-input').val(),
             col : $('#hall-edit-col-input').val()
