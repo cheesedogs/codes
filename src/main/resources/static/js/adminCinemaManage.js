@@ -23,7 +23,7 @@ $(document).ready(function() {
         $('#hall-card').empty();
         var hallDomStr = "";
         var hid=1;
-        halls.forEach(function (hall) {
+        halls.forEach(function (hall,e) {
             var seat = "";
             for(var i =0;i<hall.row;i++){
                 var temp = ""
@@ -36,7 +36,7 @@ $(document).ready(function() {
                 "<div class='cinema-hall'>" +
                 "<div>" +
                 "<span class='cinema-hall-name'>"+ hall.name +"</span>" +
-                "<span class='cinema-hall-size'>"+ hall.column +'*'+ hall.row +"</span>" +"<span>"+"<button  type=\"button\"  class=\"btn btn-primary editHall\" data-backdrop=\"static\" data-toggle=\"modal\"  >修改 "+hall.name+" 影厅信息</button>"+"</span>"+
+                "<span class='cinema-hall-size'>"+ hall.column +'*'+ hall.row +"</span>" +"<span>"+"<button id=\""+hall.id+"\" type=\"button\"  class=\"btn btn-primary editHall\" data-backdrop=\"static\" data-toggle=\"modal\"  >修改 "+hall.name+" 影厅信息</button>"+"</span>"+
                 "</div>" +
                 "<div class='cinema-seat'>" + seat +
                 "</div>" +
@@ -92,30 +92,54 @@ $(document).ready(function() {
     })
 
     $(document).on('click','.editHall',function (e) {
+        // console.log(e.target.id);
+        var hallid=e.target.id;
         $('#halleditModal').modal('show');
         var form=getHallEditForm();
+        form["id"]=hallid;
         console.log(form);
+        $(document).on('click','#hall-edit-form-btn',function () {
+            var formEdit=getHallEditForm();
+            formEdit["id"]=hallid;
+            console.log("------------------------");
+            console.log(formEdit);
+            if(!validateHallForm(form)) {
+                return;
+            }
+            postRequest(
+                '/hall/addHall',
+                form,
+                function (res) {
+                    getCinemaHalls();
+                    $('#hallModal').model('hide');
+                },
+                function (error) {
+                    alert(error);
+                    $('#hallModal').model('hide');
+                }
+            )
+        })
     })
 
-    $('#hall-form-btn').click(function () {
-        var form=getHallForm();
-        console.log(form);
-        if(!validateHallForm(form)) {
-            return;
-        }
-        postRequest(
-            '/hall/addHall',
-            form,
-            function (res) {
-                getCinemaHalls();
-                $('#hallModal').model('hide');
-            },
-            function (error) {
-                alert(error);
-                $('#hallModal').model('hide');
-            }
-        )
-    })
+    // $('#hall-form-btn').click(function () {
+    //     var form=getHallForm();
+    //     console.log(form);
+    //     if(!validateHallForm(form)) {
+    //         return;
+    //     }
+    //     postRequest(
+    //         '/hall/addHall',
+    //         form,
+    //         function (res) {
+    //             getCinemaHalls();
+    //             $('#hallModal').model('hide');
+    //         },
+    //         function (error) {
+    //             alert(error);
+    //             $('#hallModal').model('hide');
+    //         }
+    //     )
+    // })
 
     $('#hall-edit-form-btn').click(function () {
         var form=getHallEditForm();
