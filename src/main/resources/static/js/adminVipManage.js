@@ -77,10 +77,7 @@ $(document).ready(function () {
         var form = {
             targetAmount: $("#coupon-target-input").val(),
             discountAmount: $("#coupon-discount-input").val(),
-            startTime: $("#strategy-start-date-input").val(laydate.render({
-                elem: '#test11'
-                ,format: 'yyyy/MM/dd'
-            })),
+            startTime: $("#strategy-start-date-input").val(),
             endTime: $("#strategy-end-date-input").val()
         };
 

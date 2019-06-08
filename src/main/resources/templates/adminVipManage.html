@@ -8,19 +8,28 @@
     <link rel="stylesheet" type="text/css" href="/css/font-awesome.min.css"/>
     <link rel="stylesheet" type="text/css" href="/css/adminVip.css"/>
 
-
     <script src="/js/jquery.js"></script>
     <script src="/js/bootstrap.js"></script>
     <script src="/js/request.js"></script>
     <script src="/js/adminVipManage.js"></script>
-    <script src="/alerts/layDate.js"></script>
+    <script src="/alerts/laydate.js"></script>
+    <script>
+        laydate.render({
+            elem: '#strategy-start-date-input',
+            format: 'yyyy/MM/dd'
+        });
+        laydate.render({
+            elem: '#strategy-end-date-input',
+            format: 'yyyy/MM/dd'
+        });
+    </script>
 
 </head>
 <body>
 <div class="main-container">
     <div class="nav-left-container">
         <div class="nav-user-container" style="margin-bottom: 50px;">
-            <img class="avatar-lg" src="/images/defaultAvatar.jpg" />
+            <img class="avatar-lg" src="/images/defaultAvatar.jpg"/>
             <p class="title">Admin</p>
         </div>
         <ul class="nav nav-pills nav-stacked">
@@ -35,7 +44,9 @@
     <div class="content-container">
         <div class="content-header">
             <span class="title gray-text">会员管理</span>
-            <button type="button" class="btn btn-primary" data-backdrop="static" data-toggle="modal" data-target="#strategyModal"><i class="icon-plus-sign"></i> 发布充值优惠策略</button>
+            <button type="button" class="btn btn-primary" data-backdrop="static" data-toggle="modal"
+                    data-target="#strategyModal"><i class="icon-plus-sign"></i> 发布充值优惠策略
+            </button>
         </div>
         <div class="content-strategy">
 
@@ -46,31 +57,38 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
                 <h4 class="modal-title" id="strategyModalLabel">发布充值优惠策略</h4>
             </div>
             <div class="modal-body">
                 <form class="form-horizontal" role="form">
                     <div class="form-group">
-                        <label class="col-sm-2 control-label" for="strategy-start-date-input"><span class="error-text">*</span>开始日期</label>
+                        <label class="col-sm-2 control-label" for="strategy-start-date-input"><span
+                                class="error-text">*</span>开始日期</label>
                         <div class="col-sm-10">
-                            <input type="date" class="form-control" id="strategy-start-date-input" placeholder="请输入活动开始日期">
+                            <input type="text" class="form-control" id="strategy-start-date-input"
+                                   placeholder="请输入开始日期">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label" for="strategy-end-date-input"><span class="error-text">*</span>结束日期</label>
+                        <label class="col-sm-2 control-label" for="strategy-end-date-input"><span
+                                class="error-text">*</span>结束日期</label>
                         <div class="col-sm-10">
-                            <input type="date" class="form-control" id="strategy-end-date-input" placeholder="请输入活动结束日期">
+                            <input type="text" class="form-control" id="strategy-end-date-input"
+                                   placeholder="请输入结束日期">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label" for="coupon-target-input"><span class="error-text">*</span>需满金额</label>
+                        <label class="col-sm-2 control-label" for="coupon-target-input"><span
+                                class="error-text">*</span>需满金额</label>
                         <div class="col-sm-10">
-                            <input type="number" class="form-control" id="coupon-target-input" placeholder="请输入优惠需满金额">
+                            <input type="number" class="form-control" id="coupon-target-input" placeholder="请输入需满金额">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label" for="coupon-discount-input"><span class="error-text">*</span>优惠金额</label>
+                        <label class="col-sm-2 control-label" for="coupon-discount-input"><span
+                                class="error-text">*</span>优惠金额</label>
                         <div class="col-sm-10">
                             <input type="number" class="form-control" id="coupon-discount-input" placeholder="请输入优惠金额">
                         </div>
