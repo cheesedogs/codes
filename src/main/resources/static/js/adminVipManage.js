@@ -41,6 +41,7 @@ $(document).ready(function () {
     }
 
     function renderStrategies(strategies) {
+
         $(".content-strategy").empty();
         var strategiesDomStr = "";
 
@@ -58,12 +59,12 @@ $(document).ready(function () {
                         "<div class='front'>" +
                             "<div class='tip'>" +
                                 "<div class='money'>$" + strategy.discountAmount + "</div>" +
-                                "<div class='pay-line'>满" + strategy.targetAmount + "元减</div>" +
+                                "<div class='pay-line' style='white-space:nowrap;'>满" + strategy.targetAmount + "元减</div>" +
                             "</div>" +
                         "</div>" +
                         "<div class='back'>" +
                             "<div class='tip' style='background-image: linear-gradient(60deg, #96deda 0%, #50c9c3 100%);'>" +
-                                "<button class='button' data-target='#editStrategyModal'>修改</button>" +
+                                "<button class='button' onclick='changeStrategy(this)' data-backdrop='static' data-toggle='modal' data-target='#editStrategyModal'>修改</button>" +
                             "</div>" +
                         "</div>" +
                     "</div>" +
@@ -82,7 +83,7 @@ $(document).ready(function () {
         };
 
         postRequest(
-            '/vip/add',
+            '/vip/releaseVIPPromotion',
             form,
             function (res) {
                 if (res.success) {
@@ -96,33 +97,30 @@ $(document).ready(function () {
                 alert(JSON.stringify(error));
             }
         );
-    })
+    });
 
-});
-
-function changeStrategy(strategy) {
-    var strObj = strategy.parentNode.parentNode.parentNode.parentNode;
-    var reg = /[\u4e00-\u9fa5]/g;
-    var id = parseInt(strObj.getElementsByClassName('id').item(0).innerHTML.split(' ')[1]);
-    var startTime = formatDate(new Date(strObj.getElementsByClassName('start_time').item(0).innerHTML.split(' ')[1]));
-    var endTime = formatDate(new Date(strObj.getElementsByClassName('end_time').item(0).innerHTML.split(' ')[1]));
-    var discountAmount = parseInt(strObj.getElementsByClassName('money').item(0).innerHTML.slice(1));
-    var targetAmount = parseInt(strObj.getElementsByClassName('pay-line').item(0).innerHTML.replace(reg, ''));
-    console.log(strObj);
-    console.log(id);
-    console.log(startTime);
-    console.log(endTime);
-    console.log(discountAmount);
-    console.log(targetAmount);
-
+    window.changeStrategy = function (strategy) {
+        var strObj = strategy.parentNode.parentNode.parentNode.parentNode;
+        var reg = /[\u4e00-\u9fa5]/g;
+        var id = parseInt(strObj.getElementsByClassName('id').item(0).innerHTML.split(' ')[1]);
+        var startTime = formatDate(new Date(strObj.getElementsByClassName('start_time').item(0).innerHTML.split(' ')[1]));
+        var endTime = formatDate(new Date(strObj.getElementsByClassName('end_time').item(0).innerHTML.split(' ')[1]));
+        var targetAmount = parseInt(strObj.getElementsByClassName('pay-line').item(0).innerHTML.replace(reg, ''));
+        var discountAmount = parseInt(strObj.getElementsByClassName('money').item(0).innerHTML.slice(1));
+        $("#edit-strategy-id-input").val(id);
+        $("#edit-strategy-start-date-input").val(startTime);
+        $("#edit-strategy-end-date-input").val(endTime);
+        $("#edit-coupon-target-input").val(targetAmount);
+        $("#edit-coupon-discount-input").val(discountAmount);
+    };
 
     $("#edit-strategy-form-btn").click(function () {
         var form = {
-            id: $("#coupon-target-input").val(),
-            targetAmount: $("#coupon-target-input").val(),
-            discountAmount: $("#coupon-discount-input").val(),
-            startTime: $("#strategy-start-date-input").val(),
-            endTime: $("#strategy-end-date-input").val()
+            id: $("#edit-strategy-id-input").val(),
+            targetAmount: $("#edit-coupon-target-input").val(),
+            discountAmount: $("#edit-coupon-discount-input").val(),
+            startTime: $("#edit-strategy-start-date-input").val(),
+            endTime: $("#edit-strategy-end-date-input").val()
         };
 
         postRequest(
@@ -141,4 +139,5 @@ function changeStrategy(strategy) {
             }
         );
     })
-}
+
+});

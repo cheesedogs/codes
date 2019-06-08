@@ -13,24 +13,27 @@
     background: #fff;
 }
 .coupon_title {
-    margin-top: 20px;
+    margin-top: 18px;
+    margin-left: 10px;
     font-size: 24px;
     color: #66afe9;
 }
 
 .start_time,
 .end_time {
-    margin-top: 30px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    margin-left: 10px;
     font-size: 18px;
     color: #9E9E9E;
 }
 .tip {
-    height: 149px;
+    height: 147px;
     position: relative;
     flex: 0 0 100px;
     text-align: center;
     color: #ff4242;
-    padding: 13px 50px 15px 50px;
+    padding: 13px 54px 15px 54px;
     border-radius:0 8px 8px 0;
     box-shadow: 2px 2px 2px #ccc;
     background: #fff;
@@ -60,7 +63,7 @@
     bottom: 0;
 }
 .money {
-    margin-top: 18px;
+    margin-top: 23px;
     font-weight: bold;
     font-size: 24px;
 }

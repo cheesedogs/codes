@@ -16,11 +16,19 @@
     <script>
         laydate.render({
             elem: '#strategy-start-date-input',
-            format: 'yyyy/MM/dd'
+            format: 'yyyy-MM-dd'
         });
         laydate.render({
             elem: '#strategy-end-date-input',
-            format: 'yyyy/MM/dd'
+            format: 'yyyy-MM-dd'
+        });
+        laydate.render({
+            elem: '#edit-strategy-start-date-input',
+            format: 'yyyy-MM-dd'
+        });
+        laydate.render({
+            elem: '#edit-strategy-end-date-input',
+            format: 'yyyy-MM-dd'
         });
     </script>
 
@@ -112,8 +120,15 @@
             </div>
             <div class="modal-body">
                 <form class="form-horizontal" role="form">
+                    <div class="form-group" style="display:none;">
+                        <label class="col-sm-2 control-label" for="edit-strategy-id-input"><span
+                                class="error-text">*</span>优惠ID</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="edit-strategy-id-input">
+                        </div>
+                    </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label" for="strategy-start-date-input"><span
+                        <label class="col-sm-2 control-label" for="edit-strategy-start-date-input"><span
                                 class="error-text">*</span>开始日期</label>
                         <div class="col-sm-10">
                             <input type="text" class="form-control" id="edit-strategy-start-date-input"
