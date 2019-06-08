@@ -41,6 +41,7 @@ public class HallServiceImpl implements HallService, HallServiceForBl {
 
     }
 
+
     @Override
     public List<Hall> getAllHall() {
         return hallMapper.selectAllHall();

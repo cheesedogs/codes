@@ -78,6 +78,7 @@ public class TicketServiceImpl implements TicketService ,TicketServiceForBl{
 //        }
 //        ticketMapper.selectTicketById();
         return ResponseVO.buildSuccess("锁座成功");
+
     }
 
     @Override

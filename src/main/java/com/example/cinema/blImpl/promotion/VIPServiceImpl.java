@@ -6,6 +6,7 @@ import com.example.cinema.vo.VIPCardForm;
 import com.example.cinema.po.VIPCard;
 import com.example.cinema.vo.ResponseVO;
 import com.example.cinema.vo.VIPInfoVO;
+import com.example.cinema.vo.VIPPromotionForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -80,6 +81,22 @@ public class VIPServiceImpl implements VIPService {
             e.printStackTrace();
             return ResponseVO.buildFailure("失败");
         }
+    }
+
+    @Override
+    public ResponseVO releaseVIPPromotion(VIPPromotionForm vipPromotionForm) {
+
+        return ResponseVO.buildSuccess();
+    }
+
+    @Override
+    public ResponseVO updateVIPPromotion(VIPPromotionForm vipPromotionForm) {
+        return ResponseVO.buildSuccess();
+    }
+
+    @Override
+    public ResponseVO getVIPPromotion() {
+        return ResponseVO.buildSuccess();
     }
 
 

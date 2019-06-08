@@ -14,6 +14,7 @@ $(document).ready(function () {
         )
     }
 
+
     function getMovieList() {
         getRequest(
             '/ticket/get/' + sessionStorage.getItem('id'),
@@ -30,6 +31,7 @@ $(document).ready(function () {
     }
 
     // TODO:填空
+
     function renderTicketList(schedule,i) {
         var bodyContent="";
         var stateti="";
@@ -58,6 +60,7 @@ $(document).ready(function () {
             "<td>" + tiEndTime + "</td>" +
             "<td>" + stateti + "</td></tr>";
         $('#ticket-list-body').append(bodyContent);
+
     }
 
 });

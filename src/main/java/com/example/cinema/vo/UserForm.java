@@ -1,9 +1,12 @@
 package com.example.cinema.vo;
 
+import lombok.Data;
+
 /**
  * @author huwen
  * @date 2019/3/23
  */
+@Data
 public class UserForm {
     /**
      * 用户名，不可重复
@@ -14,19 +17,9 @@ public class UserForm {
      */
     private String password;
 
-    public String getUsername() {
-        return username;
-    }
+    /**
+     * 用户身份
+     */
+    private String identity;
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 }

@@ -1,7 +1,6 @@
 package com.example.cinema.data.statistics;
 
 import com.example.cinema.po.*;
-import com.example.cinema.vo.PopularMovieVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -34,7 +33,6 @@ public interface StatisticsMapper {
      * @return
      */
     List<AudiencePrice> selectAudiencePrice(@Param("date") Date date, @Param("nextDate") Date nextDate);
-
 
     /**
      * 查询影院的影厅及座位数目、观众人数、放映场次

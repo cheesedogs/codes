@@ -111,6 +111,7 @@ public interface ScheduleMapper {
      */
     List<ScheduleItem> selectScheduleByMovieId(@Param("movieId") int movieId);
 
+
     /**
      * 查询指定时间范围内的所有排片信息
      * @param startDate 开始时间

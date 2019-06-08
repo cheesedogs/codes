@@ -25,7 +25,6 @@ $(document).ready(function () {
             }
         );
     }
-
 });
 
 function renderSchedule(schedule, seats) {
@@ -186,7 +185,6 @@ function orderConfirmClick() {
         function (error) {
             alert(error);
         });
-
 }
 
 function switchPay(type) {

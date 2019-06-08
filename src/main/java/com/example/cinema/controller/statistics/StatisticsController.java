@@ -32,6 +32,7 @@ public class StatisticsController {
         return statisticsService.getAudiencePriceSevenDays();
     }
 
+
     @RequestMapping(value = "statistics/placingRate", method = RequestMethod.GET)
     public ResponseVO getMoviePlacingRateByDate(@RequestParam(required = false) Date date){
         //这里传递 date 参数时，前端传的是用 / 分隔的时间，例如 date = 2019/05/12

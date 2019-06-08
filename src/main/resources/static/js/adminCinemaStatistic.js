@@ -131,7 +131,6 @@ $(document).ready(function() {
     }
 
     function getAudiencePrice() {
-
         getRequest(
             '/statistics/audience/price',
             function (res) {
