@@ -63,7 +63,7 @@ $(document).ready(function () {
                         "</div>" +
                         "<div class='back'>" +
                             "<div class='tip' style='background-image: linear-gradient(60deg, #96deda 0%, #50c9c3 100%);'>" +
-                                "<button class='button' onclick='changeStrategy(this)'>修改</button>" +
+                                "<button class='button' data-target='#editStrategyModal'>修改</button>" +
                             "</div>" +
                         "</div>" +
                     "</div>" +
@@ -82,7 +82,7 @@ $(document).ready(function () {
         };
 
         postRequest(
-            '/vip/updateVIPPromotion',
+            '/vip/add',
             form,
             function (res) {
                 if (res.success) {
@@ -114,4 +114,31 @@ function changeStrategy(strategy) {
     console.log(endTime);
     console.log(discountAmount);
     console.log(targetAmount);
+
+
+    $("#edit-strategy-form-btn").click(function () {
+        var form = {
+            id: $("#coupon-target-input").val(),
+            targetAmount: $("#coupon-target-input").val(),
+            discountAmount: $("#coupon-discount-input").val(),
+            startTime: $("#strategy-start-date-input").val(),
+            endTime: $("#strategy-end-date-input").val()
+        };
+
+        postRequest(
+            '/vip/updateVIPPromotion',
+            form,
+            function (res) {
+                if (res.success) {
+                    getStrategies();
+                    $("#strategyModal").modal('hide');
+                } else {
+                    alert(res.message);
+                }
+            },
+            function (error) {
+                alert(JSON.stringify(error));
+            }
+        );
+    })
 }
