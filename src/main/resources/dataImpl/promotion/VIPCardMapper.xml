@@ -31,6 +31,15 @@
         select * from vip_promotion order by standard desc
     </select>
 
+    <insert id="insertRecord" useGeneratedKeys="true" keyProperty="id">
+        insert into charge_record(user_id,amount,`time`)
+        values (#{userId},#{amount},curtime())
+    </insert>
+
+    <select id="getChargeRecord" resultType="com.example.cinema.po.ChargeRecord">
+        select * from charge_record where user_id =#{id}
+    </select>
+
     <resultMap id="VIPCard" type="com.example.cinema.po.VIPCard">
         <result column="join_time" property="joinDate"></result>
         <result column="id" property="id"></result>
