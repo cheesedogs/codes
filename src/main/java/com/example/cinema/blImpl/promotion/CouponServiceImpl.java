@@ -66,7 +66,15 @@ public class CouponServiceImpl implements CouponService {
         ResponseVO response;
         try{
             List<VIPCostInfo> vipCostInfoList = couponMapper.selectByCost(target_amount);
+            for (int i=0; i<vipCostInfoList.size(); i++) {
+                VIPCostInfo v = vipCostInfoList.get(i);
+                if (v.getCost() < target_amount){
+                    vipCostInfoList = vipCostInfoList.subList(0,i);
+                    break;
+                }
+            }
             response = ResponseVO.buildSuccess(vipCostInfoList);
+            response.setMessage("获取成功");
         }catch (Exception e){
             e.printStackTrace();
             response = ResponseVO.buildFailure("获取失败，原因未知");
@@ -76,7 +84,16 @@ public class CouponServiceImpl implements CouponService {
 
     @Override
     public ResponseVO getCoupons() {
-        return null;
+        ResponseVO response;
+        try{
+            List<Coupon> couponList = couponMapper.selectCoupon();
+            response = ResponseVO.buildSuccess(couponList);
+            response.setMessage("获取成功");
+        }catch (Exception e){
+            e.printStackTrace();
+            response = ResponseVO.buildFailure("获取失败，原因未知");
+        }
+        return response;
     }
 
     @Override
