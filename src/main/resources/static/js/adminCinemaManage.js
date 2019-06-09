@@ -10,16 +10,11 @@ $(document).ready(function () {
         $("#table").tabullet({
             data: reStrategies,
             action: function (mode, data) {
-                console.dir(data);
-                if (mode === 'save') {
+                if (mode == 'save') {
                     addReStrategy(data);
                 }
-                if (mode === 'edit') {
-                    for (var i = 0; i < reStrategies.length; i++) {
-                        if (reStrategies[i].id === data.id) {
-                            updateReStrategy(data);
-                        }
-                    }
+                if (mode == 'edit') {
+                    updateReStrategy(data);
                 }
             }
         });
@@ -106,32 +101,10 @@ $(document).ready(function () {
                 alert(JSON.stringify(error));
             }
         );
-    })
+    });
 
     function getReStrategies() {
-        var strategies = [{
-            id: 1,
-            hoursBeforeEnd: 1,
-            rate: 0.0
-        }, {
-            id: 2,
-            hoursBeforeEnd: 2,
-            rate: 0.2
-        }, {
-            id: 3,
-            hoursBeforeEnd: 3,
-            rate: 0.5
-        }, {
-            id: 4,
-            hoursBeforeEnd: 4,
-            rate: 0.8
-        }, {
-            id: 5,
-            hoursBeforeEnd: 5,
-            rate: 1
-        }];
-        showReStrategies(strategies);
-        /*getRequest(
+        getRequest(
             '/ticket/getRefundStrategy',
             function (res) {
                 var strategies = res.content;
@@ -140,7 +113,7 @@ $(document).ready(function () {
             function (error) {
                 alert(JSON.stringify(error));
             }
-        );*/
+        );
     }
 
     function addReStrategy(reStrategy) {
@@ -154,7 +127,7 @@ $(document).ready(function () {
             form,
             function (res) {
                 if (res.success) {
-                    showReStrategies(res.content);
+                    getReStrategies();
                 } else {
                     alert(res.message);
                 }
@@ -166,6 +139,7 @@ $(document).ready(function () {
     }
 
     function updateReStrategy(reStrategy) {
+        console.log(reStrategy.id);
         var form = {
             id: reStrategy.id,
             hoursBeforeEnd: reStrategy.hoursBeforeEnd,
@@ -177,7 +151,7 @@ $(document).ready(function () {
             form,
             function (res) {
                 if (res.success) {
-                    showReStrategies(res.content);
+                    getReStrategies();
                 } else {
                     alert(res.message);
                 }

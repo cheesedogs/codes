@@ -3,7 +3,7 @@ $(document).ready(function () {
     getStrategies();
 
     function getStrategies() {
-        var strategies = [
+        /*var strategies = [
             {
                 'id': 1,
                 'startTime': '2019-06-04 00:00:00',
@@ -19,8 +19,8 @@ $(document).ready(function () {
                 'discountAmount': 30
             }
         ];
-        renderStrategies(strategies);
-        /*getRequest(
+        renderStrategies(strategies);*/
+        getRequest(
             '/vip/getVIPPromotion',
             function (res) {
                 var strategies = res.content;
@@ -29,7 +29,7 @@ $(document).ready(function () {
             function (error) {
                 alert(JSON.stringify(error));
             }
-        );*/
+        );
     }
 
     function renderStrategies(strategies) {
