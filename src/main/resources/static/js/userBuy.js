@@ -1,6 +1,18 @@
 $(document).ready(function () {
     var ticketList;
+    var refundStrategy;
     getMovieList();
+    getRefundStrategy();
+
+    //获取退票策略
+    function getRefundStrategy(){
+        getRequest(
+            '/ticket/getRefundStrategy',
+            function (res) {
+                refundStrategy=res.content;
+            }
+        )
+    }
 
     function getSchedule(scheduleid,i) {
         getRequest(
@@ -54,13 +66,34 @@ $(document).ready(function () {
         tiEndTime=emonth+"月"+eday+"日 "+eHourMin;
 
         bodyContent += "<tr><td>" + schedule.movieName + "</td>" +
-            "<td>" + schedule.hallName + "</td>" +
+            "<td>" + schedule.hallName  + "</td>" +
             "<td>" + (ticketList[i].rowIndex+1) + "排" + (ticketList[i].columnIndex+1) + "列" + "</td>" +
             "<td>" + tiStartTime + "</td>" +
             "<td>" + tiEndTime + "</td>" +
-            "<td>" + stateti + "</td></tr>";
-        $('#ticket-list-body').append(bodyContent);
+            "<td>" + stateti + "</td>";
 
+        if (stateti=="已完成"){
+            bodyContent+="<td><button class='btn btn-primary' id='refundBtn'>退票</button></td>"+"</tr>";
+        }
+        else {
+            bodyContent+="<td></td></tr>"
+        }
+        $('#ticket-list-body').append(bodyContent);
     }
 
+    $(document).on('click','#refundBtn',function () {
+        var r=confirm(refundStrategy+"开场前15分钟不得退票；开场前30分钟退票扣除60%费用");
+        if (r){
+            postRequest(
+                '/ticket/refund',
+                null,
+                function (res) {
+                    alert("根据退票策略，您得到的退款为："+res.content+"50元");
+                }
+            )
+        }
+
+    })
+
 });
+//问题汇总：1：如何绑定id与影厅form，点击连接字中的btn后一起传送     2：与第一个问题相似，如何将id与影票相绑定，退票时点击连接字中的btn后一起传送
