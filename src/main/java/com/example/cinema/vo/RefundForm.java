@@ -1,7 +1,10 @@
 package com.example.cinema.vo;
 
+import lombok.Data;
+
 import java.util.Date;
 
+@Data
 public class RefundForm {
     private int userId;
     private int ticketId;
@@ -14,20 +17,5 @@ public class RefundForm {
         this.ticketId = ticketId;
     }
 
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-
-    public int getTicketId() {
-        return ticketId;
-    }
-
-    public void setTicketId(int ticketId) {
-        this.ticketId = ticketId;
-    }
 
 }

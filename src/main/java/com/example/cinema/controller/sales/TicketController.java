@@ -69,7 +69,7 @@ public class TicketController {
     public ResponseVO refundTicket(@RequestBody RefundForm refundForm){
         //TODO: 退票，和上面cancelTicket(取消锁座)好像有点像
         // 不过不一样，这个是单个位置的票退票，还要退钱之类的
-        // 如果有会员卡就退到卡里，没有就。。。。。白嫖
+        // 如果有会员卡就退到卡里，没有就。。。。。白嫖，等待前端
         return ticketService.refundTicket(refundForm);
     }
 
