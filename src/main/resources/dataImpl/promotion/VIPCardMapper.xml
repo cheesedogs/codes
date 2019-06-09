@@ -22,9 +22,10 @@
         <result column="balance" property="balance"></result>
     </resultMap>
 
-    <update id="updateCardBalance" >
-        update vip_card set balance = #{balance} where id=#{id}
-    </update>
 
+    <resultMap id="VIPPromotion" type="com.example.cinema.po.VIPPromotion">
+        <result column="start_time" property="startTime"/>
+        <result column="end_time" property="endTime"/>
+    </resultMap>
 
 </mapper>

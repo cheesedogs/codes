@@ -25,6 +25,19 @@
 
     <select id="selectCouponByUserAndAmount" resultMap="Coupon">
         select * from coupon c left join coupon_user  cu on c.id=cu.coupon_id where cu.user_id=#{userId} and c.start_time &lt; Now() and c.end_time &gt; Now() and #{amount}>c.target_amount
+    </select>
+
+    <select id="selectByCost" resultMap="VIPCostInfo">
+        select t.user_id as id, u.username as username, sum(t.pay_amount) as cost
+         from ticket t left join user u on t.user_id=u.id
+         where t.user_id in (select vip.user_id from vip_card vip)
+         group by t.user_id
+         order by cost desc;
+    </select>
+
+    <select id="selectCoupon" resultMap="Coupon">
+        
+    </select>
 
     </select>
 
