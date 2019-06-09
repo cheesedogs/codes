@@ -116,7 +116,21 @@
     </div>
 </div>
 <script>
-    console.log()
+    var id = localStorage.getItem('tabId');
+    var rows = parent.document.getElementById('table').rows;
+    var flag = 0;
+    for (var i = 1; i < rows.length; i++) {
+        if (rows[i].cells[0].innerHTML == id) {
+            flag = i;
+        }
+    }
+    var username = rows[flag].cells[1].innerHTML;
+    var password= rows[flag].cells[2].innerHTML;
+    var identity = rows[flag].cells[3].innerHTML;
+    $("#id").val(id);
+    $("#username").val(username);
+    $("#password").val(password);
+    $("#identity").val(identity);
     layui.use(['form', 'layer'], function () {
         $ = layui.jquery;
         var form = layui.form, layer = layui.layer;
@@ -134,10 +148,10 @@
         //监听提交
         form.on('submit(edit)', function (data) {
             var form = {
-                id: data.field.id,
-                identity: data.field.identity,
-                username: data.field.username,
-                password: data.field.password
+                id: $("#id").val(),
+                identity: $("#identity").val(),
+                username: $("#username").val(),
+                password: $("#password").val()
             };
 
             postRequest(
@@ -155,7 +169,7 @@
                 }
             );
             //异步发送提醒
-            layer.alert("增加成功", {icon: 6}, function () {
+            layer.alert("更新成功", {icon: 6}, function () {
                 // 获得frame索引
                 var index = parent.layer.getFrameIndex(window.name);
                 xadmin.father_reload();

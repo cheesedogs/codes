@@ -34,7 +34,7 @@ $(document).ready(function() {
             td3.innerHTML = user.password;
             td4.innerHTML = user.identity;
             td5.className = "td-manage";
-            td5.innerHTML = "<a title='编辑' onclick=\"xadmin.open('用户修改','edit',1200,450)\"'>" +
+            td5.innerHTML = "<a title='编辑' onclick=\"localStorage.setItem('tabId',$(this).parents('tr')[0].children[0].innerText);xadmin.open('用户修改','edit',1200,450)\"'>" +
                                 "<i class='layui-icon'>&#xe642;</i>" +
                             "</a>" +
                             "<a title='删除' onclick=\"member_del(this,'要删除的id')\"'>" +
