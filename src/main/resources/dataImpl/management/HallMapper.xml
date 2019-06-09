@@ -25,6 +25,7 @@
         select * from schedule where hall_id=#{id} and (select now() from dual) > end_time
     </select>
     <resultMap id="Hall" type="com.example.cinema.po.Hall">
+        <id column="id" property="id"/>
     </resultMap>
     <resultMap id="ScheduleItem" type="com.example.cinema.po.ScheduleItem">
     </resultMap>

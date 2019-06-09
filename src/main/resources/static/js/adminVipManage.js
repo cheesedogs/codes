@@ -103,8 +103,8 @@ $(document).ready(function () {
             form,
             function (res) {
                 if (res.success) {
-                    $("#strategyModal").modal('hide');
                     getStrategies();
+                    $("#editStrategyModal").modal('hide');
                 } else {
                     alert(res.message);
                 }
