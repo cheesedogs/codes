@@ -38,19 +38,19 @@ public class VIPCardController {
 
     @GetMapping("/getVIPPromotion")
     public ResponseVO getVIPPromotion(){
-        // TODO: 获取用户会员卡充值优惠数据
+        // 【完成TODO】: 获取用户会员卡充值优惠数据
         return vipService.getVIPPromotion();
     }
 
     @PostMapping("/releaseVIPPromotion")
     public ResponseVO releaseVIPPromotion(@RequestBody VIPPromotionForm vipPromotionForm){
-        // TODO: 发布用户会员卡充值优惠数据
+        // 【完成TODO】: 发布用户会员卡充值优惠数据
         return vipService.releaseVIPPromotion(vipPromotionForm);
     }
 
     @PostMapping("/updateVIPPromotion")
     public ResponseVO updateVIPPromotion(@RequestBody VIPPromotionForm vipPromotionForm){
-        // TODO: 更新用户会员卡充值优惠数据
+        // 【完成TODO】: 更新用户会员卡充值优惠数据
         return vipService.updateVIPPromotion(vipPromotionForm);
     }
 

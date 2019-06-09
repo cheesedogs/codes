@@ -5,7 +5,6 @@ import com.example.cinema.config.InterceptorConfiguration;
 import com.example.cinema.vo.UserForm;
 import com.example.cinema.vo.ResponseVO;
 import com.example.cinema.vo.UserVO;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,27 +41,27 @@ public class AccountController {
     }
 
     @GetMapping("/admin/getAllUser")
-    public ResponseVO getAllUser(){
-        //TODO: 获取所有影院角色
-        return ResponseVO.buildSuccess();
+    public ResponseVO getAllAccount(){
+        //【完成TODO】: 获取所有影院角色
+        return accountService.getAllAccount();
     }
 
     @PostMapping("/admin/addUser")
-    public ResponseVO addUser(UserForm userForm){
-        //TODO: 增加影院角色，和注册差不多
-        return ResponseVO.buildSuccess();
+    public ResponseVO addUser(@RequestBody UserForm userForm){
+        //【完成TODO】: 增加影院角色，和注册差不多
+        return accountService.addAccount(userForm);
     }
 
     @PostMapping("/admin/updateUser")
-    public ResponseVO updateUser(UserForm userForm){
-        //TODO: 更新某个影院角色信息
-        return ResponseVO.buildSuccess();
+    public ResponseVO updateUser(@RequestBody UserForm userForm){
+        //【完成TODO】: 更新某个影院角色信息
+        return accountService.updateAccount(userForm);
     }
 
     @PostMapping("/admin/delUser")
     public ResponseVO delUser(@RequestParam("id")int id){
-        //TODO: 删除指定影院角色
-        return ResponseVO.buildSuccess();
+        //【完成TODO】: 删除指定影院角色
+        return accountService.deleteAccount(id);
     }
 
     @GetMapping("/user/member/getConsumption")

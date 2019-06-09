@@ -113,7 +113,7 @@ public class StatisticsServiceImpl implements StatisticsService {
             scheduleNum = scheduleItemList.size();
 
             //获取所有影厅
-            List<Hall> hallList = new ArrayList<>();
+            List<Hall> hallList;
             hallList = hallServiceForBl.getAllHall();
             hallNum = hallList.size();
 

@@ -8,6 +8,12 @@ import lombok.Data;
  */
 @Data
 public class UserForm {
+
+    /**
+     * 用户id，除了管理员更改用户信息时，其余为空
+     * */
+    private int id;
+
     /**
      * 用户名，不可重复
      */

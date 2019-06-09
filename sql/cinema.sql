@@ -392,7 +392,7 @@ CREATE TABLE `refund_strategy` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
-INSERT INTO refund_strategy VALUES (1,200,30);
+INSERT INTO refund_strategy VALUES (1,2,0.5);
 
 
 # 这是消费记录表
