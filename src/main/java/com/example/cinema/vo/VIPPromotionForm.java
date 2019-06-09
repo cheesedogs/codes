@@ -2,6 +2,8 @@ package com.example.cinema.vo;
 
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
 public class VIPPromotionForm {
 
@@ -13,4 +15,8 @@ public class VIPPromotionForm {
 
     /**这是附赠的金额*/
     private double minus;
+
+    /**开始和结束时间*/
+    private Date startTime;
+    private Date endTime;
 }

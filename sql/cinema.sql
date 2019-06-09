@@ -373,11 +373,13 @@ CREATE TABLE `vip_promotion` (
                               `id` int(11) NOT NULL AUTO_INCREMENT,
                               `standard` double NOT NULL,
                               `minus` double NOT NULL ,
+                              `start_time` date NOT NULL ,
+                              `end_time` date NOT NULL ,
                               PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
-INSERT INTO `vip_promotion` VALUES (1,200,30);
+INSERT INTO `vip_promotion` VALUES (1,200,30,'2019-5-10','2019-6-30');
 
 
 # 这是退票策略表

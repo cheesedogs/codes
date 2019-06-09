@@ -95,6 +95,8 @@ public class VIPServiceImpl implements VIPService {
             VIPPromotion vipPromotion = new VIPPromotion();
             vipPromotion.setStandard(vipPromotionForm.getStandard());
             vipPromotion.setMinus(vipPromotionForm.getMinus());
+            vipPromotion.setStartTime(vipPromotionForm.getStartTime());
+            vipPromotion.setEndTime(vipPromotionForm.getEndTime());
             vipCardMapper.insertPromotion(vipPromotion);
             response = ResponseVO.buildSuccess(new VIPPromotionVO(vipPromotion));
             response.setMessage("发布会员卡充值优惠策略成功");
@@ -113,6 +115,8 @@ public class VIPServiceImpl implements VIPService {
             vipPromotion.setStandard(vipPromotionForm.getStandard());
             vipPromotion.setMinus(vipPromotionForm.getMinus());
             vipPromotion.setId(vipPromotionForm.getId());
+            vipPromotion.setStartTime(vipPromotionForm.getStartTime());
+            vipPromotion.setEndTime(vipPromotionForm.getEndTime());
             vipCardMapper.updatePromotion(vipPromotion);
             response = ResponseVO.buildSuccess(new VIPPromotionVO(vipPromotion));
             response.setMessage("修改会员卡充值优惠策略成功");
