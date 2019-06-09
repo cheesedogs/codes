@@ -16,7 +16,7 @@ import java.util.List;
  * Created by liying on 2019/4/17.
  */
 @Service
-public class CouponServiceImpl implements CouponService {
+public class CouponServiceImpl implements CouponService, CouponServiceForBL {
 
     @Autowired
     CouponMapper couponMapper;
@@ -108,5 +108,31 @@ public class CouponServiceImpl implements CouponService {
             response = ResponseVO.buildFailure("赠送失败，原因未知");
         }
         return response;
+    }
+
+    @Override
+    public boolean checkCouponValidated(int userId, int couponId) {
+        List<Coupon> coupons = couponMapper.selectCouponByUser(userId);
+        for (Coupon c : coupons) {
+            if (c.getId() == couponId){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public Coupon selectCouponsById(int couponId) {
+        return couponMapper.selectById(couponId);
+    }
+
+    @Override
+    public void sendCouponUser(int couponId, int userId) {
+        couponMapper.insertCouponUser(couponId, userId);
+    }
+
+    @Override
+    public void delCouponUser(int userId, int couponId) {
+        couponMapper.deleteCouponUser(userId, couponId);
     }
 }

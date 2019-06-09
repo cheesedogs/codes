@@ -405,7 +405,7 @@ CREATE TABLE `charge_record` (
                         `id` int(11) NOT NULL AUTO_INCREMENT,
                         `user_id` int(11) NOT NULL,
                         `time` DATE NOT NULL ,
-                        `amount` DATE NOT NULL ,
+                        `amount` double NOT NULL ,
                         PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;

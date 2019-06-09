@@ -61,6 +61,14 @@
         update refund_strategy set hours_before_end=#{hoursBeforeEnd},rate=#{rate} where id=#{id}
     </update>
 
+    <select id="selectScheduleByTicketId" resultMap="ScheduleItem">
+        select * from schedule s where s.id = (select t.schedule_id from ticket t where t.id=#{id});
+    </select>
+
+    <update id="completeTicket">
+        update ticket set state=1, pay_amount=#{payAmount} where id = #{id}
+    </update>
+
     <resultMap id="Ticket" type="com.example.cinema.po.Ticket">
         <result column="schedule_id" property="scheduleId"/>
         <result column="id" property="id"/>
@@ -77,4 +85,13 @@
         <result column="rate" property="rate"/>
     </resultMap>
 
+    <resultMap id="ScheduleItem" type="com.example.cinema.po.ScheduleItem">
+        <id column="id" property="id"/>
+        <result column="hall_id" property="hallId"/>
+        <result column="movie_id" property="movieId"/>
+        <result column="start_time" property="startTime"/>
+        <result column="end_time" property="endTime"/>
+        <result column="movie_name" property="movieName"/>
+        <result column="hall_name" property="hallName"/>
+    </resultMap>
 </mapper>

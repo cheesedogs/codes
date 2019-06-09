@@ -21,7 +21,7 @@ public class TicketController {
 
     @PostMapping("/vip/buy")
     public ResponseVO buyTicketByVIPCard(@RequestParam List<Integer> ticketId, @RequestParam int couponId){
-        return ticketService.completeByVIPCard(ticketId,couponId);
+        return ticketService.completeTicket(ticketId, couponId, true);
     }
 
     @PostMapping("/lockSeat")
@@ -30,7 +30,7 @@ public class TicketController {
     }
     @PostMapping("/buy")
     public ResponseVO buyTicket(@RequestParam List<Integer> ticketId,@RequestParam int couponId){
-        return ticketService.completeTicket(ticketId,couponId);
+        return ticketService.completeTicket(ticketId, couponId, false);
     }
     @GetMapping("/get/{userId}")
     public ResponseVO getTicketByUserId(@PathVariable int userId){

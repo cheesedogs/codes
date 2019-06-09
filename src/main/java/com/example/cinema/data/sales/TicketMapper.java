@@ -1,6 +1,7 @@
 package com.example.cinema.data.sales;
 
 import com.example.cinema.po.RefundStrategy;
+import com.example.cinema.po.ScheduleItem;
 import com.example.cinema.po.Ticket;
 import com.example.cinema.vo.ResponseVO;
 import org.apache.ibatis.annotations.Mapper;
@@ -42,5 +43,9 @@ public interface TicketMapper {
     void insertRefundStrategy(RefundStrategy refundStrategy);
 
     void updateRefundStrategy(RefundStrategy refundStrategy);
+
+    ScheduleItem selectScheduleByTicketId(@Param("id") int id);
+
+    void completeTicket(@Param("id") int id,@Param("payAmount") double payAmount);
 }
 

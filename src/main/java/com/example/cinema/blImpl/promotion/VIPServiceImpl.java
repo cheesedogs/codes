@@ -15,7 +15,7 @@ import java.util.List;
  * Created by liying on 2019/4/14.
  */
 @Service
-public class VIPServiceImpl implements VIPService {
+public class VIPServiceImpl implements VIPService, VIPCardServiceForBL {
     @Autowired
     VIPCardMapper vipCardMapper;
 
@@ -141,4 +141,12 @@ public class VIPServiceImpl implements VIPService {
     }
 
 
+    @Override
+    public void pay(int userId, double totalFare) throws Exception {
+        VIPCard card = vipCardMapper.selectCardByUserId(userId);
+        if(card.getBalance() < totalFare) {
+            throw new Exception("VIP卡余额不足");
+        }
+        vipCardMapper.updateCardBalance(card.getId(), card.getBalance() - totalFare);
+    }
 }

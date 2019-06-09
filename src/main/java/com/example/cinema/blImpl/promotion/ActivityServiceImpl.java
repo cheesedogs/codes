@@ -11,11 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * Created by liying on 2019/4/20.
  */
 @Service
-public class ActivityServiceImpl implements ActivityService {
+public class ActivityServiceImpl implements ActivityService, ActivityServiceForBL {
 
     @Autowired
     ActivityMapper activityMapper;
@@ -55,4 +57,8 @@ public class ActivityServiceImpl implements ActivityService {
         }
     }
 
+    @Override
+    public List<Activity> selectActivitiesByMovie(int movieId) {
+        return activityMapper.selectActivitiesByMovie(movieId);
+    }
 }

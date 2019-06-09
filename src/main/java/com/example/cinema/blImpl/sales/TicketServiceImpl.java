@@ -3,7 +3,10 @@ package com.example.cinema.blImpl.sales;
 import com.example.cinema.bl.sales.TicketService;
 import com.example.cinema.blImpl.management.hall.HallServiceForBl;
 import com.example.cinema.blImpl.management.schedule.ScheduleServiceForBl;
+import com.example.cinema.blImpl.promotion.ActivityServiceForBL;
 import com.example.cinema.blImpl.promotion.ActivityServiceImpl;
+import com.example.cinema.blImpl.promotion.CouponServiceForBL;
+import com.example.cinema.blImpl.promotion.VIPCardServiceForBL;
 import com.example.cinema.data.management.MovieMapper;
 import com.example.cinema.data.management.ScheduleMapper;
 import com.example.cinema.data.promotion.ActivityMapper;
@@ -36,8 +39,12 @@ public class TicketServiceImpl implements TicketService ,TicketServiceForBl{
     HallServiceForBl hallService;
 
     @Autowired
+    CouponServiceForBL couponServiceForBL;
+    @Autowired
     CouponMapper couponMapper;
 
+    @Autowired
+    ActivityServiceForBL activityServiceForBL;
     @Autowired
     ActivityMapper activityMapper;
 
@@ -48,7 +55,8 @@ public class TicketServiceImpl implements TicketService ,TicketServiceForBl{
     MovieMapper movieMapper;
 
     @Autowired
-    VIPCardMapper vipCardMapper;
+    VIPCardServiceForBL vipCardServiceForBL;
+
 
     @Override
     @Transactional
@@ -77,29 +85,6 @@ public class TicketServiceImpl implements TicketService ,TicketServiceForBl{
 
     }
 
-    @Override
-    @Transactional
-    public ResponseVO completeTicket(List<Integer> id, int couponId) {
-        try {
-            Ticket ticket;
-
-            for (int idOfOne : id) {
-                ticket = ticketMapper.selectTicketById(idOfOne);
-
-                //检验优惠券
-                checkCouponValidated(ticket, couponId);
-
-                //判断是否符合活动
-                checkActivities(ticket);
-
-                ticketMapper.updateTicketState(idOfOne, 1);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseVO.buildFailure("普通购票失败" + e.getMessage());
-        }
-        return ResponseVO.buildSuccess("普通购票成功");
-    }
 
     @Override
     public ResponseVO getBySchedule(int scheduleId) {
@@ -136,34 +121,57 @@ public class TicketServiceImpl implements TicketService ,TicketServiceForBl{
 
     @Override
     @Transactional
-    public ResponseVO completeByVIPCard(List<Integer> id, int couponId) {
-        Ticket ticket;
-        int UserId = ticketMapper.selectTicketById(id.get(0)).getUserId();
-        double totalFare = 0;
-        double discount = 0;
+    public ResponseVO completeTicket(List<Integer> ticketId, int couponId, boolean isVIP) {
+        ResponseVO response;
         try {
-            for (int idOfOne : id) {
-                ticket = ticketMapper.selectTicketById(idOfOne);
-
-                //检验优惠券
-                discount = checkCouponValidated(ticket, couponId);
-
-                //判断是否符合活动
-                checkActivities(ticket);
-
-                totalFare += scheduleMapper.selectScheduleById(ticket.getScheduleId()).getFare();
-                ticketMapper.updateTicketState(idOfOne, 1);
+            ScheduleItem scheduleItem = ticketMapper.selectScheduleByTicketId(ticketId.get(0));
+            List<Ticket> ticketList = new ArrayList<>();
+            for (int i : ticketId) {
+                ticketList.add(ticketMapper.selectTicketById(i));
             }
-            totalFare -= discount;
-            if(vipCardMapper.selectCardByUserId(UserId).getBalance() < totalFare) {
-                throw new Exception("VIP卡余额不足，请充值！");
+            double totalFare = scheduleItem.getFare() * ticketId.size();
+            int userId = ticketList.get(0).getUserId();
+
+            /*检验优惠券*/
+            if (couponId !=0 ){
+                if (!couponServiceForBL.checkCouponValidated(userId, couponId)){
+                    throw new Exception("该用户没有此优惠券");
+                }else {
+                    Coupon coupon = couponServiceForBL.selectCouponsById(couponId);
+                    if (totalFare < coupon.getTargetAmount()){
+                        throw new Exception("不满足优惠金额条件");
+                    }else {
+                        totalFare -= coupon.getDiscountAmount();
+                        couponServiceForBL.delCouponUser(userId, couponId);
+                    }
+                }
             }
-            vipCardMapper.updateCardBalance(vipCardMapper.selectCardByUserId(UserId).getId(), vipCardMapper.selectCardByUserId(UserId).getBalance() - totalFare);
-            return ResponseVO.buildSuccess("VIP卡购票成功");
+
+            /*判断是否符合活动并赠送优惠券*/
+            Timestamp ticketTimeStamp = new Timestamp(new Date().getTime());
+            List<Activity> activities = activityServiceForBL.selectActivitiesByMovie(scheduleItem.getMovieId());
+            int gainCoupons = 0;
+            for (Activity a : activities) {
+                if (ticketTimeStamp.compareTo(a.getStartTime()) > 0
+                        && ticketTimeStamp.compareTo(a.getEndTime()) < 0) {
+                    couponServiceForBL.sendCouponUser(a.getCoupon().getId(), userId);
+                    gainCoupons += 1;
+                }
+            }
+            //完成付款
+            if(isVIP){
+                vipCardServiceForBL.pay(userId, totalFare);
+            }
+            for (int i : ticketId) {
+                ticketMapper.completeTicket(i, totalFare/ticketId.size());
+            }
+            response = ResponseVO.buildSuccess(gainCoupons);
+            response.setMessage("购票成功");
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseVO.buildFailure("VIP卡购票失败" + e.getMessage());
+            response = ResponseVO.buildFailure("购票失败，原因：" + e.getMessage());
         }
+        return response;
     }
 
     @Override
@@ -236,40 +244,6 @@ public class TicketServiceImpl implements TicketService ,TicketServiceForBl{
     @Override
     public ResponseVO refundTicket(RefundForm refundForm) {
         return null;
-    }
-
-    private double checkCouponValidated(Ticket ticket, int couponId) throws Exception {
-        if (couponId == 0) {
-            return 0;
-        }
-        Coupon coupon = couponMapper.selectById(couponId);
-        double dicount = 0;
-        int UserId = ticket.getUserId();
-        //判断优惠券是否有效
-        Timestamp ticketTimeStamp;
-        ticketTimeStamp = ticket.getTime();
-        if (ticketTimeStamp.compareTo(coupon.getStartTime()) < 0
-                || ticketTimeStamp.compareTo(coupon.getEndTime()) > 0) {
-            System.out.println(ticketTimeStamp);
-            System.out.println(coupon.getStartTime());
-            System.out.println(coupon.getEndTime());
-            throw new Exception("优惠券时间失效");
-        }
-        dicount = couponMapper.selectById(couponId).getDiscountAmount();
-        couponMapper.deleteCouponUser(couponId, UserId);
-        return dicount;
-    }
-
-    private void checkActivities(Ticket ticket) {
-        Timestamp ticketTimeStamp = ticket.getTime();
-        ScheduleItem schedule = scheduleMapper.selectScheduleById(ticket.getScheduleId());
-        List<Activity> activities = activityMapper.selectActivitiesByMovie(schedule.getMovieId());
-        for (Activity a : activities) {
-            if (ticketTimeStamp.compareTo(a.getStartTime()) > 0
-                    && ticketTimeStamp.compareTo(a.getEndTime()) < 0) {
-                couponMapper.insertCouponUser(a.getCoupon().getId(), ticket.getUserId());
-            }
-        }
     }
 
     @Override

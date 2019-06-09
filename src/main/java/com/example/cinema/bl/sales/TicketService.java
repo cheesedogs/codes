@@ -21,13 +21,14 @@ public interface TicketService {
     ResponseVO addTicket(TicketForm ticketForm);
 
     /**
-     * TODO:完成购票【不使用会员卡】流程包括校验优惠券和根据优惠活动赠送优惠券，现在要修改下金额问题
+     * TODO:完成购票，流程包括校验优惠券、根据优惠活动赠送优惠券、如果是会员卡支付则扣会员卡费
      *
-     * @param id
+     * @param ticketId
      * @param couponId
+     * @param isVIP
      * @return
      */
-    ResponseVO completeTicket(List<Integer> id, int couponId);
+    ResponseVO completeTicket(List<Integer> ticketId, int couponId, boolean isVIP);
 
     /**
      * 获得该场次的被锁座位和场次信息
@@ -44,15 +45,6 @@ public interface TicketService {
      * @return
      */
     ResponseVO getTicketByUser(int userId);
-
-    /**
-     * TODO:完成购票【使用会员卡】流程包括会员卡扣费、校验优惠券和根据优惠活动赠送优惠券，现在要修改下金额问题，以及对BL层和Data层的混用问题
-     *
-     * @param id
-     * @param couponId
-     * @return
-     */
-    ResponseVO completeByVIPCard(List<Integer> id, int couponId);
 
     /**
      * 【完成TODO，不需要做这个功能】:取消锁座（只有状态是"锁定中"的可以取消），调整下message
