@@ -68,6 +68,7 @@ public class VIPServiceImpl implements VIPService, VIPCardServiceForBL {
         }
         double balance = vipCard.calculate(vipCardForm.getAmount(),vipCardMapper.selectPromotion());
         chargeRecord.setAmount(balance);
+        chargeRecord.setBalance(vipCard.getBalance()+balance);
         vipCard.setBalance(vipCard.getBalance() + balance);
         try {
             vipCardMapper.updateCardBalance(vipCardForm.getVipId(), vipCard.getBalance());

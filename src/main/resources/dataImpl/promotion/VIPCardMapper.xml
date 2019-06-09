@@ -32,8 +32,7 @@
     </select>
 
     <insert id="insertRecord" useGeneratedKeys="true" keyProperty="id">
-        insert into charge_record(user_id,amount,`time`)
-        values (#{userId},#{amount},curtime())
+        insert into charge_record(user_id, `time`, amount, balance) values (#{userId},now(),#{amount},#{balance})
     </insert>
 
     <select id="getChargeRecord" resultType="com.example.cinema.po.ChargeRecord">

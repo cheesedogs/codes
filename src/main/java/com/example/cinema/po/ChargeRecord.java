@@ -15,15 +15,18 @@ public class ChargeRecord {
     private int userId;
     private Date time;
     private double amount;
+    private double balance;
 
     public ChargeRecord() {
+        this.time = new Date();
     }
 
-    public ChargeRecord(int id, int userId, Date time, double amount) {
+
+    public ChargeRecord(int id, int userId, Date time, double amount, double balance) {
         this.id = id;
         this.userId = userId;
         this.time = time;
         this.amount = amount;
+        this.balance = balance;
     }
-
 }
