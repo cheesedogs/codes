@@ -187,7 +187,12 @@ public class TicketServiceImpl implements TicketService ,TicketServiceForBl{
     public ResponseVO getAllRefundStrategy() {
         ResponseVO response;
         try {
-            response = ResponseVO.buildSuccess(ticketMapper.selectRefundStrategy());
+            List<RefundStrategy> refundStrategyList = ticketMapper.selectRefundStrategy();
+            StringBuilder sb = new StringBuilder();
+            for (RefundStrategy refundStrategy : refundStrategyList) {
+                sb.append("在 ").append(refundStrategy.getHoursBeforeEnd()).append(" 小时内退票返还 ").append(refundStrategy.getRate()*100).append("%").append(System.lineSeparator());
+            }
+            response = ResponseVO.buildSuccess(sb.toString());
             response.setMessage("获取退票策略成功");
         }catch (Exception e){
             e.printStackTrace();
@@ -235,7 +240,30 @@ public class TicketServiceImpl implements TicketService ,TicketServiceForBl{
 
     @Override
     public ResponseVO refundTicket(RefundForm refundForm) {
-        return null;
+        ResponseVO response;
+        try {
+            Ticket ticket = ticketMapper.selectTicketById(refundForm.getTicketId());
+            ScheduleItem scheduleItem = scheduleService.getScheduleItemById(ticket.getScheduleId());
+            List<RefundStrategy> refundStrategyList = ticketMapper.selectRefundStrategy();
+            Date currentTime = new Date();
+            double rate = 1;
+            double balance = ticket.getPayAmount();
+            for (RefundStrategy refundStrategy : refundStrategyList) {
+                if ((scheduleItem.getStartTime().getTime() - currentTime.getTime()) / (1000*3600) < refundStrategy.getHoursBeforeEnd()){
+                    rate = refundStrategy.getRate();
+                    break;
+                }
+            }
+            balance *= rate;
+            ticketMapper.updateTicketState(refundForm.getTicketId(), 3);
+            vipCardServiceForBL.addRefundBalance(refundForm.getUserId(), balance);
+            response = ResponseVO.buildSuccess(balance);
+            response.setMessage("退票成功");
+        }catch (Exception e){
+            e.printStackTrace();
+            response = ResponseVO.buildFailure("退票失败");
+        }
+        return response;
     }
 
     @Override
