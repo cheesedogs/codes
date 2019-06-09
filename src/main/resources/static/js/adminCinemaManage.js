@@ -1,9 +1,24 @@
-$(document).ready(function() {
+$(document).ready(function () {
 
     var canSeeDate = 0;
 
     getCanSeeDayNum();
     getCinemaHalls();
+    getReStrategies();
+
+    function showReStrategies(reStrategies) {
+        $("#table").tabullet({
+            data: reStrategies,
+            action: function (mode, data) {
+                if (mode == 'save') {
+                    addReStrategy(data);
+                }
+                if (mode == 'edit') {
+                    updateReStrategy(data);
+                }
+            }
+        });
+    }
 
     function getCinemaHalls() {
         var halls = [];
@@ -19,28 +34,28 @@ $(document).ready(function() {
         );
     }
 
-    function renderHall(halls){
+    function renderHall(halls) {
         $('#hall-card').empty();
         var hallDomStr = "";
         halls.forEach(function (hall) {
             var seat = "";
-            for(var i =0;i<hall.row;i++){
+            for (var i = 0; i < hall.row; i++) {
                 var temp = ""
-                for(var j =0;j<hall.column;j++){
-                    temp+="<div class='cinema-hall-seat'></div>";
+                for (var j = 0; j < hall.column; j++) {
+                    temp += "<div class='cinema-hall-seat'></div>";
                 }
-                seat+= "<div>"+temp+"</div>";
+                seat += "<div>" + temp + "</div>";
             }
             var hallDom =
                 "<div class='cinema-hall'>" +
                 "<div>" +
-                "<span class='cinema-hall-name'>"+ hall.name +"</span>" +
-                "<span class='cinema-hall-size'>"+ hall.column +'*'+ hall.row +"</span>" +
+                "<span class='cinema-hall-name'>" + hall.name + "</span>" +
+                "<span class='cinema-hall-size'>" + hall.column + '*' + hall.row + "</span>" +
                 "</div>" +
                 "<div class='cinema-seat'>" + seat +
                 "</div>" +
                 "</div>";
-            hallDomStr+=hallDom;
+            hallDomStr += hallDom;
         });
         $('#hall-card').append(hallDomStr);
     }
@@ -59,10 +74,10 @@ $(document).ready(function() {
     }
 
     $('#canview-modify-btn').click(function () {
-       $("#canview-modify-btn").hide();
-       $("#canview-set-input").val(canSeeDate);
-       $("#canview-set-input").show();
-       $("#canview-confirm-btn").show();
+        $("#canview-modify-btn").hide();
+        $("#canview-set-input").val(canSeeDate);
+        $("#canview-set-input").show();
+        $("#canview-confirm-btn").show();
     });
 
     $('#canview-confirm-btn').click(function () {
@@ -70,15 +85,15 @@ $(document).ready(function() {
         // 验证一下是否为数字
         postRequest(
             '/schedule/view/set',
-            {day:dayNum},
+            {day: dayNum},
             function (res) {
-                if(res.success){
+                if (res.success) {
                     getCanSeeDayNum();
                     canSeeDate = dayNum;
                     $("#canview-modify-btn").show();
                     $("#canview-set-input").hide();
                     $("#canview-confirm-btn").hide();
-                } else{
+                } else {
                     alert(res.message);
                 }
             },
@@ -86,5 +101,64 @@ $(document).ready(function() {
                 alert(JSON.stringify(error));
             }
         );
-    })
+    });
+
+    function getReStrategies() {
+        getRequest(
+            '/ticket/getRefundStrategy',
+            function (res) {
+                var strategies = res.content;
+                showReStrategies(strategies);
+            },
+            function (error) {
+                alert(JSON.stringify(error));
+            }
+        );
+    }
+
+    function addReStrategy(reStrategy) {
+        var form = {
+            hoursBeforeEnd: reStrategy.hoursBeforeEnd,
+            rate: reStrategy.rate
+        };
+
+        postRequest(
+            '/ticket/addRefundStrategy',
+            form,
+            function (res) {
+                if (res.success) {
+                    getReStrategies();
+                } else {
+                    alert(res.message);
+                }
+            },
+            function (error) {
+                alert(JSON.stringify(error));
+            }
+        );
+    }
+
+    function updateReStrategy(reStrategy) {
+        console.log(reStrategy.id);
+        var form = {
+            id: reStrategy.id,
+            hoursBeforeEnd: reStrategy.hoursBeforeEnd,
+            rate: reStrategy.rate
+        };
+
+        postRequest(
+            '/ticket/updateRefundStrategy',
+            form,
+            function (res) {
+                if (res.success) {
+                    getReStrategies();
+                } else {
+                    alert(res.message);
+                }
+            },
+            function (error) {
+                alert(JSON.stringify(error));
+            }
+        );
+    }
 });

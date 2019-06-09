@@ -22,4 +22,11 @@ public interface AccountService {
      */
     public UserVO login(UserForm userForm);
 
+    /**
+     * 管理员增删改查影院角色信息
+     * */
+    ResponseVO getAllAccount();
+    ResponseVO addAccount(UserForm userForm);
+    ResponseVO updateAccount(UserForm userForm);
+    ResponseVO deleteAccount(int id);
 }

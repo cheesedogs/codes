@@ -53,6 +53,7 @@ public class TicketServiceImpl implements TicketService ,TicketServiceForBl{
     @Override
     @Transactional
     public ResponseVO addTicket(TicketForm ticketForm) {
+        ResponseVO response;
         List<Ticket> tickets = new ArrayList<>();
         Ticket ticket;
         try {
@@ -65,19 +66,14 @@ public class TicketServiceImpl implements TicketService ,TicketServiceForBl{
                 ticket.setState(0);
                 tickets.add(ticket);
             }
+            ticketMapper.insertTickets(tickets);
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseVO.buildFailure("锁座失败");
+            response = ResponseVO.buildFailure("锁座失败，原因未知");
+            return response;
         }
-        ticketMapper.insertTickets(tickets);
-//        int ticketId;
-//        List<Integer> ticketsIds = new ArrayList<>();
-//        for (Ticket t : tickets) {
-//            ticketId = t.getId();
-//            ticketsIds.add(ticketId);
-//        }
-//        ticketMapper.selectTicketById();
-        return ResponseVO.buildSuccess("锁座成功");
+        response = ResponseVO.buildSuccess(tickets);
+        return response;
 
     }
 
@@ -185,6 +181,61 @@ public class TicketServiceImpl implements TicketService ,TicketServiceForBl{
             return ResponseVO.buildFailure("取消购票失败，原因:" + e.getMessage());
         }
         return ResponseVO.buildSuccess("取消购票成功");
+    }
+
+    @Override
+    public ResponseVO getAllRefundStrategy() {
+        ResponseVO response;
+        try {
+            response = ResponseVO.buildSuccess(ticketMapper.selectRefundStrategy());
+            response.setMessage("获取退票策略成功");
+        }catch (Exception e){
+            e.printStackTrace();
+            response = ResponseVO.buildFailure("获取失败，原因未知");
+        }
+        return response;
+    }
+
+    @Override
+    public ResponseVO addRefundStrategy(RefundStrategyFrom refundStrategyFrom) {
+        ResponseVO response;
+        try {
+            RefundStrategy refundStrategy = new RefundStrategy();
+            refundStrategy.setHoursBeforeEnd(refundStrategyFrom.getHoursBeforeEnd());
+            refundStrategy.setRate(refundStrategyFrom.getRate());
+            ticketMapper.insertRefundStrategy(refundStrategy);
+            RefundStrategyVO refundStrategyVO = new RefundStrategyVO(refundStrategy);
+            response = ResponseVO.buildSuccess(refundStrategyVO);
+            response.setMessage("更新退票策略成功");
+        }catch (Exception e){
+            e.printStackTrace();
+            response = ResponseVO.buildFailure("发布失败，该退票策略已存在");
+        }
+        return response;
+    }
+
+    @Override
+    public ResponseVO updateRefundStrategy(RefundStrategyFrom refundStrategyFrom) {
+        ResponseVO response;
+        try {
+            RefundStrategy refundStrategy = new RefundStrategy();
+            refundStrategy.setId(refundStrategyFrom.getId());
+            refundStrategy.setHoursBeforeEnd(refundStrategyFrom.getHoursBeforeEnd());
+            refundStrategy.setRate(refundStrategyFrom.getRate());
+            ticketMapper.updateRefundStrategy(refundStrategy);
+            RefundStrategyVO refundStrategyVO = new RefundStrategyVO(refundStrategy);
+            response = ResponseVO.buildSuccess(refundStrategyVO);
+            response.setMessage("修改退票策略成功");
+        }catch (Exception e){
+            e.printStackTrace();
+            response = ResponseVO.buildFailure("发布失败，该退票策略已存在");
+        }
+        return response;
+    }
+
+    @Override
+    public ResponseVO refundTicket(RefundForm refundForm) {
+        return null;
     }
 
     private double checkCouponValidated(Ticket ticket, int couponId) throws Exception {
