@@ -33,26 +33,18 @@ public class TicketServiceImpl implements TicketService ,TicketServiceForBl{
 
     @Autowired
     TicketMapper ticketMapper;
+
     @Autowired
     ScheduleServiceForBl scheduleService;
+
     @Autowired
     HallServiceForBl hallService;
 
     @Autowired
     CouponServiceForBL couponServiceForBL;
-    @Autowired
-    CouponMapper couponMapper;
 
     @Autowired
     ActivityServiceForBL activityServiceForBL;
-    @Autowired
-    ActivityMapper activityMapper;
-
-    @Autowired
-    ScheduleMapper scheduleMapper;
-
-    @Autowired
-    MovieMapper movieMapper;
 
     @Autowired
     VIPCardServiceForBL vipCardServiceForBL;

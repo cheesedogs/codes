@@ -1,11 +1,15 @@
 package com.example.cinema.po;
 
+import lombok.Data;
+
 import java.util.Date;
 
 /**
  * @author zjy
  * @data 2019/6/9
  */
+
+@Data
 public class ChargeRecord {
     private int id;
     private int userId;
@@ -22,35 +26,4 @@ public class ChargeRecord {
         this.amount = amount;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-
-    public void setTime(Date time) {
-        this.time = time;
-    }
-
-    public void setAmount(double amount) {
-        this.amount = amount;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public Date getTime() {
-        return time;
-    }
-
-    public double getAmount() {
-        return amount;
-    }
 }
