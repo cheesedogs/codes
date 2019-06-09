@@ -8,7 +8,25 @@
         select * from hall where id = #{hallId}
     </select>
 
+     <insert id="addHall" useGeneratedKeys="true" keyProperty="id">
+         insert into hall(`name`, `column`, `row`)
+         values (#{name}, #{column}, #{row})
+     </insert>
+
+    <update id="updateHall">
+        update hall
+        <set>
+            `column` = #{column},
+            `row` = #{row}
+        </set>
+          where id=#{id}
+    </update>
+    <select id="isEngaged" resultMap="ScheduleItem">
+        select * from schedule where hall_id=#{id} and (select now() from dual) > end_time
+    </select>
     <resultMap id="Hall" type="com.example.cinema.po.Hall">
+    </resultMap>
+    <resultMap id="ScheduleItem" type="com.example.cinema.po.ScheduleItem">
     </resultMap>
 
 </mapper>

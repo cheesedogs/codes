@@ -22,15 +22,15 @@ public class HallController {
     }
 
     @PostMapping("/addHall")
-    public ResponseVO addHall(HallVO hallVO){
+    public ResponseVO addHall(@RequestBody HallVO hallVO){
         // TODO: 录入新影厅
-        return ResponseVO.buildSuccess();
+        return hallService.addHall(hallVO);
     }
 
     @PostMapping("/updateHall")
-    public ResponseVO updateHall(HallVO hallVO){
+    public ResponseVO updateHall(@RequestBody HallVO hallVO){
         // TODO: 修改影厅信息
-        return ResponseVO.buildSuccess();
+        return hallService.updateHall(hallVO);
     }
 
 }
