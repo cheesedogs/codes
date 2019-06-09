@@ -73,7 +73,7 @@ $(document).ready(function () {
             "<td>" + stateti + "</td>";
 
         if (stateti=="已完成"){
-            bodyContent+="<td><button id=\""+ticketList[i].id+"\" class='btn btn-primary refundBtn'>退票</button></td>"+"</tr>";
+            bodyContent+="<td><button class='btn btn-primary' id='refundBtn'>退票</button></td>"+"</tr>";
         }
         else {
             bodyContent+="<td></td></tr>"
@@ -81,17 +81,12 @@ $(document).ready(function () {
         $('#ticket-list-body').append(bodyContent);
     }
 
-    $(document).on('click','.refundBtn',function (e) {
-        console.log("-----下面是事件元素-----");
-        console.log(e.target);
-        console.log("-----下面是id元素-----");
-        console.log(e.target.id);
-        var ticketId=e.target.id;
+    $(document).on('click','#refundBtn',function () {
         var r=confirm(refundStrategy+"开场前15分钟不得退票；开场前30分钟退票扣除60%费用");
         if (r){
             postRequest(
                 '/ticket/refund',
-                ticketId,
+                null,
                 function (res) {
                     alert("根据退票策略，您得到的退款为："+res.content+"50元");
                 }
