@@ -35,8 +35,17 @@
     </select>
 
     <select id="selectCoupon" resultMap="Coupon">
-        
+        select * from coupon
     </select>
+
+    <insert id="sendCoupon" parameterType="java.util.List">
+        insert into coupon_user(user_id,coupon_id)
+        values
+        <foreach collection="list" item="item" index="index"
+                 separator=",">
+            (#{item.userId}, #{item.couponId})
+        </foreach>
+    </insert>
 
     <resultMap id="VIPCostInfo" type="com.example.cinema.po.VIPCostInfo">
     </resultMap>

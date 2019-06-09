@@ -20,15 +20,15 @@
     </update>
 
     <insert id="insertPromotion" parameterType="com.example.cinema.po.VIPPromotion">
-        insert into vip_promotion(standard, minus) values (#{standard},#{minus})
+        insert into vip_promotion(standard, minus, start_time, end_time) values (#{standard},#{minus},#{startTime},#{endTime})
     </insert>
 
     <update id="updatePromotion" parameterType="com.example.cinema.po.VIPPromotion">
-        update vip_promotion set standard=#{standard},minus=#{minus} where id=#{id}
+        update vip_promotion set standard=#{standard},minus=#{minus},start_time=#{startTime},end_time=#{endTime} where id=#{id}
     </update>
 
     <select id="selectPromotion" resultMap="VIPPromotion">
-        select * from vip_promotion order by standard desc
+        select * from vip_promotion where end_time>now() order by standard desc
     </select>
 
     <resultMap id="VIPCard" type="com.example.cinema.po.VIPCard">
