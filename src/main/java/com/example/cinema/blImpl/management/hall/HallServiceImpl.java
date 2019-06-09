@@ -47,55 +47,11 @@ public class HallServiceImpl implements HallService, HallServiceForBl {
         return hallMapper.selectAllHall();
     }
 
-    private List<HallVO> hallList2HallVOList(List<Hall> hallList) {
+    private List<HallVO> hallList2HallVOList(List<Hall> hallList){
         List<HallVO> hallVOList = new ArrayList<>();
-        for (Hall hall : hallList) {
+        for(Hall hall : hallList){
             hallVOList.add(new HallVO(hall));
         }
         return hallVOList;
-    }
-
-    public ResponseVO addHall(HallVO hallVO) {
-        Hall hall = new Hall();
-        try {
-            hall.setName(hallVO.getName());
-            hall.setRow(hallVO.getRow());
-            hall.setColumn(hallVO.getColumn());
-            hallMapper.addHall(hall);
-            hall = hallMapper.selectHallById(hall.getId());
-            ResponseVO response = ResponseVO.buildSuccess(hall);
-            response.setMessage("影厅录入成功");
-            return response;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseVO.buildFailure("影厅已存在");
-        }
-
-    }
-
-    public ResponseVO updateHall(HallVO hallVO){
-            Hall hall = new Hall();
-            hall.setColumn(hallVO.getColumn());
-            hall.setRow(hallVO.getRow());
-            hall.setId(hallVO.getId());
-            hall.setName(hallVO.getName());
-            try{
-                if(isEngaged(hall))
-                    throw new Exception();
-                hallMapper.updateHall(hall);
-            }catch (Exception e){
-                e.printStackTrace();
-                return ResponseVO.buildFailure("更新失败,该影厅已有排片");
-            }
-            return ResponseVO.buildSuccess(hall);
-    }
-
-    public boolean isEngaged(Hall hall){
-        int id = hall.getId();
-        Hall tempHall = hallMapper.isEngaged(id);
-        if(tempHall ==null)
-            return false;
-        return true;
-
     }
 }

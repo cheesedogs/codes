@@ -1,7 +1,5 @@
 package com.example.cinema.bl.management;
 
-import com.example.cinema.po.Hall;
-import com.example.cinema.vo.HallVO;
 import com.example.cinema.vo.ResponseVO;
 
 /**
@@ -11,12 +9,7 @@ import com.example.cinema.vo.ResponseVO;
 public interface HallService {
     /**
      * 搜索所有影厅
-     *
      * @return
      */
     ResponseVO searchAllHall();
-
-    ResponseVO addHall(HallVO hallVO);
-
-    ResponseVO updateHall(HallVO hallVO);
 }

@@ -1,7 +1,5 @@
 package com.example.cinema.po;
 
-import com.example.cinema.vo.HallVO;
-
 /**
  * @author fjj
  * @date 2019/4/28 5:09 PM
@@ -11,10 +9,6 @@ public class Hall {
     private String name;
     private Integer row;
     private Integer column;
-
-    public Hall() {
-    }
-
 
     public Integer getId() {
         return id;
