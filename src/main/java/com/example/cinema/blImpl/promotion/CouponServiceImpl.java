@@ -98,6 +98,15 @@ public class CouponServiceImpl implements CouponService {
 
     @Override
     public ResponseVO sendCoupon(List<SendCouponForm> sendCouponFormList) {
-        return null;
+        ResponseVO response;
+        try{
+            couponMapper.sendCoupon(sendCouponFormList);
+            response = ResponseVO.buildSuccess();
+            response.setMessage("赠送成功");
+        }catch (Exception e){
+            e.printStackTrace();
+            response = ResponseVO.buildFailure("赠送失败，原因未知");
+        }
+        return response;
     }
 }
