@@ -5,12 +5,24 @@
     </resultMap>
 
     <insert id="createNewAccount" useGeneratedKeys="true" keyProperty="id">
-        insert into user(username,password)
-        values(#{username},#{password})
+        insert into user(username,password,identity)
+        values(#{username},#{password},#{identity})
     </insert>
+
     <select id="getAccountByName" resultMap="User">
         select * from user where username=#{username}
     </select>
 
+    <select id="getAllAccount" resultMap="User">
+        select * from user;
+    </select>
+
+    <update id="updateAccount" parameterType="com.example.cinema.po.User">
+        update user set `username`=#{username},`password`=#{password},`identity`=#{identity} where id=#{id}
+    </update>
+
+    <delete id="deleteAccount">
+        delete from user where id=#{id}
+    </delete>
 
 </mapper>

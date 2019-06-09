@@ -2,6 +2,7 @@ package com.example.cinema.po;
 
 
 import java.sql.Timestamp;
+import java.util.List;
 
 /**
  * Created by liying on 2019/4/14.
@@ -11,7 +12,7 @@ public class VIPCard {
 
     public static final double price = 25;
 
-    public static final String description="满200送30";
+//    public static final String description="满200送30";
 
     /**
      * 用户id
@@ -71,8 +72,17 @@ public class VIPCard {
         this.joinDate = joinDate;
     }
 
-    public double calculate(double amount) {
-        return (int)(amount/200)*30+amount;
+    public double calculate(double amount, List<VIPPromotion> vipPromotions) {
+        double stadard = 0;
+        double minus = 0;
+        for (VIPPromotion promotion : vipPromotions) {
+            if (stadard > promotion.getStandard()){
+                stadard = promotion.getStandard();
+                minus = promotion.getMinus();
+                break;
+            }
+        }
+        return ((int)(amount / stadard)) * minus + amount;
 
     }
 }

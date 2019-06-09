@@ -41,5 +41,69 @@ public class AccountServiceImpl implements AccountService {
         return new UserVO(user);
     }
 
+    @Override
+    public ResponseVO getAllAccount() {
+        ResponseVO response;
+        try {
+            response = ResponseVO.buildSuccess(accountMapper.getAllAccount());
+            response.setMessage("获取所有影院角色信息成功");
+        }catch (Exception e){
+            e.printStackTrace();
+            response = ResponseVO.buildFailure("获取所有影院角色信息失败，原因未知");
+        }
+        return response;
+    }
+
+    @Override
+    public ResponseVO addAccount(UserForm userForm) {
+        ResponseVO response;
+        try {
+            User user = new User();
+            user.setUsername(userForm.getUsername());
+            user.setPassword(userForm.getPassword());
+            user.setIdentity(userForm.getIdentity());
+            accountMapper.createNewAccount(user);
+            response = ResponseVO.buildSuccess(user);
+            response.setMessage("增加影院角色信息成功");
+        }catch (Exception e){
+            e.printStackTrace();
+            response = ResponseVO.buildFailure("该用户已存在");
+        }
+        return response;
+    }
+
+    @Override
+    public ResponseVO updateAccount(UserForm userForm) {
+        ResponseVO response;
+        try {
+            User user = new User();
+            user.setId(userForm.getId());
+            user.setUsername(userForm.getUsername());
+            user.setPassword(userForm.getPassword());
+            user.setIdentity(userForm.getIdentity());
+            accountMapper.updateAccount(user);
+            response = ResponseVO.buildSuccess(user);
+            response.setMessage("修改影院角色信息成功");
+        }catch (Exception e){
+            e.printStackTrace();
+            response = ResponseVO.buildFailure("修改失败，原因未知");
+        }
+        return response;
+    }
+
+    @Override
+    public ResponseVO deleteAccount(int id) {
+        ResponseVO response;
+        try {
+            accountMapper.deleteAccount(id);
+            response = ResponseVO.buildSuccess();
+            response.setMessage("删除影院角色信息成功");
+        }catch (Exception e){
+            e.printStackTrace();
+            response = ResponseVO.buildFailure("删除影院角色信息失败，原因未知");
+        }
+        return response;
+    }
+
 
 }

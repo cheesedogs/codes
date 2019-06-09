@@ -1,6 +1,8 @@
 package com.example.cinema.data.sales;
 
+import com.example.cinema.po.RefundStrategy;
 import com.example.cinema.po.Ticket;
+import com.example.cinema.vo.ResponseVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -35,5 +37,10 @@ public interface TicketMapper {
 
     List<Ticket> selectTicketByDate(@Param("startDate") Date startDate,@Param("endDate") Date endDate);
 
+    List<RefundStrategy> selectRefundStrategy();
+
+    void insertRefundStrategy(RefundStrategy refundStrategy);
+
+    void updateRefundStrategy(RefundStrategy refundStrategy);
 }
 

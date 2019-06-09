@@ -33,7 +33,7 @@ public class Ticket {
 
     /**
      * 订单状态：
-     * 0：未完成 1：已完成 2:已失效
+     * 0：未完成 1：已完成 2:已失效 3:被退票
      */
     private int state;
 

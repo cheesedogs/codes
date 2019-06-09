@@ -20,6 +20,6 @@ public interface HallServiceForBl {
      * 获取所有影厅信息
      * @return 返回所有影厅的列表
      * */
-    public List<Hall> getAllHall();
+    List<Hall> getAllHall();
 
 }

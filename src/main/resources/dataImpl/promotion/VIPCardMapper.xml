@@ -15,6 +15,22 @@
         select * from vip_card where user_id=#{userId}
     </select>
 
+    <update id="updateCardBalance" >
+        update vip_card set balance = #{balance} where id=#{id}
+    </update>
+
+    <insert id="insertPromotion" parameterType="com.example.cinema.po.VIPPromotion">
+        insert into vip_promotion(standard, minus) values (#{standard},#{minus})
+    </insert>
+
+    <update id="updatePromotion" parameterType="com.example.cinema.po.VIPPromotion">
+        update vip_promotion set standard=#{standard},minus=#{minus} where id=#{id}
+    </update>
+
+    <select id="selectPromotion" resultMap="VIPPromotion">
+        select * from vip_promotion order by standard desc
+    </select>
+
     <resultMap id="VIPCard" type="com.example.cinema.po.VIPCard">
         <result column="join_time" property="joinDate"></result>
         <result column="id" property="id"></result>
@@ -22,9 +38,7 @@
         <result column="balance" property="balance"></result>
     </resultMap>
 
-    <update id="updateCardBalance" >
-        update vip_card set balance = #{balance} where id=#{id}
-    </update>
-
+    <resultMap id="VIPPromotion" type="com.example.cinema.po.VIPPromotion">
+    </resultMap>
 
 </mapper>
