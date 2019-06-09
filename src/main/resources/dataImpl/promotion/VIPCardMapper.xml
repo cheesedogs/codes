@@ -39,6 +39,8 @@
     </resultMap>
 
     <resultMap id="VIPPromotion" type="com.example.cinema.po.VIPPromotion">
+        <result column="start_time" property="startTime"/>
+        <result column="end_time" property="endTime"/>
     </resultMap>
 
 </mapper>

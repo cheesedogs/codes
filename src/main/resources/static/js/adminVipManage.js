@@ -3,23 +3,6 @@ $(document).ready(function () {
     getStrategies();
 
     function getStrategies() {
-        /*var strategies = [
-            {
-                'id': 1,
-                'startTime': '2019-06-04 00:00:00',
-                'endTime': '2019-06-23 00:00:00',
-                'targetAmount': 20,
-                'discountAmount': 10
-            },
-            {
-                'id': 2,
-                'startTime': '2019-06-04 00:00:00',
-                'endTime': '2019-06-23 00:00:00',
-                'targetAmount': 50,
-                'discountAmount': 30
-            }
-        ];
-        renderStrategies(strategies);*/
         getRequest(
             '/vip/getVIPPromotion',
             function (res) {
@@ -50,8 +33,8 @@ $(document).ready(function () {
                     "<div class='edit_container'>" +
                         "<div class='front'>" +
                             "<div class='tip'>" +
-                                "<div class='money'>$" + strategy.discountAmount + "</div>" +
-                                "<div class='pay-line' style='white-space:nowrap;'>满" + strategy.targetAmount + "元减</div>" +
+                                "<div class='money'>$" + strategy.minus + "</div>" +
+                                "<div class='pay-line' style='white-space:nowrap;'>满" + strategy.standard + "元减</div>" +
                             "</div>" +
                         "</div>" +
                         "<div class='back'>" +
@@ -68,12 +51,11 @@ $(document).ready(function () {
 
     $("#strategy-form-btn").click(function () {
         var form = {
-            targetAmount: $("#coupon-target-input").val(),
-            discountAmount: $("#coupon-discount-input").val(),
-            startTime: $("#strategy-start-date-input").val(),
-            endTime: $("#strategy-end-date-input").val()
+            standard: $("#coupon-target-input").val(),
+            minus: $("#coupon-discount-input").val(),
+            startTime: new Date($("#strategy-start-date-input").val()).toISOString().split('T')[0],
+            endTime: new Date($("#strategy-end-date-input").val()).toISOString().split('T')[0]
         };
-
         postRequest(
             '/vip/releaseVIPPromotion',
             form,
@@ -82,6 +64,7 @@ $(document).ready(function () {
                     getStrategies();
                     $("#strategyModal").modal('hide');
                 } else {
+                    console.log(res);
                     alert(res.message);
                 }
             },
@@ -109,10 +92,10 @@ $(document).ready(function () {
     $("#edit-strategy-form-btn").click(function () {
         var form = {
             id: $("#edit-strategy-id-input").val(),
-            targetAmount: $("#edit-coupon-target-input").val(),
-            discountAmount: $("#edit-coupon-discount-input").val(),
-            startTime: $("#edit-strategy-start-date-input").val(),
-            endTime: $("#edit-strategy-end-date-input").val()
+            standard: $("#edit-coupon-target-input").val(),
+            minus: $("#edit-coupon-discount-input").val(),
+            startTime: new Date($("#edit-strategy-start-date-input").val()).toISOString().split('T')[0],
+            endTime: new Date($("#edit-strategy-end-date-input").val()).toISOString().split('T')[0]
         };
 
         postRequest(
