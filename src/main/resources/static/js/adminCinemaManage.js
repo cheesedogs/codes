@@ -1,4 +1,4 @@
-$(document).ready(function () {
+$(document).ready(function() {
 
     var canSeeDate = 0;
 
@@ -25,8 +25,7 @@ $(document).ready(function () {
         getRequest(
             '/hall/all',
             function (res) {
-                halls = res.content;
-                renderHall(halls);
+                renderHall(res.content);
             },
             function (error) {
                 alert(JSON.stringify(error));
@@ -34,28 +33,32 @@ $(document).ready(function () {
         );
     }
 
-    function renderHall(halls) {
+    function renderHall(halls){
+        console.log(halls);
         $('#hall-card').empty();
         var hallDomStr = "";
-        halls.forEach(function (hall) {
+        var hid=1;
+        halls.forEach(function (hall,e) {
             var seat = "";
-            for (var i = 0; i < hall.row; i++) {
+            for(var i =0;i<hall.row;i++){
                 var temp = ""
-                for (var j = 0; j < hall.column; j++) {
-                    temp += "<div class='cinema-hall-seat'></div>";
+                for(var j =0;j<hall.column;j++){
+                    temp+="<div class='cinema-hall-seat'></div>";
                 }
-                seat += "<div>" + temp + "</div>";
+                seat+= "<div>"+temp+"</div>";
             }
             var hallDom =
                 "<div class='cinema-hall'>" +
                 "<div>" +
-                "<span class='cinema-hall-name'>" + hall.name + "</span>" +
-                "<span class='cinema-hall-size'>" + hall.column + '*' + hall.row + "</span>" +
+                "<span class='cinema-hall-name'>"+ hall.name +"</span>" +
+                "<span class='cinema-hall-size'>"+ hall.column +'*'+ hall.row +"</span>" +"<span>"+"<button id=\""+hall.id+"\" type=\"button\"  class=\"btn btn-primary editHall\" data-backdrop=\"static\" data-toggle=\"modal\"  >修改 "+hall.name+" 影厅信息</button>"+"</span>"+
                 "</div>" +
                 "<div class='cinema-seat'>" + seat +
                 "</div>" +
                 "</div>";
-            hallDomStr += hallDom;
+            hallDomStr+=hallDom;
+            localStorage.setItem("hallid"+hid,hid)
+            hid+=1;
         });
         $('#hall-card').append(hallDomStr);
     }
@@ -85,15 +88,15 @@ $(document).ready(function () {
         // 验证一下是否为数字
         postRequest(
             '/schedule/view/set',
-            {day: dayNum},
+            {day:dayNum},
             function (res) {
-                if (res.success) {
+                if(res.success){
                     getCanSeeDayNum();
                     canSeeDate = dayNum;
                     $("#canview-modify-btn").show();
                     $("#canview-set-input").hide();
                     $("#canview-confirm-btn").hide();
-                } else {
+                } else{
                     alert(res.message);
                 }
             },
@@ -102,6 +105,92 @@ $(document).ready(function () {
             }
         );
     });
+
+    $(document).on('click','.editHall',function (e) {
+        console.log(e.target.id);
+        var hallid=e.target.id;
+        $('#hallEditModal').modal('show');
+        var form=getHallEditForm();
+        form["id"]=hallid;
+        localStorage.setItem("hallid",hallid);
+        console.log(form);
+    });
+
+    $('#hall-form-btn').click(function () {
+        var form=getHallForm();
+        console.log(form);
+        if(!validateHallForm(form)) {
+            return;
+        }
+        postRequest(
+            '/hall/addHall',
+            form,
+            function (res) {
+                getCinemaHalls();
+                $('#hallModal').modal('hide');
+            },
+            function (error) {
+                alert(error);
+                $('#hallModal').modal('hide');
+            }
+        )
+    });
+
+    $('#hall-edit-form-btn').click(function () {
+        var form=getHallEditForm();
+        form["id"]=localStorage.getItem("hallid");
+        console.log("----------下面是要传送的东西------------")
+        console.log(form);
+        if(!validateHallForm(form)){
+            return;
+        }
+        postRequest(
+            '/hall/updateHall',
+            form,
+            function (res) {
+                $('#hallEditModal').modal('hide');
+                getCinemaHalls();
+            },
+            function (error) {
+                alert(error);
+                $('#hallEditModal').modal('hide');
+            }
+        )
+    });
+
+    function getHallForm() {
+        return  {
+            hallName : $('#hall-name-input').val(),
+            row : $('#hall-row-input').val(),
+            col : $('#hall-col-input').val()
+        }
+    }
+
+    function getHallEditForm() {
+        return  {
+            // id:
+            hallName : $('#hall-edit-name-input').val(),
+            row : $('#hall-edit-row-input').val(),
+            col : $('#hall-edit-col-input').val()
+        }
+    }
+
+    function validateHallForm(data) {
+        var isValidate=true;
+        if (!data.hallName){
+            isValidate = false;
+            $('#hall-name-input').parent('.form-group').addClass('has-error');
+        }
+        if (!data.row){
+            isValidate = false;
+            $('#hall-row-input').parent('.form-group').addClass('has-error');
+        }
+        if (!data.col){
+            isValidate = false;
+            $('#hall-col-input').parent('.form-group').addClass('has-error');
+        }
+        return isValidate;
+    }
 
     function getReStrategies() {
         getRequest(

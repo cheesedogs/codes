@@ -13,7 +13,7 @@ public class HallVO {
     private Integer column;
 
     public HallVO(Hall hall){
-        //this.id = hall.getId();
+        this.id = hall.getId();
         this.name = hall.getName();
         this.row = hall.getRow();
         this.column = hall.getColumn();

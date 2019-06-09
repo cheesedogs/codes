@@ -9,10 +9,10 @@
     <link rel="stylesheet" type="text/css" href="/css/cinemaHall.css"/>
 
     <script src="/js/jquery.js"></script>
+    <script src="/js/jquery-1.12.0.min.js"></script>
     <script src="/js/bootstrap.js"></script>
     <script src="/js/request.js"></script>
     <script src="/js/adminCinemaManage.js"></script>
-    <script src="/js/jquery-1.12.0.min.js"></script>
     <script src="/js/Tabullet.js"></script>
 </head>
 <body>
@@ -63,10 +63,84 @@
         </div>
         <div class="content-item">
             <span class="title gray-text">影厅管理</span>
+            <button type="button" class="btn btn-primary addHall" data-backdrop="static" data-toggle="modal" data-target="#hallModal"><i class="icon-plus-sign"></i>新增影厅</button>
             <div class="content-card card" id="hall-card">
             </div>
         </div>
     </div>
 </div>
+<div class="modal fade" id="hallModal" tabindex="-1" role="dialog" aria-labelledby="hallModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="hallModalLabel">新增影厅</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="hall-name-input"><span class="error-text">*</span>影厅名称</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="hall-name-input" placeholder="请输入影厅名称">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="hall-row-input"><span class="error-text">*</span>排数</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="hall-row-input" placeholder="请输入排数">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="hall-col-input"><span class="error-text">*</span>列数</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="hall-col-input" placeholder="请输入列数">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" id="hall-form-btn">确认</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="hallEditModal" tabindex="-1" role="dialog" aria-labelledby="halleditModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="halleditModalLabel">修改影厅信息</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="hall-edit-name-input"><span class="error-text">*</span>影厅名称</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="hall-edit-name-input" placeholder="请输入影厅名称">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="hall-edit-row-input"><span class="error-text">*</span>排数</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="hall-edit-row-input" placeholder="请输入排数">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="hall-edit-col-input"><span class="error-text">*</span>列数</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="hall-edit-col-input" placeholder="请输入列数">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" id="hall-edit-form-btn">确认</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>
