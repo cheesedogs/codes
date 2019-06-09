@@ -270,4 +270,9 @@ public class TicketServiceImpl implements TicketService ,TicketServiceForBl{
     public List<Ticket> getTicketByDate(Date startDate, Date endDate) {
         return ticketMapper.selectTicketByDate(startDate,endDate);
     }
+
+    @Override
+    public List<TicketWithScheduleVO> getTickWithScheduleByUserId(int userId) {
+        return ticketMapper.selectTicketWithScheduleByUser(userId);
+    }
 }

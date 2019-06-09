@@ -69,6 +69,18 @@
         update ticket set state=1, pay_amount=#{payAmount} where id = #{id}
     </update>
 
+    <select id="selectTicketWithScheduleByUser" resultMap="TicketWithSchedule">
+        select t.id as id, t.user_id as user_id, t.column_index, t.row_index,
+               t.state, t.time, s.id as schedule_id,
+               h.id as hall_id, h.name as hall_name,
+               m.id as movie_id, m.name as movie_name,
+               s.start_time, s.end_time, s.fare
+        from ticket t
+            left join schedule s on t.schedule_id=s.id
+            left join movie m on s.movie_id=m.id
+            left join hall h on s.hall_id=h.id;
+    </select>
+
     <resultMap id="Ticket" type="com.example.cinema.po.Ticket">
         <result column="schedule_id" property="scheduleId"/>
         <result column="id" property="id"/>
@@ -94,5 +106,17 @@
         <result column="end_time" property="endTime"/>
         <result column="movie_name" property="movieName"/>
         <result column="hall_name" property="hallName"/>
+        <result column="fare" property="fare"/>
+    </resultMap>
+
+    <resultMap id="TicketWithSchedule" type="com.example.cinema.vo.TicketWithScheduleVO">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="column_index" property="columnIndex"/>
+        <result column="row_index" property="rowIndex"/>
+        <result column="state" property="state"/>
+        <result column="time" property="time"/>
+        <association property="schedule" resultMap="ScheduleItem">
+        </association>
     </resultMap>
 </mapper>
