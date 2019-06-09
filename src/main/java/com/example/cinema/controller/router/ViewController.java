@@ -50,6 +50,11 @@ public class ViewController {
         return "adminVipManage";
     }
 
+    @RequestMapping(value = "/admin/role/manage")
+    public String getAdminRoleManage() {
+        return "adminRoleManage";
+    }
+
     @RequestMapping(value = "/admin/movieDetail")
     public String getAdminMovieDetail(@RequestParam int id) { return "adminMovieDetail"; }
 

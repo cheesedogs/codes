@@ -24,14 +24,6 @@ $(document).ready(function () {
             '/vip/getVIPPromotion',
             function (res) {
                 var strategies = res.content;
-                strategies = [
-                    {
-                        'startTime':'2019-06-04 00:00:00',
-                        'endTime':'2019-06-23 00:00:00',
-                        'targetAmount':20,
-                        'discountAmount':10
-                    }
-                ];
                 renderStrategies(strategies);
             },
             function (error) {
