@@ -404,7 +404,6 @@ DROP TABLE IF EXISTS charge_record;
 CREATE TABLE `charge_record` (
                         `id` int(11) NOT NULL AUTO_INCREMENT,
                         `user_id` int(11) NOT NULL,
-                        `type` int(11) NOT NULL ,
                         `time` DATE NOT NULL ,
                         `amount` DATE NOT NULL ,
                         PRIMARY KEY (id)
