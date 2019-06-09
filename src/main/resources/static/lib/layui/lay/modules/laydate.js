@@ -1,4 +1,4 @@
-/** layui-v2.4.5 MIT License By https://www.layui.com */
+/*! laydate-v5.0.9 日期与时间组件 MIT License  http://www.layui.com/laydate/ */
 ;!function () {
     "use strict";
     var e = window.layui && layui.define, t = {
@@ -161,7 +161,6 @@
         range: !1,
         format: "yyyy-MM-dd",
         value: null,
-        isInitValue: !0,
         min: "1900-1-1",
         max: "2099-12-31",
         trigger: "focus",
@@ -235,7 +234,7 @@
                 minutes: 0 | i[1],
                 seconds: 0 | i[2]
             }
-        }), e.elemID = "layui-laydate" + t.elem.attr("lay-key"), (t.show || a) && e.render(), a || e.events(), t.value && t.isInitValue && (t.value.constructor === Date ? e.setValue(e.parse(0, e.systemDate(t.value))) : e.setValue(t.value)))
+        }), e.elemID = "layui-laydate" + t.elem.attr("lay-key"), (t.show || a) && e.render(), a || e.events(), t.value && (t.value.constructor === Date ? e.setValue(e.parse(0, e.systemDate(t.value))) : e.setValue(t.value)))
     }, T.prototype.render = function () {
         var e = this, t = e.config, n = e.lang(), a = "static" === t.position, i = e.elem = w.elem("div", {
                 id: e.elemID,
@@ -302,9 +301,9 @@
         d + i + l > s("width") && (d = s("width") - i - l), c + r + l > s() && (c = a.top > r ? a.top - r : s() - r, c -= 2 * l), t.position && (e.elem.style.position = t.position), e.elem.style.left = d + ("fixed" === t.position ? 0 : o(1)) + "px", e.elem.style.top = c + ("fixed" === t.position ? 0 : o()) + "px"
     }, T.prototype.hint = function (e) {
         var t = this, n = (t.config, w.elem("div", {"class": h}));
-        t.elem && (n.innerHTML = e || "", w(t.elem).find("." + h).remove(), t.elem.appendChild(n), clearTimeout(t.hinTimer), t.hinTimer = setTimeout(function () {
+        n.innerHTML = e || "", w(t.elem).find("." + h).remove(), t.elem.appendChild(n), clearTimeout(t.hinTimer), t.hinTimer = setTimeout(function () {
             w(t.elem).find("." + h).remove()
-        }, 3e3))
+        }, 3e3)
     }, T.prototype.getAsYM = function (e, t, n) {
         return n ? t-- : t++, t < 0 && (t = 11, e--), t > 11 && (t = 0, e++), [e, t]
     }, T.prototype.systemDate = function (e) {

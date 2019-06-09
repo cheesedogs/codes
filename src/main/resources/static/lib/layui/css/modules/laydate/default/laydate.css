@@ -1,4 +1,4 @@
-/** layui-v2.4.5 MIT License By https://www.layui.com */
+/*! laydate-v5.0.9 日期与时间组件 MIT License  http://www.layui.com/laydate/ */
 .laydate-set-ym, .layui-laydate, .layui-laydate *, .layui-laydate-list {
     box-sizing: border-box
 }
@@ -460,4 +460,18 @@ html #layuicss-laydate {
 .laydate-theme-grid .laydate-month-list > li {
     height: 71px;
     line-height: 71px
+}
+
+@font-face {
+    font-family: laydate-icon;
+    src: url(font/iconfont.eot);
+    src: url(font/iconfont.eot#iefix) format('embedded-opentype'), url(font/iconfont.svg#iconfont) format('svg'), url(font/iconfont.woff) format('woff'), url(font/iconfont.ttf) format('truetype')
+}
+
+.laydate-icon {
+    font-family: laydate-icon !important;
+    font-size: 16px;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale
 }
