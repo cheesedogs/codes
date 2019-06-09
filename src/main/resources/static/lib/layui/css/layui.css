@@ -65,7 +65,6 @@ button, input, optgroup, option, select, textarea {
 pre {
     white-space: pre-wrap;
     white-space: -moz-pre-wrap;
-    white-space: -pre-wrap;
     white-space: -o-pre-wrap;
     word-wrap: break-word
 }
@@ -2158,7 +2157,7 @@ a cite {
 }
 
 :root .layui-form-selected .layui-edge {
-    margin-top: -9px \0/ IE9
+    margin-top: -9px
 }
 
 .layui-form-selectup dl {
@@ -3846,7 +3845,7 @@ body .layui-table-tips .layui-layer-content {
 }
 
 :root .layui-tab-more .layui-tab-bar .layui-icon {
-    top: -2px \0/ IE9
+    top: -2px
 }
 
 .layui-tab-content {
