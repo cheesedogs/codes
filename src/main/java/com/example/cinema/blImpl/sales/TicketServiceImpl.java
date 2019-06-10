@@ -192,8 +192,8 @@ public class TicketServiceImpl implements TicketService ,TicketServiceForBl{
             for (RefundStrategy refundStrategy : refundStrategyList) {
                 sb.append("在 ").append(refundStrategy.getHoursBeforeEnd()).append(" 小时内退票返还 ").append(refundStrategy.getRate()*100).append("%").append(System.lineSeparator());
             }
-            response = ResponseVO.buildSuccess(sb.toString());
-            response.setMessage("获取退票策略成功");
+            response = ResponseVO.buildSuccess(refundStrategyList);
+            response.setMessage(sb.toString());
         }catch (Exception e){
             e.printStackTrace();
             response = ResponseVO.buildFailure("获取失败，原因未知");

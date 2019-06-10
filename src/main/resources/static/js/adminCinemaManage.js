@@ -141,7 +141,7 @@ $(document).ready(function() {
         form["id"]=localStorage.getItem("hallid");
         console.log("----------下面是要传送的东西------------")
         console.log(form);
-        if(!validateHallForm(form)){
+        if(validateHallForm(form)){
             console.log("不合法");
             return;
         }
@@ -161,18 +161,18 @@ $(document).ready(function() {
 
     function getHallForm() {
         return  {
-            hallName : $('#hall-name-input').val(),
+            name : $('#hall-name-input').val(),
             row : $('#hall-row-input').val(),
-            col : $('#hall-col-input').val()
+            column : $('#hall-col-input').val()
         }
     }
 
     function getHallEditForm() {
         return  {
             // id:
-            hallName : $('#hall-edit-name-input').val(),
+            name : $('#hall-edit-name-input').val(),
             row : $('#hall-edit-row-input').val(),
-            col : $('#hall-edit-col-input').val()
+            column : $('#hall-edit-col-input').val()
         }
     }
 

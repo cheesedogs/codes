@@ -1,13 +1,12 @@
 $(document).ready(function () {
     var chargeList;
-    var userid=sessionStorage.getItem("id")
-    console.log(userid)
     getChargeList();
     getTicketList();
-    function getChargeList(userid) {
+    function getChargeList() {
         getRequest(
-            '/vip/getChargeRecord'+userid,
+            '/vip/getChargeRecord?id='+parseInt(sessionStorage.getItem("id")),
             function (res) {
+                console.log(res);
                 renderChargeList(res.content);
             },
             function (error) {
@@ -16,11 +15,12 @@ $(document).ready(function () {
         )
     }
 
-    function renderChargeList(res) {
-        for (var i=0;i<res.content.length;i++) {
-            var chargeTime = res.chargeTime;
-            var chargeAmount = res.chargeAmount;
-            var cardBalance = res.cardBalance;
+    function renderChargeList(chargeList) {
+        for (var i=0;i<chargeList.length;i++) {
+            console.log(chargeList[i]);
+            var chargeTime = chargeList[i].time;
+            var chargeAmount = chargeList[i].amount;
+            var cardBalance = chargeList[i].balance;
             var chargetex = "";
 
             chargetex+= "<tr><td>"+chargeTime+"</td>"+
@@ -32,17 +32,19 @@ $(document).ready(function () {
 
     function getTicketList() {
         getRequest(
-            '/user/member/getConsumption'+userid,
+            '/user/member/getConsumption?id='+parseInt(sessionStorage.getItem("id")),
             function (res) {
                 renderTicketList(res.content);
             }
         )
     }
     function renderTicketList(ticketList) {
+        console.log(ticketList);
         for (var j = 0; j < ticketList.length; j++) {
-            var movieName = ticketList[j].movieName;
-            var startTime=ticketList[j].startTime;
-            var endTime=ticketList[j].endTime;
+            var scheduleItem=ticketList[j].schedule;
+            var movieName = scheduleItem.movieName;
+            var startTime=scheduleItem.startTime;
+            var endTime=scheduleItem.endTime;
             var bodyContent="";
 
             bodyContent+="<tr><td>"+movieName+"</td>"+

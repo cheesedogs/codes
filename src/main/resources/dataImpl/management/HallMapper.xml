@@ -16,6 +16,7 @@
     <update id="updateHall">
         update hall
         <set>
+            `name` = #{name},
             `column` = #{column},
             `row` = #{row}
         </set>
