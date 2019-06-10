@@ -105,19 +105,20 @@ $(document).ready(function() {
     $('#hall-form-btn').click(function () {
         var form=getHallForm();
         console.log(form);
-        if(!validateHallForm(form)) {
-            return;
-        }
+        // if(!validateHallForm(form)) {
+        //     return;
+        // }
         postRequest(
             '/hall/addHall',
             form,
             function (res) {
-                getCinemaHalls();
+                console.log(res);
                 $('#hallModal').modal('hide');
+                getCinemaHalls();
             },
             function (error) {
-                alert(error);
                 $('#hallModal').modal('hide');
+                alert(error);
             }
         )
     });
