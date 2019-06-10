@@ -6,20 +6,6 @@ $(document).ready(function() {
     getCinemaHalls();
     getReStrategies();
 
-    function showReStrategies(reStrategies) {
-        $("#table").tabullet({
-            data: reStrategies,
-            action: function (mode, data) {
-                if (mode == 'save') {
-                    addReStrategy(data);
-                }
-                if (mode == 'edit') {
-                    updateReStrategy(data);
-                }
-            }
-        });
-    }
-
     function getCinemaHalls() {
         var halls = [];
         getRequest(
@@ -204,6 +190,20 @@ $(document).ready(function() {
                 alert(JSON.stringify(error));
             }
         );
+    }
+
+    function showReStrategies(reStrategies) {
+        $("#table").tabullet({
+            data: reStrategies,
+            action: function (mode, data) {
+                if (mode == 'save') {
+                    addReStrategy(data);
+                }
+                if (mode == 'edit') {
+                    updateReStrategy(data);
+                }
+            }
+        });
     }
 
     function addReStrategy(reStrategy) {

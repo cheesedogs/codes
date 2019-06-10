@@ -55,6 +55,16 @@ public class ViewController {
         return "adminRoleManage";
     }
 
+    @RequestMapping(value = "admin/role/add")
+    public String getAdminRoleAdd() {
+        return "adminRoleAdd";
+    }
+
+    @RequestMapping(value = "admin/role/edit")
+    public String getAdminRoleEdit() {
+        return "adminRoleEdit";
+    }
+
     @RequestMapping(value = "/admin/movieDetail")
     public String getAdminMovieDetail(@RequestParam int id) { return "adminMovieDetail"; }
 
