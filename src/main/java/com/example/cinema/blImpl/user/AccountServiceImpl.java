@@ -1,6 +1,7 @@
 package com.example.cinema.blImpl.user;
 
 import com.example.cinema.bl.user.AccountService;
+import com.example.cinema.blImpl.sales.TicketServiceForBl;
 import com.example.cinema.data.user.AccountMapper;
 import com.example.cinema.po.User;
 import com.example.cinema.vo.UserForm;
@@ -18,6 +19,9 @@ public class AccountServiceImpl implements AccountService {
     private final static String ACCOUNT_EXIST = "账号已存在";
     @Autowired
     private AccountMapper accountMapper;
+
+    @Autowired
+    private TicketServiceForBl ticketServiceForBl;
 
     @Override
     public ResponseVO registerAccount(UserForm userForm) {
@@ -101,6 +105,19 @@ public class AccountServiceImpl implements AccountService {
         }catch (Exception e){
             e.printStackTrace();
             response = ResponseVO.buildFailure("删除影院角色信息失败，原因未知");
+        }
+        return response;
+    }
+
+    @Override
+    public ResponseVO getConsumption(int id) {
+        ResponseVO response;
+        try {
+            response = ResponseVO.buildSuccess(ticketServiceForBl.getTickWithScheduleByUserId(id));
+            response.setMessage("查询成功");
+        }catch (Exception e){
+            e.printStackTrace();
+            response = ResponseVO.buildFailure("查询失败");
         }
         return response;
     }

@@ -29,4 +29,6 @@ public interface AccountService {
     ResponseVO addAccount(UserForm userForm);
     ResponseVO updateAccount(UserForm userForm);
     ResponseVO deleteAccount(int id);
+
+    ResponseVO getConsumption(int id);
 }

@@ -26,4 +26,6 @@ public interface VIPService {
     ResponseVO updateVIPPromotion(VIPPromotionForm vipPromotionForm);
 
     ResponseVO getVIPPromotion();
+
+    ResponseVO getChargeRecord(int id);
 }
