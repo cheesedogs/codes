@@ -4,6 +4,7 @@ import com.example.cinema.po.Hall;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -28,5 +29,5 @@ public interface HallMapper {
 
     int updateHall(Hall hall);
 
-    Hall isEngaged(@Param("id") int id);
+    Hall isEngaged(@Param("id") int id,@Param("date") Date date);
 }

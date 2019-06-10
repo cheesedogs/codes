@@ -2,14 +2,14 @@ package com.example.cinema.blImpl.management.hall;
 
 import com.example.cinema.bl.management.HallService;
 import com.example.cinema.data.management.HallMapper;
+import com.example.cinema.data.management.ScheduleMapper;
 import com.example.cinema.po.Hall;
 import com.example.cinema.vo.HallVO;
 import com.example.cinema.vo.ResponseVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author fjj
@@ -19,6 +19,8 @@ import java.util.List;
 public class HallServiceImpl implements HallService, HallServiceForBl {
     @Autowired
     private HallMapper hallMapper;
+    @Autowired
+    private ScheduleMapper scheduleMapper;
 
     @Override
     public ResponseVO searchAllHall() {
@@ -92,7 +94,11 @@ public class HallServiceImpl implements HallService, HallServiceForBl {
 
     public boolean isEngaged(Hall hall){
         int id = hall.getId();
-        Hall tempHall = hallMapper.isEngaged(id);
+        Date date = new Date();
+        Calendar calendar=new GregorianCalendar();
+        calendar.setTime(date);
+        calendar.add(calendar.DATE,scheduleMapper.getDay());
+        Hall tempHall = hallMapper.isEngaged(id,date);
         if(tempHall ==null)
             return false;
         return true;
