@@ -38,7 +38,7 @@ $(document).ready(function () {
             }
         )
     }
-    function renderTiceketList(ticketList) {
+    function renderTicketList(ticketList) {
         for (var j = 0; j < ticketList.length; j++) {
             var movieName = ticketList[j].movieName;
             var startTime=ticketList[j].startTime;

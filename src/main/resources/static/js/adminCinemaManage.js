@@ -142,6 +142,7 @@ $(document).ready(function() {
         console.log("----------下面是要传送的东西------------")
         console.log(form);
         if(!validateHallForm(form)){
+            console.log("不合法");
             return;
         }
         postRequest(
