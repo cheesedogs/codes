@@ -2,6 +2,7 @@ package com.example.cinema.blImpl.promotion;
 
 import com.example.cinema.bl.promotion.VIPService;
 import com.example.cinema.data.promotion.VIPCardMapper;
+import com.example.cinema.po.ChargeRecord;
 import com.example.cinema.po.VIPPromotion;
 import com.example.cinema.vo.*;
 import com.example.cinema.po.VIPCard;
@@ -15,7 +16,7 @@ import java.util.List;
  * Created by liying on 2019/4/14.
  */
 @Service
-public class VIPServiceImpl implements VIPService {
+public class VIPServiceImpl implements VIPService, VIPCardServiceForBL {
     @Autowired
     VIPCardMapper vipCardMapper;
 
@@ -60,13 +61,18 @@ public class VIPServiceImpl implements VIPService {
     public ResponseVO charge(VIPCardForm vipCardForm) {
 
         VIPCard vipCard = vipCardMapper.selectCardById(vipCardForm.getVipId());
+        ChargeRecord chargeRecord = new ChargeRecord();
+        chargeRecord.setUserId(vipCard.getUserId());
         if (vipCard == null) {
             return ResponseVO.buildFailure("会员卡不存在");
         }
         double balance = vipCard.calculate(vipCardForm.getAmount(),vipCardMapper.selectPromotion());
+        chargeRecord.setAmount(balance);
+        chargeRecord.setBalance(vipCard.getBalance()+balance);
         vipCard.setBalance(vipCard.getBalance() + balance);
         try {
             vipCardMapper.updateCardBalance(vipCardForm.getVipId(), vipCard.getBalance());
+            vipCardMapper.insertRecord(chargeRecord);
             return ResponseVO.buildSuccess(vipCard);
         } catch (Exception e) {
             e.printStackTrace();
@@ -140,5 +146,33 @@ public class VIPServiceImpl implements VIPService {
         return response;
     }
 
+    @Override
+    public ResponseVO getChargeRecord(int id) {
+        List<ChargeRecord> recordList;
+        try {
+            recordList = vipCardMapper.getChargeRecord(id);
+            if (recordList.size() == 0)
+                throw new Exception();
+            return ResponseVO.buildSuccess(recordList);
+        } catch (Exception e) {
+            return ResponseVO.buildFailure("用户不存在或没有历史消费记录");
+        }
+    }
 
+    @Override
+    public void pay(int userId, double totalFare) throws Exception {
+        VIPCard card = vipCardMapper.selectCardByUserId(userId);
+        if(card.getBalance() < totalFare) {
+            throw new Exception("VIP卡余额不足");
+        }
+        vipCardMapper.updateCardBalance(card.getId(), card.getBalance() - totalFare);
+    }
+
+    @Override
+    public void addRefundBalance(int userId, double balance) {
+        VIPCard card = vipCardMapper.selectCardByUserId(userId);
+        if (card != null){
+            vipCardMapper.updateCardBalance(card.getId(), card.getBalance() + balance);
+        }
+    }
 }

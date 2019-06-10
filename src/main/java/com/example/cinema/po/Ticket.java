@@ -2,12 +2,14 @@ package com.example.cinema.po;
 
 import com.example.cinema.vo.TicketVO;
 import com.example.cinema.vo.TicketWithScheduleVO;
+import lombok.Data;
 
 import java.sql.Timestamp;
 
 /**
  * Created by liying on 2019/4/16.
  */
+@Data
 public class Ticket {
 
     /**
@@ -38,6 +40,8 @@ public class Ticket {
     private int state;
 
     private Timestamp time;
+
+    private double payAmount;
 
     public Timestamp getTime() {
         return time;
@@ -100,51 +104,4 @@ public class Ticket {
         return vo;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-
-    public int getScheduleId() {
-        return scheduleId;
-    }
-
-    public void setScheduleId(int scheduleId) {
-        this.scheduleId = scheduleId;
-    }
-
-    public int getColumnIndex() {
-        return columnIndex;
-    }
-
-    public void setColumnIndex(int columnIndex) {
-        this.columnIndex = columnIndex;
-    }
-
-    public int getRowIndex() {
-        return rowIndex;
-    }
-
-    public void setRowIndex(int rowIndex) {
-        this.rowIndex = rowIndex;
-    }
-
-    public int getState() {
-        return state;
-    }
-
-    public void setState(int state) {
-        this.state = state;
-    }
 }

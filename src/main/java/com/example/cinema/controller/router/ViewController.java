@@ -97,4 +97,9 @@ public class ViewController {
     public String getUserMember() {
         return "userMember";
     }
+
+    @RequestMapping(value = "/user/userConsumeHistory")
+    public String getUserConsumeHistory() {
+        return "userConsumeHistory";
+    }
 }
