@@ -78,7 +78,8 @@
         from ticket t
             left join schedule s on t.schedule_id=s.id
             left join movie m on s.movie_id=m.id
-            left join hall h on s.hall_id=h.id;
+            left join hall h on s.hall_id=h.id
+        where t.user_id=#{id} and t.state in (1,3);
     </select>
 
     <resultMap id="Ticket" type="com.example.cinema.po.Ticket">
