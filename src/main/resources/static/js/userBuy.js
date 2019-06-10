@@ -87,7 +87,8 @@ $(document).ready(function () {
         var r=confirm(refundStrategy);
         var form;
         var ticketId = e.target.id;
-        var userId = localStorage.getItem("userid")
+        var userId = sessionStorage.getItem("id");
+        console.log(ticketId+"dd"+userId);
         if (r){
             postRequest(
                 '/ticket/refund',

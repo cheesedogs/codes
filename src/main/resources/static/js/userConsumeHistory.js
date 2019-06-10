@@ -18,7 +18,8 @@ $(document).ready(function () {
     function renderChargeList(chargeList) {
         for (var i=0;i<chargeList.length;i++) {
             console.log(chargeList[i]);
-            var chargeTime = chargeList[i].time;
+            var chargeTime = chargeList[i].time.split("T")[0]+chargeList[i].time.split("T")[1].split(".")[0];
+            console.log(chargeTime);
             var chargeAmount = chargeList[i].amount;
             var cardBalance = chargeList[i].balance;
             var chargetex = "";
@@ -50,7 +51,7 @@ $(document).ready(function () {
             bodyContent+="<tr><td>"+movieName+"</td>"+
                 "<td>"+startTime+"</td>"+
                 "<td>"+endTime+"</td>"+
-                "<button>"+"查看详情"+"</button>"
+                "<button>"+"查看详情"+"</button>";
 
             $('ticket-list-body').append(bodyContent);
         }
