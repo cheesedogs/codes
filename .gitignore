@@ -2,8 +2,6 @@ target/
 /target/
 !.mvn/wrapper/maven-wrapper.jar
 
-*.yml
-
 ### STS ###
 .apt_generated
 .classpath
@@ -26,3 +24,4 @@ target/
 /nbdist/
 /.nb-gradle/
 /build/
+*.yml

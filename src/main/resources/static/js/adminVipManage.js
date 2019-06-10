@@ -38,7 +38,7 @@ $(document).ready(function () {
                             "</div>" +
                         "</div>" +
                         "<div class='back'>" +
-                            "<div class='tip' style='background-image: linear-gradient(60deg, #96deda 0%, #50c9c3 100%);'>" +
+                            "<div class='tip' style='background-image:linear-gradient(60deg, #96deda 0%, #50c9c3 100%);'>" +
                                 "<button class='button' onclick='changeStrategy(this)' data-backdrop='static' data-toggle='modal' data-target='#editStrategyModal'>修改</button>" +
                             "</div>" +
                         "</div>" +
