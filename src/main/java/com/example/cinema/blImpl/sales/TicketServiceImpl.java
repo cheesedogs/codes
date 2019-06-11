@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -155,7 +156,7 @@ public class TicketServiceImpl implements TicketService ,TicketServiceForBl{
                 vipCardServiceForBL.pay(userId, totalFare);
             }
             for (int i : ticketId) {
-                ticketMapper.completeTicket(i, totalFare/ticketId.size());
+                ticketMapper.completeTicket(i, Double.parseDouble(new DecimalFormat("#.00").format(totalFare/ticketId.size())));
             }
             response = ResponseVO.buildSuccess(gainCoupons);
             response.setMessage("购票成功");

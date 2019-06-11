@@ -1,12 +1,10 @@
 $(document).ready(function () {
 
-    var target_amount = 0;
-
     var target_vip_users = [];
 
     getStrategies();
 
-    getTargetVip(target_amount);
+    getTargetVip(0);
 
     getCoupons();
 
@@ -159,7 +157,7 @@ $(document).ready(function () {
                             "<div class='media-option btn-group shaded-icon'>" +
                                 "<button class='btn btn-small'>" +
                                     "<i class='icon-yen' style='display:inline;'></i>" +
-                                    "<h5 style='display:inline;padding-right:4px;'>" + vip.cost + "</h5>" +
+                                    "<h5 style='display:inline;padding-right:4px;'>" + parseInt(vip.cost) + "</h5>" +
                                 "</button>" +
                             "</div>" +
                         "</div>" +
@@ -178,8 +176,12 @@ $(document).ready(function () {
     }
 
     $("#vip-form-btn").click(function () {
-        target_amount = $('#target_amount').val();
+        var target_amount = $('#target_amount').val();
+        if (target_amount == '' || target_amount == undefined || target_amount == null) {
+            target_amount = 0;
+        }
         getTargetVip(target_amount);
+        return false;
     });
 
 
