@@ -29,6 +29,7 @@
 }
 .tip {
     height: 147px;
+    width: 170px;
     position: relative;
     flex: 0 0 100px;
     text-align: center;
@@ -37,6 +38,7 @@
     border-radius:0 8px 8px 0;
     box-shadow: 2px 2px 2px #ccc;
     background: #fff;
+    background-size: cover;
 }
 .split-line {
     position: relative;
