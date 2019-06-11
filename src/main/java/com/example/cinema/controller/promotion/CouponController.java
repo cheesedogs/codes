@@ -36,7 +36,7 @@ public class CouponController {
         return couponService.getCoupons();
     }
 
-    @PostMapping("send")
+    @PostMapping("/send")
     public ResponseVO sendCoupon(@RequestBody List<SendCouponForm> sendCouponFormList){
         //TODO: 根据传入的(用户id：优惠券id)赠送优惠券，等待前端
         return couponService.sendCoupon(sendCouponFormList);
