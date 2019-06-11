@@ -133,6 +133,6 @@ public class CouponServiceImpl implements CouponService, CouponServiceForBL {
 
     @Override
     public void delCouponUser(int userId, int couponId) {
-        couponMapper.deleteCouponUser(userId, couponId);
+        couponMapper.deleteCouponUser(couponId, userId);
     }
 }

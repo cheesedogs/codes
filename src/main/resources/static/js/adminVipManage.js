@@ -1,6 +1,12 @@
 $(document).ready(function () {
 
+    var target_vip_users = [];
+
     getStrategies();
+
+    getTargetVip(0);
+
+    getCoupons();
 
     function getStrategies() {
         getRequest(
@@ -64,7 +70,6 @@ $(document).ready(function () {
                     getStrategies();
                     $("#strategyModal").modal('hide');
                 } else {
-                    console.log(res);
                     alert(res.message);
                 }
             },
@@ -113,6 +118,196 @@ $(document).ready(function () {
                 alert(JSON.stringify(error));
             }
         );
-    })
+    });
+
+
+    function getTargetVip(target_amount) {
+        getRequest(
+            '/coupon/getVIPList?target_amount=' + target_amount,
+            function (res) {
+                if (res.success) {
+                    target_vip_users = res.content;
+                    showTargetVip(target_vip_users);
+                } else {
+                    alert(res.message);
+                }
+            },
+            function (error) {
+                alert(JSON.stringify(error));
+            }
+        )
+    }
+
+    function showTargetVip(vipUsers) {
+        var flag = 0;
+        $(".module-body").empty();
+        var targetVipDomStr = "";
+
+        vipUsers.forEach(function (vip) {
+            if (flag % 2 == 0){
+                targetVipDomStr += "<div class='row-fluid'>";
+            }
+            targetVipDomStr +=
+                "<div class='span6'>" +
+                    "<div class='media user'>" +
+                        "<a class='media-avatar pull-left' href='#'> <img src='/images/user.png'> </a>" +
+                        "<div class='media-body'>" +
+                            "<h3 class='media-title'>" + vip.username + "</h3>" +
+                            "<p><small class='muted'>VIP</small></p>" +
+                            "<div class='media-option btn-group shaded-icon'>" +
+                                "<button class='btn btn-small'>" +
+                                    "<i class='icon-yen' style='display:inline;'></i>" +
+                                    "<h5 style='display:inline;padding-right:4px;'>" + parseInt(vip.cost) + "</h5>" +
+                                "</button>" +
+                            "</div>" +
+                        "</div>" +
+                    "</div>" +
+                "</div>";
+            if (flag % 2 != 0) {
+                targetVipDomStr += "</div>";
+                flag = 0;
+            } else {
+                flag = 1;
+            }
+        });
+
+        $(".module-body").append(targetVipDomStr);
+
+    }
+
+    $("#vip-form-btn").click(function () {
+        var target_amount = $('#target_amount').val();
+        if (target_amount == '' || target_amount == undefined || target_amount == null) {
+            target_amount = 0;
+        }
+        getTargetVip(target_amount);
+        return false;
+    });
+
+
+    //AJAX提交筛选出的会员
+    $('#nextBtn').click(function(){
+        var i = $(this).index() + 1;
+        $('.processorBox li').removeClass('current').eq(i).addClass('current');
+        $('.step').fadeOut(300).eq(i).removeClass('hide');
+    });
+
+    function getCoupons() {
+        getRequest(
+            '/coupon/getAllCoupon',
+            function (res) {
+                if (res.success) {
+                    showCoupons(res.content);
+                } else {
+                    alert(res.message);
+                }
+            },
+            function (error) {
+                alert(JSON.stringify(error));
+            }
+        )
+    }
+
+    function showCoupons(coupons) {
+
+        var flag = 0;
+        $(".coupon-row").empty();
+        var couponsDomStr = "";
+
+        coupons.forEach(function (coupon) {
+            if (flag % 2 == 0){
+                couponsDomStr +=
+                    "<div class='col-lg-3 cool-md-6 col-sm-12'>" +
+                        "<div class='coupon-card'>" +
+                            "<ul class='coupon-pricing coupon-body'>" +
+                                "<li style='overflow:hidden;text-overflow:ellipsis;white-space:nowrap;'><big>" + coupon.name + "</big></li>" +
+                                "<li style='display:none;'>ID: " + coupon.id + "</li>" +
+                                "<li>" + coupon.description + "</li>" +
+                                "<li>" + coupon.startTime.split('T')[0] + "</li>" +
+                                "<li>" + coupon.endTime.split('T')[0] + "</li>" +
+                                "<li>" +
+                                    "<h3>¥" + coupon.targetAmount + "</h3>" +
+                                    "<span>-" + coupon.discountAmount + "</span>" +
+                                "</li>" +
+                                "<li>" +
+                                    "<button class='coupon-btn coupon-btn-primary coupon-btn-round coupon-btn-simple'>赠送" +
+                                    "<div style='display:none;'>" + coupon.id + "</div>" +
+                                    "</button>" +
+                                "</li>" +
+                            "</ul>" +
+                        "</div>" +
+                    "</div>";
+                flag = 1;
+            } else {
+                couponsDomStr +=
+                    "<div class='col-lg-3 cool-md-6 col-sm-12'>" +
+                        "<div class='coupon-card'>" +
+                            "<ul class='coupon-pricing coupon-body active'>" +
+                                "<li style='overflow:hidden;text-overflow:ellipsis;white-space:nowrap;'><big>" + coupon.name + "</big></li>" +
+                                "<li style='display:none;'>ID: " + coupon.id + "</li>" +
+                                "<li>" + coupon.description + "</li>" +
+                                "<li>" + coupon.startTime.split('T')[0] + "</li>" +
+                                "<li>" + coupon.endTime.split('T')[0] + "</li>" +
+                                "<li>" +
+                                    "<h3>¥" + coupon.targetAmount + "</h3>" +
+                                    "<span>-" + coupon.discountAmount + "</span>" +
+                                "</li>" +
+                                "<li>" +
+                                    "<button class='coupon-btn coupon-btn-primary coupon-btn-round'>赠送" +
+                                        "<div style='display:none;'>" + coupon.id + "</div>" +
+                                    "</button>" +
+                                "</li>" +
+                            "</ul>" +
+                        "</div>" +
+                    "</div>";
+                flag = 0;
+            }
+        });
+
+        $(".coupon-row").append(couponsDomStr);
+    }
+
+    //AJAX提交优惠券
+    $(document).on('click','.coupon-btn',function() {
+        var i = $(this).index() + 2;
+        var couponForm = [];
+        var couponId = parseInt($(this)[0].textContent.split('赠送')[1]);
+        $('.processorBox li').removeClass('current').eq(i).addClass('current');
+        $('.step').fadeOut(300).eq(i).removeClass('hide');
+
+
+        target_vip_users.forEach(function (vip) {
+            var form = {
+                userId: vip.id,
+                couponId: couponId
+            };
+            couponForm.push(form);
+        });
+
+        postRequest(
+            '/coupon/send',
+            couponForm,
+            function (res) {
+                if (res.success) {
+                    console.dir(res);
+                } else {
+                    alert(res.message);
+                }
+            },
+            function (error) {
+                alert(JSON.stringify(error));
+            }
+        );
+
+        countdown({
+            maxTime:10,
+            ing:function(c){
+                $("#times").text(c);
+            },
+            after:function(){
+                window.location.href="http://localhost:8080/admin/cinema/vip";
+            }
+        });
+    });
 
 });

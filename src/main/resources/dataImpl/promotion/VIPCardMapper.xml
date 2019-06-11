@@ -35,7 +35,7 @@
         insert into charge_record(user_id, `time`, amount, balance) values (#{userId},now(),#{amount},#{balance})
     </insert>
 
-    <select id="getChargeRecord" resultType="com.example.cinema.po.ChargeRecord">
+    <select id="getChargeRecord" resultMap="ChargeRecord">
         select * from charge_record where user_id =#{id}
     </select>
 
@@ -49,6 +49,10 @@
     <resultMap id="VIPPromotion" type="com.example.cinema.po.VIPPromotion">
         <result column="start_time" property="startTime"/>
         <result column="end_time" property="endTime"/>
+    </resultMap>
+
+    <resultMap id="ChargeRecord" type="com.example.cinema.po.ChargeRecord">
+        <result column="user_id" property="userId"/>
     </resultMap>
 
 </mapper>

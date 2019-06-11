@@ -1,13 +1,13 @@
 $(document).ready(function () {
     var chargeList;
-    var userid=sessionStorage.getItem("id")
-    console.log(userid)
     getChargeList();
     getTicketList();
-    function getChargeList(userid) {
+    function getChargeList() {
         getRequest(
-            '/vip/getChargeRecord'+userid,
+            '/vip/getChargeRecord?id='+parseInt(sessionStorage.getItem("id")),
             function (res) {
+                console.log("充值记录：");
+                console.log(res);
                 renderChargeList(res.content);
             },
             function (error) {
@@ -16,11 +16,13 @@ $(document).ready(function () {
         )
     }
 
-    function renderChargeList(res) {
-        for (var i=0;i<res.content.length;i++) {
-            var chargeTime = res.chargeTime;
-            var chargeAmount = res.chargeAmount;
-            var cardBalance = res.cardBalance;
+    function renderChargeList(chargeList) {
+        for (var i=0;i<chargeList.length;i++) {
+            console.log("单个充值记录");
+            console.log(chargeList[i]);
+            var chargeTime = chargeList[i].time.split("T")[0]+chargeList[i].time.split("T")[1].split(".")[0];
+            var chargeAmount = chargeList[i].amount;
+            var cardBalance = chargeList[i].balance;
             var chargetex = "";
 
             chargetex+= "<tr><td>"+chargeTime+"</td>"+
@@ -32,25 +34,32 @@ $(document).ready(function () {
 
     function getTicketList() {
         getRequest(
-            '/user/member/getConsumption'+userid,
+            '/user/member/getConsumption?id='+parseInt(sessionStorage.getItem("id")),
             function (res) {
                 renderTicketList(res.content);
             }
         )
     }
     function renderTicketList(ticketList) {
+        console.log("获取电影票列表：");
+        console.log(ticketList);
         for (var j = 0; j < ticketList.length; j++) {
-            var movieName = ticketList[j].movieName;
-            var startTime=ticketList[j].startTime;
-            var endTime=ticketList[j].endTime;
-            var bodyContent="";
+            var scheduleItem=ticketList[j].schedule;
+            // console.log(scheduleItem);
+            var movieName = scheduleItem.movieName;
+            // console.log(movieName);
+            var startTime;
+            startTime=scheduleItem.startTime.split("T")[0]+" "+scheduleItem.startTime.split("T")[1].substring(0,5);
+            var endTime;
+            endTime=scheduleItem.endTime.split("T")[0]+" "+scheduleItem.endTime.split("T")[1].substring(0,5);
+            var bodyContent;
 
             bodyContent+="<tr><td>"+movieName+"</td>"+
                 "<td>"+startTime+"</td>"+
                 "<td>"+endTime+"</td>"+
-                "<button>"+"查看详情"+"</button>"
+                "<td><button class='btn-info'>"+"查看详情"+"</button></td></tr>";
 
-            $('ticket-list-body').append(bodyContent);
+            $('#ticket-list-body').append(bodyContent);
         }
     }
 })
