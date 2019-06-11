@@ -51,8 +51,14 @@ $(document).ready(function () {
         if (ticketList[i].state==1){
             stateti="已完成";
         }
-        else {
+        if(ticketList[i].state==0){
+            stateti="未完成";
+        }
+        if (ticketList[i].state==2){
             stateti="已失效";
+        }
+        if (ticketList[i].state==3){
+            stateti="已退票";
         }
         var tiStartTime=schedule.startTime.toString();
         var smonth=tiStartTime.split("-")[1];
