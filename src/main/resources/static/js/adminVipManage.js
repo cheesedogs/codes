@@ -177,6 +177,9 @@ $(document).ready(function () {
 
     $("#vip-form-btn").click(function () {
         var target_amount = $('#target_amount').val();
+        if (target_amount == '' || target_amount == undefined || target_amount == null) {
+            target_amount = 0;
+        }
         getTargetVip(target_amount);
         return false;
     });
