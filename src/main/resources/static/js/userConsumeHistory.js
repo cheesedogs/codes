@@ -41,20 +41,25 @@ $(document).ready(function () {
         )
     }
     function renderTicketList(ticketList) {
-        console.log("获取电影票列表："+ticketList);
+        console.log("获取电影票列表：");
+        console.log(ticketList);
         for (var j = 0; j < ticketList.length; j++) {
             var scheduleItem=ticketList[j].schedule;
+            // console.log(scheduleItem);
             var movieName = scheduleItem.movieName;
-            var startTime=scheduleItem.startTime;
-            var endTime=scheduleItem.endTime;
-            var bodyContent="";
+            // console.log(movieName);
+            var startTime;
+            startTime=scheduleItem.startTime.split("T")[0]+" "+scheduleItem.startTime.split("T")[1].substring(0,5);
+            var endTime;
+            endTime=scheduleItem.endTime.split("T")[0]+" "+scheduleItem.endTime.split("T")[1].substring(0,5);
+            var bodyContent;
 
             bodyContent+="<tr><td>"+movieName+"</td>"+
                 "<td>"+startTime+"</td>"+
                 "<td>"+endTime+"</td>"+
-                "<button>"+"查看详情"+"</button></tr>";
+                "<td><button class='btn-info'>"+"查看详情"+"</button></td></tr>";
 
-            $('ticket-list-body').append(bodyContent);
+            $('#ticket-list-body').append(bodyContent);
         }
     }
 })
