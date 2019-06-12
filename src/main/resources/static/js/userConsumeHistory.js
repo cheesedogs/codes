@@ -57,7 +57,7 @@ $(document).ready(function () {
                 "<td>"+startTime+"</td>"+
                 "<td>"+endTime+"</td>"+
                 "<td><button class='btn-info' id=\""+ticketList[j].id+"\" >"+"查看详情"+"</button></td></tr>";
-            
+
         }
         $('#ticket-list-body').append(bodyContent);
     }
