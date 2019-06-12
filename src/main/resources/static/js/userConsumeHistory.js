@@ -41,6 +41,7 @@ $(document).ready(function () {
     }
 
     function renderTicketList(ticketList) {
+        $('#ticket-list-body').empty();
         ticketListForInfo=ticketList;
         console.log(ticketList);
         $('#ticket-list-body').empty();
@@ -56,9 +57,9 @@ $(document).ready(function () {
             bodyContent+="<tr><td>"+movieName+"</td>"+
                 "<td>"+startTime+"---"+endTime+"</td>"+
                 "<td><button class='btn-info' id=\""+ticketList[j].id+"\" >"+"查看详情"+"</button></td></tr>";
-
-            $('#ticket-list-body').append(bodyContent);
+            
         }
+        $('#ticket-list-body').append(bodyContent);
     }
 
     $(document).on('click','.btn-info',function (e) {
