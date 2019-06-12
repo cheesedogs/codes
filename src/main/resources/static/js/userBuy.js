@@ -94,7 +94,6 @@ $(document).ready(function () {
         var form;
         var ticketId = e.target.id;
         var userId = sessionStorage.getItem("id");
-        console.log(ticketId+"dd"+userId);
         if (r){
             postRequest(
                 '/ticket/refund',
@@ -110,4 +109,3 @@ $(document).ready(function () {
     })
 
 });
- // 问题汇总：1：如何绑定id与影厅form，点击连接字中的btn后一起传送     2：与第一个问题相似，如何将id与影票相绑定，退票时点击连接字中的btn后一起传送

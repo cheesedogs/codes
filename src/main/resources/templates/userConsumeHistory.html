@@ -81,5 +81,37 @@
     </div>
     <h4 id="date-none-hint2" style="display: none;">暂无电影票消费记录</h4>
 </div>
+
+
+<div class="modal fade" id="ticketInfo" tabindex="-1" role="dialog" aria-labelledby="ticketInfoLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="ticketInfoModalLabel">影票详情</h4>
+            </div>
+            <div class="modal-body">
+                <table class="table table-hover">
+                    <tr>
+                        <th>电影名</th>
+                        <th>开始时间</th>
+                        <th>结束时间</th>
+                        <th>座位号</th>
+                        <th>价格</th>
+                    </tr>
+                    </thead>
+                    <tbody id="ticketInfoShow">
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" id="confirmBtn">确认</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 </body>
 </html>
