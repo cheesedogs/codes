@@ -35,7 +35,6 @@ $(document).ready(function () {
         getRequest(
             '/user/member/getConsumption?id='+parseInt(sessionStorage.getItem("id")),
             function (res) {
-                localStorage.setItem("ticketList",res.content);
                 renderTicketList(res.content);
             }
         )
@@ -43,6 +42,8 @@ $(document).ready(function () {
 
     function renderTicketList(ticketList) {
         ticketListForInfo=ticketList;
+        console.log(ticketList);
+        $('#ticket-list-body').empty();
         for (var j = 0; j < ticketList.length; j++) {
             var scheduleItem=ticketList[j].schedule;
             var movieName = scheduleItem.movieName;
@@ -53,8 +54,7 @@ $(document).ready(function () {
             var bodyContent;
 
             bodyContent+="<tr><td>"+movieName+"</td>"+
-                "<td>"+startTime+"</td>"+
-                "<td>"+endTime+"</td>"+
+                "<td>"+startTime+"---"+endTime+"</td>"+
                 "<td><button class='btn-info' id=\""+ticketList[j].id+"\" >"+"查看详情"+"</button></td></tr>";
 
             $('#ticket-list-body').append(bodyContent);
@@ -65,23 +65,20 @@ $(document).ready(function () {
         var ticketid=e.target.id;
         for (var i = 0; i < ticketListForInfo.length; i++) {
             if ( ticketListForInfo[i].id==ticketid){
-                console.log(ticketListForInfo[i]);
                 var scheduleItem=ticketListForInfo[i].schedule;
-                console.log(scheduleItem);
                 var movieName=scheduleItem.movieName;
                 var seat=ticketListForInfo[i].rowIndex+"排"+ticketListForInfo[i].columnIndex+"列";
                 var fare=scheduleItem.fare;
-                var startTime;
-                startTime=scheduleItem.startTime.split("T")[0]+" "+scheduleItem.startTime.split("T")[1].substring(0,5);
-                var endTime;
-                endTime=scheduleItem.endTime.split("T")[0]+" "+scheduleItem.endTime.split("T")[1].substring(0,5);
+                var startTime=scheduleItem.startTime.split("T")[0]+" "+scheduleItem.startTime.split("T")[1].substring(0,5);
+                var endTime=scheduleItem.endTime.split("T")[0]+" "+scheduleItem.endTime.split("T")[1].substring(0,5);
                 var hall=scheduleItem.hallName;
-
+                var buyTime=ticketListForInfo[i].time.split("T")[0]+" "+ticketListForInfo[i].time.split("T")[1].substring(0,5);
                 var bodyContex;
                 bodyContex+="<tr><td>"+movieName+"</td>"+
                     "<td>"+startTime+"</td>"+
                     "<td>"+endTime+"</td>"+
                     "<td>"+seat+"</td>"+
+                    "<td>"+buyTime+"</td>"+
                     "<td>"+fare+"</td></tr>";
 
                 $('#ticketInfoShow').empty();
