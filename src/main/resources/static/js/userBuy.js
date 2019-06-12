@@ -10,7 +10,6 @@ $(document).ready(function () {
             '/ticket/getRefundStrategy',
             function (res) {
                 refundStrategy=res.message;
-                console.log(refundStrategy);
             }
         )
     }
@@ -36,7 +35,7 @@ $(document).ready(function () {
                 ticketList = res.content;
                 for(var i=0;i<res.content.length;i++){
                     getSchedule(ticketList[i].scheduleId,i);
-                };
+                }
             },
             function (error) {
                 alert(error);
@@ -102,6 +101,7 @@ $(document).ready(function () {
                     userId : userId
                 },
                 function (res) {
+                    window.location.reload();
                     alert("根据退票策略，您得到的退款为："+res.content);
                 }
             )
