@@ -13,6 +13,11 @@
             (#{activityId},#{item})
         </foreach>
     </insert>
+
+    <insert id="insertActivityAndAllMovie">
+        insert into activity_movie select a.id, m.id from activity a join movie m where a.id=#{activityId} and m.status=0;
+    </insert>
+
     <select id="selectById" resultMap="Activity">
         select
             *
