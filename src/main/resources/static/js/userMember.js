@@ -34,9 +34,18 @@ function getVIP() {
         '/vip/getVIPInfo',
         function (res) {
             if (res.success) {
+                var descriptions = "";
+                $("#member-description").empty();
                 $("#member-buy-price").text(res.content.price);
-                $("#member-buy-description").text("充值优惠：" + res.content.description + "。永久有效");
-                $("#member-description").text(res.content.description);
+                var descrs = res.content.description.split('\r\n');
+                for (let i = descrs.length - 2; i >= 0; i--) {
+                    if (i == descrs.length - 2) {
+                        descriptions += "<div class='line'><b>充值优惠：</b>" + descrs[i] + "</div>";
+                    } else {
+                        descriptions += "<div class='line'><b></b>" + descrs[i] + "</div>";
+                    }
+                }
+                $("#member-description").append(descriptions);
             } else {
                 alert(res.content);
             }

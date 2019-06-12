@@ -11,6 +11,10 @@
     <!-- 引入css样式文件 -->
     <link rel="stylesheet" type="text/css" href="/css/common.css"/>
     <link rel="stylesheet" type="text/css" href="/css/userHome.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/normalize.css" />
+
+    <!--必要样式-->
+    <link rel="stylesheet" type="text/css" href="/css/component.css" />
 
     <!-- 引入js脚本文件 -->
     <!-- jquery -->
@@ -41,7 +45,18 @@
             </ul>
         </div>
     </div>
-    暂时没内容，点击导航 ' 电影 ' 看看吧
+    <div class="demo-container demo">
+        <div class="content">
+            <div id="large-header" class="large-header">
+                <canvas id="demo-canvas"></canvas>
+                <h1 class="main-title">MAMS <span class="thin">NJUSE</span></h1>
+            </div>
+        </div>
+    </div><!-- /container -->
+    <script src="/js/TweenLite.min.js"></script>
+    <script src="/js/EasePack.min.js"></script>
+    <script src="/js/rAF.js"></script>
+    <script src="/js/demo.js"></script>
     <!-- 可能不需要的功能 -->
     <!--<div class="content-container">-->
         <!--<div class="movie-contianer">-->

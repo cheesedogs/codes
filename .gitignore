@@ -25,3 +25,5 @@ target/
 /.nb-gradle/
 /build/
 *.yml
+.idea/dataSources.xml
+src/main/resources/application.yml

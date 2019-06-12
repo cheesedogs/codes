@@ -13,12 +13,13 @@ $(document).ready(function () {
                 if (res.success) {
                     sessionStorage.setItem('username', formData.username);
                     sessionStorage.setItem('id', res.content.id);
-                    if (formData.username == "root") {
+                    if (res.content.identity == "管理员" || res.content.identity == "员工") {
                         sessionStorage.setItem('role', 'admin');
+                        sessionStorage.setItem('identity', res.content.identity);
                         window.location.href = "/admin/movie/manage"
                     } else {
                         sessionStorage.setItem('role', 'user');
-                        window.location.href = "/user/home"
+                        window.location.href = "/user/movie"
                     }
                 } else {
                     alert(res.message);

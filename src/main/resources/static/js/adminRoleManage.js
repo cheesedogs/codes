@@ -1,4 +1,11 @@
 $(document).ready(function() {
+
+    if (sessionStorage.getItem('identity') == "管理员") {
+        $('.nav-stacked').append(
+            "<li role='presentation' class='active'><a href='#'><i class='icon-group'></i> 角色管理</a></li>"
+        )
+    }
+
     getUsers();
 
     function getUsers() {

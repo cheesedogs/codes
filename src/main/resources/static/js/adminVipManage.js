@@ -1,5 +1,11 @@
 $(document).ready(function () {
 
+    if (sessionStorage.getItem('identity') == "管理员") {
+        $('.nav-stacked').append(
+            "<li role='presentation'><a href='/admin/role/manage'><i class='icon-group'></i> 角色管理</a></li>"
+        )
+    }
+
     var target_vip_users = [];
 
     getStrategies();
@@ -300,11 +306,12 @@ $(document).ready(function () {
         );
 
         countdown({
-            maxTime:10,
-            ing:function(c){
+            maxTime: 5,
+            minTime: 0,
+            ing: function(c){
                 $("#times").text(c);
             },
-            after:function(){
+            after: function(){
                 window.location.href="http://localhost:8080/admin/cinema/vip";
             }
         });

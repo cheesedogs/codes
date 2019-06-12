@@ -5,6 +5,7 @@ import com.example.cinema.bl.promotion.CouponService;
 import com.example.cinema.data.promotion.ActivityMapper;
 import com.example.cinema.po.Activity;
 import com.example.cinema.po.Coupon;
+import com.example.cinema.po.Movie;
 import com.example.cinema.vo.ActivityForm;
 import com.example.cinema.vo.ResponseVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,8 @@ public class ActivityServiceImpl implements ActivityService, ActivityServiceForB
             activityMapper.insertActivity(activity);
             if(activityForm.getMovieList()!=null&&activityForm.getMovieList().size()!=0){
                 activityMapper.insertActivityAndMovie(activity.getId(), activityForm.getMovieList());
+            }else {
+                activityMapper.insertActivityAndAllMovie(activity.getId());
             }
             return ResponseVO.buildSuccess(activityMapper.selectById(activity.getId()));
         } catch (Exception e) {

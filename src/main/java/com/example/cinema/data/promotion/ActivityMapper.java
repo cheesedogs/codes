@@ -24,9 +24,5 @@ public interface ActivityMapper {
 
     List<Activity> selectActivitiesWithoutMovie();
 
-
-
-
-
-
+    void insertActivityAndAllMovie(int activityId);
 }

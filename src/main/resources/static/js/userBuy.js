@@ -10,7 +10,6 @@ $(document).ready(function () {
             '/ticket/getRefundStrategy',
             function (res) {
                 refundStrategy=res.message;
-                console.log(refundStrategy);
             }
         )
     }
@@ -36,7 +35,7 @@ $(document).ready(function () {
                 ticketList = res.content;
                 for(var i=0;i<res.content.length;i++){
                     getSchedule(ticketList[i].scheduleId,i);
-                };
+                }
             },
             function (error) {
                 alert(error);
@@ -94,7 +93,6 @@ $(document).ready(function () {
         var form;
         var ticketId = e.target.id;
         var userId = sessionStorage.getItem("id");
-        console.log(ticketId+"dd"+userId);
         if (r){
             postRequest(
                 '/ticket/refund',
@@ -103,6 +101,7 @@ $(document).ready(function () {
                     userId : userId
                 },
                 function (res) {
+                    window.location.reload();
                     alert("根据退票策略，您得到的退款为："+res.content);
                 }
             )
@@ -110,4 +109,3 @@ $(document).ready(function () {
     })
 
 });
- // 问题汇总：1：如何绑定id与影厅form，点击连接字中的btn后一起传送     2：与第一个问题相似，如何将id与影票相绑定，退票时点击连接字中的btn后一起传送

@@ -386,7 +386,7 @@
         clearTimeout(b)
     };
     require.defaults = {
-        maxTime: 60,
+        maxTime: 5,
         minTime: 0,
         ing: function (c) {
         },

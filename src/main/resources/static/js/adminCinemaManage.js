@@ -6,6 +6,12 @@ $(document).ready(function() {
     getCinemaHalls();
     getReStrategies();
 
+    if (sessionStorage.getItem('identity') == "管理员") {
+        $('.nav-stacked').append(
+            "<li role='presentation'><a href='/admin/role/manage'><i class='icon-group'></i> 角色管理</a></li>"
+        )
+    }
+
     function getCinemaHalls() {
         var halls = [];
         getRequest(
