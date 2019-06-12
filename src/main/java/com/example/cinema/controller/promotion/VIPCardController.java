@@ -56,7 +56,7 @@ public class VIPCardController {
 
     @GetMapping("/getChargeRecord")
     public ResponseVO getChargeRecord(@RequestParam("id") int id){
-        //TODO: 获取会员卡充值记录，和用户历史消费记录是分离的，等待前端
+        //【完成TODO】: 获取会员卡充值记录，和用户历史消费记录是分离的，等待前端
         return vipService.getChargeRecord(id);
     }
 
