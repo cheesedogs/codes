@@ -300,11 +300,12 @@ $(document).ready(function () {
         );
 
         countdown({
-            maxTime:10,
-            ing:function(c){
+            maxTime: 5,
+            minTime: 0,
+            ing: function(c){
                 $("#times").text(c);
             },
-            after:function(){
+            after: function(){
                 window.location.href="http://localhost:8080/admin/cinema/vip";
             }
         });
