@@ -42,6 +42,7 @@ $(document).ready(function () {
     }
 
     function renderTicketList(ticketList) {
+        $('#ticket-list-body').empty();
         ticketListForInfo=ticketList;
         for (var j = 0; j < ticketList.length; j++) {
             var scheduleItem=ticketList[j].schedule;
@@ -56,9 +57,9 @@ $(document).ready(function () {
                 "<td>"+startTime+"</td>"+
                 "<td>"+endTime+"</td>"+
                 "<td><button class='btn-info' id=\""+ticketList[j].id+"\" >"+"查看详情"+"</button></td></tr>";
-
-            $('#ticket-list-body').append(bodyContent);
+            
         }
+        $('#ticket-list-body').append(bodyContent);
     }
 
     $(document).on('click','.btn-info',function (e) {
