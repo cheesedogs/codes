@@ -46,7 +46,7 @@ $(document).ready(function () {
                         "<div class='front'>" +
                             "<div class='tip'>" +
                                 "<div class='money'>$" + strategy.minus + "</div>" +
-                                "<div class='pay-line' style='white-space:nowrap;'>满" + strategy.standard + "元减</div>" +
+                                "<div class='pay-line' style='white-space:nowrap;'>满" + strategy.standard + "元送</div>" +
                             "</div>" +
                         "</div>" +
                         "<div class='back'>" +
