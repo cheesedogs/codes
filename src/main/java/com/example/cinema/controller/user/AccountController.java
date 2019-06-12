@@ -66,7 +66,7 @@ public class AccountController {
 
     @GetMapping("/user/member/getConsumption")
     public ResponseVO getConsumption(@RequestParam("id") int id){
-        //TODO: 获取用户历史消费记录(和会员卡充值记录是分离的)，等待前端
+        //【完成TODO】: 获取用户历史消费记录(和会员卡充值记录是分离的)，等待前端
         return accountService.getConsumption(id);
     }
 

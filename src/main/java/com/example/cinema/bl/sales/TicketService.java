@@ -21,7 +21,7 @@ public interface TicketService {
     ResponseVO addTicket(TicketForm ticketForm);
 
     /**
-     * TODO:完成购票，流程包括校验优惠券、根据优惠活动赠送优惠券、如果是会员卡支付则扣会员卡费，等待前端
+     * 【完成TODO】:完成购票，流程包括校验优惠券、根据优惠活动赠送优惠券、如果是会员卡支付则扣会员卡费，等待前端
      *
      * @param ticketId
      * @param couponId
