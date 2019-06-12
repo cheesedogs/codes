@@ -73,16 +73,16 @@ public class VIPCard {
     }
 
     public double calculate(double amount, List<VIPPromotion> vipPromotions) {
-        double stadard = 0;
+        double standard = 0;
         double minus = 0;
         for (VIPPromotion promotion : vipPromotions) {
-            if (stadard > promotion.getStandard()){
-                stadard = promotion.getStandard();
+            if (amount >= promotion.getStandard()){
+                standard = promotion.getStandard();
                 minus = promotion.getMinus();
-                break;
+                return ((int)(amount / standard)) * minus;
             }
         }
-        return ((int)(amount / stadard)) * minus + amount;
+        return 0;
 
     }
 }
