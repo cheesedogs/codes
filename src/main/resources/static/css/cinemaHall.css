@@ -3,9 +3,12 @@
 }
 .editHall{
     float: right;
+    height: 50px;
+    width: 200px;
 }
 .addHall{
-    float: right;
+    margin-left: 1020px;
+    width: 200px;
 }
 .cinema-hall-name {
     font-size: 18px;
