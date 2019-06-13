@@ -63,6 +63,12 @@ public interface ScheduleMapper {
     int selectViewCount();
 
     /**
+    *查询可见的天数
+    * @returns:
+    */
+    int getDay();
+
+    /**
      * 批量删除排片信息
      * @param scheduleIdList
      * @return

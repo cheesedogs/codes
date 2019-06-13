@@ -33,6 +33,10 @@
         </foreach>
     </select>
 
+    <select id="getDay" resultType="int">
+            select day from view
+    </select>
+
     <insert id="insertOneView" parameterType="com.example.cinema.vo.ScheduleViewForm"
             useGeneratedKeys="true" keyProperty="id">
         insert into view(day) values(#{day})
