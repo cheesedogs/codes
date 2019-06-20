@@ -240,6 +240,7 @@ public class TicketServiceImpl implements TicketService ,TicketServiceForBl{
     }
 
     @Override
+    @Transactional
     public ResponseVO refundTicket(RefundForm refundForm) {
         ResponseVO response;
         try {

@@ -9,6 +9,7 @@ import com.example.cinema.po.ScheduleItem;
 import com.example.cinema.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -180,6 +181,7 @@ public class ScheduleServiceImpl implements ScheduleService, ScheduleServiceForB
     }
 
     @Override
+    @Transactional
     public ResponseVO setScheduleView(ScheduleViewForm scheduleViewForm) {
         try{
             if(scheduleViewForm.getDay() < 0){

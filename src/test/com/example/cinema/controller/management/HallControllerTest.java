@@ -1,6 +1,7 @@
 package com.example.cinema.controller.management;
 
 import com.example.cinema.CinemaApplicationTest;
+import com.example.cinema.po.Hall;
 import com.example.cinema.vo.HallVO;
 import org.junit.Assert;
 import org.junit.Test;
@@ -47,9 +48,9 @@ public class HallControllerTest extends CinemaApplicationTest {
             hallVO.setName("测试影厅1");
             hallVO.setRow(5);
             hallVO.setColumn(6);
-            hallVO = (HallVO)hallController.addHall(hallVO).getContent();
-            assertNotNull(hallVO.getId());
-            Assert.assertEquals("测试影厅1",hallVO.getName());
+            Hall hall = (Hall)hallController.addHall(hallVO).getContent();
+            assertNotNull(hall.getId());
+            Assert.assertEquals("测试影厅1",hall.getName());
         }catch (Exception e){
             e.printStackTrace();
             fail();
@@ -61,13 +62,13 @@ public class HallControllerTest extends CinemaApplicationTest {
     public void updateHall() {
         try {
             HallVO hallVO = new HallVO();
-            hallVO.setId(1);
+            hallVO.setId(3);
             hallVO.setName("测试影厅1");
             hallVO.setRow(5);
             hallVO.setColumn(6);
-            hallVO = (HallVO)hallController.updateHall(hallVO).getContent();
-            assertNotNull(hallVO.getId());
-            Assert.assertNotEquals("刘涛的后宫",hallVO.getName());
+            Hall hall = (Hall)hallController.updateHall(hallVO).getContent();
+            assertNotNull(hall.getId());
+            Assert.assertNotEquals("周际宇的狗窝",hall.getName());
         }catch (Exception e){
             e.printStackTrace();
             fail();
