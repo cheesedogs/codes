@@ -53,7 +53,7 @@
         select * from refund_strategy order by hours_before_end;
     </select>
 
-    <insert id="insertRefundStrategy" parameterType="com.example.cinema.po.RefundStrategy">
+    <insert id="insertRefundStrategy" parameterType="com.example.cinema.po.RefundStrategy" useGeneratedKeys="true" keyProperty="id">
         insert into refund_strategy(hours_before_end, rate) values (#{hoursBeforeEnd},#{rate})
     </insert>
 
