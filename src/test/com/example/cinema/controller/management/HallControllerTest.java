@@ -50,7 +50,10 @@ public class HallControllerTest extends CinemaApplicationTest {
             hallVO = (HallVO)hallController.addHall(hallVO).getContent();
             assertNotNull(hallVO.getId());
             Assert.assertEquals("测试影厅1",hallVO.getName());
-        }catch (Exception ignored){}
+        }catch (Exception e){
+            e.printStackTrace();
+            fail();
+        }
     }
 
     @Test
@@ -65,6 +68,9 @@ public class HallControllerTest extends CinemaApplicationTest {
             hallVO = (HallVO)hallController.updateHall(hallVO).getContent();
             assertNotNull(hallVO.getId());
             Assert.assertNotEquals("刘涛的后宫",hallVO.getName());
-        }catch (Exception ignored){}
+        }catch (Exception e){
+            e.printStackTrace();
+            fail();
+        }
     }
 }

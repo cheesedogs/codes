@@ -1,6 +1,8 @@
 package com.example.cinema.controller.promotion;
 
 import com.example.cinema.CinemaApplicationTest;
+import com.example.cinema.po.ChargeRecord;
+import com.example.cinema.po.VIPCard;
 import com.example.cinema.po.VIPPromotion;
 import com.example.cinema.vo.VIPCardForm;
 import com.example.cinema.vo.VIPPromotionForm;
@@ -21,23 +23,22 @@ public class VIPCardControllerTest extends CinemaApplicationTest {
     @Autowired
     private VIPCardController vipCardController;
 
-//    @Test
-//    @Transactional
-//    public void charge() {
-//        try {
-//            VIPCardForm form = new VIPCardForm();
-//            form.setVipId(8);
-//            form.setAmount(100);
-//            List<VIPPromotion> promotions = (List<VIPPromotion>)vipCardController.getVIPPromotion().getContent();
-//            StringBuilder sb = new StringBuilder();
-//            for (VIPPromotion v : promotions) {
-//                sb.append(v.getStandard()).append(":").append(v.getMinus()).append(System.lineSeparator());
-//            }
-//            Assert.assertEquals("500.0:100.0\r\n200.0:30.0\r\n", sb.toString());
-//        }catch (Exception e){
-//            e.printStackTrace();
-//        }
-//    }
+    @Test
+    @Transactional
+    public void charge() {
+        try {
+            VIPCardForm form = new VIPCardForm();
+            form.setVipId(8);
+            form.setAmount(100);
+            VIPCard vipCard = (VIPCard)vipCardController.charge(form).getContent();
+            StringBuilder sb = new StringBuilder();
+            sb.append(vipCard.getId()).append(":").append(vipCard.getUserId()).append(":").append(vipCard.getBalance());
+            Assert.assertEquals("8:16:8457.0", sb.toString());
+        }catch (Exception e){
+            fail();
+            e.printStackTrace();
+        }
+    }
 
     @Test
     @Transactional
@@ -50,6 +51,7 @@ public class VIPCardControllerTest extends CinemaApplicationTest {
             }
             Assert.assertEquals("500.0:100.0\r\n200.0:30.0\r\n", sb.toString());
         }catch (Exception e){
+            fail();
             e.printStackTrace();
         }
     }
@@ -68,6 +70,7 @@ public class VIPCardControllerTest extends CinemaApplicationTest {
             sb.append(promotion.getStandard()).append(":").append(promotion.getMinus());
             Assert.assertEquals("300.0:50.0", sb.toString());
         }catch (Exception e){
+            fail();
             e.printStackTrace();
         }
     }
@@ -88,12 +91,24 @@ public class VIPCardControllerTest extends CinemaApplicationTest {
             sb.append(promotion.getStandard()).append(":").append(promotion.getMinus());
             Assert.assertEquals("300.0:50.0", sb.toString());
         }catch (Exception e){
+            fail();
             e.printStackTrace();
         }
     }
 
-//    @Test
-//    @Transactional
-//    public void getChargeRecord() {
-//    }
+    @Test
+    @Transactional
+    public void getChargeRecord() {
+        try {
+            List<ChargeRecord> records = (List<ChargeRecord>) vipCardController.getChargeRecord(3).getContent();
+            StringBuilder sb = new StringBuilder();
+            for (ChargeRecord c : records) {
+                sb.append(c.getAmount()).append(":").append(c.getBalance()).append(System.lineSeparator());
+            }
+            Assert.assertEquals("300.0:330.0\r\n100.0:430.0\r\n", sb.toString());
+        }catch (Exception e){
+            fail();
+            e.printStackTrace();
+        }
+    }
 }
