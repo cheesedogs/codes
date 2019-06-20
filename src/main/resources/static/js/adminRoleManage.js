@@ -1,5 +1,6 @@
 $(document).ready(function() {
 
+    // 若当前用户的身份为“管理员”，侧边栏要加入“角色管理”操作
     if (sessionStorage.getItem('identity') == "管理员") {
         $('.nav-stacked').append(
             "<li role='presentation' class='active'><a href='#'><i class='icon-group'></i> 角色管理</a></li>"
@@ -8,6 +9,7 @@ $(document).ready(function() {
 
     getUsers();
 
+    // 从后台GET所有用户
     function getUsers() {
         getRequest(
             '/admin/getAllUser',
@@ -21,6 +23,7 @@ $(document).ready(function() {
         );
     }
 
+    // 前端显示请求到的用户数据
     function showUsers(users) {
         for (let user of users) {
             var table = document.getElementById("table");

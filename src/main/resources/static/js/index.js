@@ -19,7 +19,7 @@ $(document).ready(function () {
                         window.location.href = "/admin/movie/manage"
                     } else {
                         sessionStorage.setItem('role', 'user');
-                        window.location.href = "/user/movie"
+                        window.location.href = "/user/home"
                     }
                 } else {
                     alert(res.message);

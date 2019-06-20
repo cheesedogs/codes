@@ -6,6 +6,7 @@ $(document).ready(function() {
     getCinemaHalls();
     getReStrategies();
 
+    // 若当前用户的身份为“管理员”，侧边栏要加入“角色管理”操作
     if (sessionStorage.getItem('identity') == "管理员") {
         $('.nav-stacked').append(
             "<li role='presentation'><a href='/admin/role/manage'><i class='icon-group'></i> 角色管理</a></li>"
@@ -186,6 +187,7 @@ $(document).ready(function() {
         return isValidate;
     }
 
+    // 从后台GET所有退票策略
     function getReStrategies() {
         getRequest(
             '/ticket/getRefundStrategy',
@@ -199,6 +201,7 @@ $(document).ready(function() {
         );
     }
 
+    // 前端显示请求到的退票策略
     function showReStrategies(reStrategies) {
         $("#table").tabullet({
             data: reStrategies,
@@ -213,6 +216,7 @@ $(document).ready(function() {
         });
     }
 
+    // 将用户新添加的退票策略POST到后台
     function addReStrategy(reStrategy) {
         var form = {
             hoursBeforeEnd: reStrategy.hoursBeforeEnd,
@@ -235,6 +239,7 @@ $(document).ready(function() {
         );
     }
 
+    // 后台更新用户修改的退票策略
     function updateReStrategy(reStrategy) {
         console.log(reStrategy.id);
         var form = {

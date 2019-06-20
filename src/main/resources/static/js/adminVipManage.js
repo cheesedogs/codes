@@ -1,11 +1,13 @@
 $(document).ready(function () {
 
+    // 若当前用户的身份为“管理员”，侧边栏要加入“角色管理”操作
     if (sessionStorage.getItem('identity') == "管理员") {
         $('.nav-stacked').append(
             "<li role='presentation'><a href='/admin/role/manage'><i class='icon-group'></i> 角色管理</a></li>"
         )
     }
 
+    // 因为各方法都会用到users集合，故将其设置为全局变量，方便调用
     var target_vip_users = [];
 
     getStrategies();
@@ -14,6 +16,7 @@ $(document).ready(function () {
 
     getCoupons();
 
+    // 从后台GET所有的会员卡充值优惠策略
     function getStrategies() {
         getRequest(
             '/vip/getVIPPromotion',
@@ -27,6 +30,7 @@ $(document).ready(function () {
         );
     }
 
+    // 前端显示请求到的会员卡充值优惠策略
     function renderStrategies(strategies) {
 
         $(".content-strategy").empty();
@@ -61,6 +65,7 @@ $(document).ready(function () {
         $(".content-strategy").append(strategiesDomStr);
     }
 
+    // 点击"strategy-form-btn" -> 发布充值优惠策略
     $("#strategy-form-btn").click(function () {
         var form = {
             standard: $("#coupon-target-input").val(),
@@ -85,6 +90,7 @@ $(document).ready(function () {
         );
     });
 
+    // 为方便修改会员卡充值优惠策略时，当前页面已有优惠策略数据的调用，将changeStrategy函数置于window内
     window.changeStrategy = function (strategy) {
         var strObj = strategy.parentNode.parentNode.parentNode.parentNode;
         var reg = /[\u4e00-\u9fa5]/g;
@@ -100,6 +106,7 @@ $(document).ready(function () {
         $("#edit-coupon-discount-input").val(discountAmount);
     };
 
+    // 点击"edit-strategy-form-btn"，触发函数，POST修改后的优惠策略到后台
     $("#edit-strategy-form-btn").click(function () {
         var form = {
             id: $("#edit-strategy-id-input").val(),
@@ -126,7 +133,7 @@ $(document).ready(function () {
         );
     });
 
-
+    // 从后端GET所以消费额超过管理员指定额度的VIP
     function getTargetVip(target_amount) {
         getRequest(
             '/coupon/getVIPList?target_amount=' + target_amount,
@@ -144,6 +151,7 @@ $(document).ready(function () {
         )
     }
 
+    // 前端显示请求到的VIP
     function showTargetVip(vipUsers) {
         var flag = 0;
         $(".module-body").empty();
@@ -178,9 +186,9 @@ $(document).ready(function () {
         });
 
         $(".module-body").append(targetVipDomStr);
-
     }
 
+    // 用户点击"vip-form-btn"后，POST请求消费额超过管理员指定额度的VIP
     $("#vip-form-btn").click(function () {
         var target_amount = $('#target_amount').val();
         if (target_amount == '' || target_amount == undefined || target_amount == null) {
@@ -190,14 +198,14 @@ $(document).ready(function () {
         return false;
     });
 
-
-    //AJAX提交筛选出的会员
+    // AJAX提交筛选出的会员
     $('#nextBtn').click(function(){
         var i = $(this).index() + 1;
         $('.processorBox li').removeClass('current').eq(i).addClass('current');
         $('.step').fadeOut(300).eq(i).removeClass('hide');
     });
 
+    // 从后台GET所有可赠送的coupons
     function getCoupons() {
         getRequest(
             '/coupon/getAllCoupon',
@@ -214,6 +222,7 @@ $(document).ready(function () {
         )
     }
 
+    // 前端显示GET到的coupons
     function showCoupons(coupons) {
 
         var flag = 0;
@@ -273,7 +282,7 @@ $(document).ready(function () {
         $(".coupon-row").append(couponsDomStr);
     }
 
-    //AJAX提交优惠券
+    // AJAX提交优惠券，并提示用户发送成功（5s后跳转到初始界面）
     $(document).on('click','.coupon-btn',function() {
         var i = $(this).index() + 2;
         var couponForm = [];
