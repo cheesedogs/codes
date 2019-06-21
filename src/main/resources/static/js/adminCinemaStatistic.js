@@ -217,7 +217,7 @@ $(document).ready(function() {
                     },
                     calculable: true,
                     series: [{
-                        name: '上座率',
+                        name: '空座率',
                         type: 'pie',
                         radius: [30, 110],
                         center: ['50%', '50%'],
