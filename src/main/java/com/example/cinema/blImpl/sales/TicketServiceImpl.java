@@ -212,7 +212,7 @@ public class TicketServiceImpl implements TicketService ,TicketServiceForBl{
             ticketMapper.insertRefundStrategy(refundStrategy);
             RefundStrategyVO refundStrategyVO = new RefundStrategyVO(refundStrategy);
             response = ResponseVO.buildSuccess(refundStrategyVO);
-            response.setMessage("更新退票策略成功");
+            response.setMessage("发布退票策略成功");
         }catch (Exception e){
             e.printStackTrace();
             response = ResponseVO.buildFailure("发布失败，该退票策略已存在");
@@ -240,6 +240,7 @@ public class TicketServiceImpl implements TicketService ,TicketServiceForBl{
     }
 
     @Override
+    @Transactional
     public ResponseVO refundTicket(RefundForm refundForm) {
         ResponseVO response;
         try {

@@ -25,7 +25,7 @@ public class CouponController {
     }
 
     @GetMapping("/getVIPList")
-    public ResponseVO sendCoupon(@RequestParam("target_amount")double target_amount){
+    public ResponseVO getVIPListByAmount(@RequestParam("target_amount")double target_amount){
         //【完成TODO】: 获取历史消费超过指定金额的会员列表，等待前端
         return couponService.getVIPListByAmount(target_amount);
     }
